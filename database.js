@@ -1,28 +1,35 @@
 const Sequelize = require('sequelize');
 
-let sequelize;
+class Database {
+    constructor(env) {
+        this.env = env;
 
-if (process.env.NODE_ENV === 'test') {
-  sequelize = new Sequelize(
-    'mysql://root:1@localhost/store_management_test',
-    {
-      logging: false
+        this.getDatabaseName();
+        this.createSequelize();
+
+        return this.sequelize;
     }
-  );
-} else if (process.env.NODE_ENV === 'dev') {
-  sequelize = new Sequelize(
-    'mysql://root:1@localhost/store_management_dev',
-    {
-      logging: false
+
+    createSequelize() {
+        this.sequelize = new Sequelize(
+            `mysql://root:1@localhost/${this.name}`,
+            { logging: false }
+        );
     }
-  );
-} else {
-  sequelize = new Sequelize(
-    'mysql://root:1@localhost/store_management',
-    { logging: false }
-  );
+
+    getDatabaseName() {
+        switch (this.env) {
+            case 'test': {
+                this.name = 'store_management_test';
+            }
+
+            case 'dev': {
+                this.name = 'store_management_dev';
+            }
+        }
+
+        this.name = 'store_management';
+    }
 }
 
-console.log('NODE_ENV', process.env.NODE_ENV);
-
-module.exports = sequelize;
+module.exports = Database;

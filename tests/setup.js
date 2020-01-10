@@ -1,4 +1,5 @@
-const db = require('database');
+const Database = require('database');
+const db = new Database(process.env.NODE_ENV);
 
 module.exports = () => {
     db.authenticate()
@@ -7,7 +8,7 @@ module.exports = () => {
     db.sync();
 
     beforeEach(() => {
-        console.log('NODE_ENV: ', process.env.NODE_ENV);
+        db.sync({ force: true });
     });
 
     afterEach(() => {
