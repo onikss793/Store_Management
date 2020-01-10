@@ -4,21 +4,21 @@ let sequelize;
 
 if (process.env.NODE_ENV === 'test') {
   sequelize = new Sequelize(
-    'mysql://root:password@localhost/store_management_test',
+    'mysql://root:1@localhost/store_management_test',
     {
       logging: false
     }
   );
 } else if (process.env.NODE_ENV === 'dev') {
   sequelize = new Sequelize(
-    'mysql://root:password@localhost/store_management_dev',
+    'mysql://root:1@localhost/store_management_dev',
     {
       logging: false
     }
   );
 } else {
   sequelize = new Sequelize(
-    'mysql://root:password@localhost/store_management',
+    'mysql://root:1@localhost/store_management',
     { logging: false }
   );
 }
