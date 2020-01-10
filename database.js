@@ -1,18 +1,20 @@
 const Sequelize = require('sequelize');
 
-let sequelize;
-
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+
+let sequelize;
 
 if (process.env.NODE_ENV === 'test') {
-  sequelize = new Sequelize('test_database', DB_USER, DB_PASSWORD, {
-    dialect: 'mysql'
+  sequelize = new Sequelize('mysql://root:password@localhost/test_database', {
+    logging: false
   });
 } else {
-  sequelize = new Sequelize('store_management', DB_USER, DB_PASSWORD, {
-    dialect: 'mysql'
-  });
+  sequelize = new Sequelize(
+    'mysql://root:password@localhost/store_management',
+    { logging: false }
+  );
 }
 
 module.exports = sequelize;
