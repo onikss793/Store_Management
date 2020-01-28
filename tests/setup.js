@@ -6,11 +6,7 @@ module.exports = () => {
     .catch(err => console.error('TEST_DB Connection Error:', err));
   db.sync();
 
-  beforeEach(() => {
-    console.log('NODE_ENV: ', process.env.NODE_ENV);
-  });
+  // beforeEach(() => {});
 
-  afterEach(() => {
-    db.sync({ force: true });
-  });
+  afterEach(() => db.sync({ force: true }));
 };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_PATH=./ jest --detectOpenHandles",
-    "dev": "NODE_PATH=./ nodemon server.js"
+    "dev": "NODE_PATH=./ NODE_ENV=dev nodemon server.js"
   },
   "keywords": [],
   "author": "",
