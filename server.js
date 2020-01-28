@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8000;
 db.authenticate()
   .then(() => console.log('DB Connected!'))
   .catch(err => console.error('DB Connection Error:', err));
-db.sync({ force: true });
+db.sync();
 
 http
   .createServer(app)

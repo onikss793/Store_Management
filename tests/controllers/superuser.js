@@ -3,9 +3,9 @@ const Supertest = require('supertest');
 const app = require('app');
 const request = Supertest(app);
 
-setup();
+// setup();
 
-describe('Test Superuser Controllers', () => {
+module.exports = describe('Test Superuser Controllers', () => {
   test('createSuperuser should respond created', async () => {
     const dataForSuperuser = { name: 'new superuser', password: 'PW for test' };
 

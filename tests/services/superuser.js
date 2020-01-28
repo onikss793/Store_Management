@@ -1,9 +1,9 @@
 const setup = require('tests/setup');
 const { insertSuperuser, findSuperuser } = require('services/superuser');
 
-setup();
+// setup();
 
-describe('Test Superuser Service', () => {
+module.exports = describe('Test Superuser Service', () => {
   test('insertSuperuser should create new superuser', async () => {
     const dataForSuperuser = { name: 'new superuser', password: 'PW for test' };
 
