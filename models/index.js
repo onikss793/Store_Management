@@ -1,13 +1,13 @@
 const initModels = require('utils/initModels');
 
 const models = initModels(
-  'Superuser',
-  'Brand',
-  'Color',
-  'Employee',
-  'Reservation',
-  'Service',
-  'Store'
+    'Superuser',
+    'Brand',
+    'Color',
+    'Employee',
+    'Reservation',
+    'Service',
+    'Store'
 );
 
 models.Brand.hasMany(models.Store);
@@ -21,5 +21,5 @@ models.Service.hasOne(models.Reservation);
 models.Store.hasOne(models.Reservation);
 
 module.exports = {
-  ...models
+    ...models
 };
