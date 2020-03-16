@@ -1,4 +1,4 @@
-const initModels = require('utils/initModels');
+const initModels = require('models/initModels');
 
 const models = initModels(
     'Superuser',
