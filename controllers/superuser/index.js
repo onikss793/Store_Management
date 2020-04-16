@@ -1,6 +1,5 @@
-const { insertSuperuser, findSuperuser } = require('services/superuser');
+const { insertSuperuser, findSuperuser } = require('dao/superuser');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
 const { checkRequestBody } = require('./superuser');
 
@@ -18,7 +17,7 @@ const createSuperuser = async (req, res, next) => {
         };
 
         const superuser = await insertSuperuser(superuserData);
-        const created = await findSuperuser(superuser.id);
+        const created = await findSuperuser({ key: 'id', value: superuser.id });
 
         res.status(200).json({ created });
     } catch (err) {

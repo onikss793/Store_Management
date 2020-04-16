@@ -1,9 +1,9 @@
-module.exports = (Sequelize, db) =>
+module.exports = (DataTypes, db) =>
   db.define(
     'services',
     {
-      name: { type: Sequelize.STRING, unique: true, allowNull: false },
-      color_id: { type: Sequelize.INTEGER, allowNull: false }
+      service_name: { type: DataTypes.STRING, unique: true, allowNull: false },
+      color_id: { type: DataTypes.INTEGER, allowNull: false }
     },
     { underscored: true }
   );

@@ -1,13 +1,11 @@
-const Sequelize = require('Sequelize');
-const Database = require('database');
-
-const db = new Database(process.env.NODE_ENV);
+const { DataTypes } = require('sequelize');
+const db = require('database');
 
 module.exports = (...names) => {
-    return names.reduce((acc, curr) => {
-        return {
-            ...acc,
-            [curr]: require(`./${curr}`)(Sequelize, db)
-        };
-    }, {});
+	return names.reduce((acc, curr) => {
+		return {
+			...acc,
+			[curr]: require(`./${curr}`)(DataTypes, db)
+		};
+	}, {});
 };

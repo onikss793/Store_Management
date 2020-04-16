@@ -1,4 +1,4 @@
-const makeError = require('utils/makeError');
+const makeError = require('../utils/throwError');
 
 const notFound = (req, res, next) => {
   next(makeError(404, `Can't find ${req.originalUrl} from this server`));

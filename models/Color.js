@@ -1,8 +1,8 @@
-module.exports = (Sequelize, db) =>
+module.exports = (DataTypes, db) =>
     db.define(
         'colors',
         {
-            color: { type: Sequelize.STRING, unique: true, allowNull: false }
+            value: { type: DataTypes.STRING, unique: true, allowNull: false }
         },
         { underscored: true }
     );

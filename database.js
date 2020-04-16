@@ -1,4 +1,31 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(
+    `mysql://root:1@localhost/${getDbName(process.env.NODE_ENV)}`,
+    {
+        logging: false
+    }
+);
+
+function getDbName(env) {
+    switch (env) {
+        case 'test': {
+            this.name = 'store_management_test';
+            break;
+        }
+
+        case 'dev': {
+            this.name = 'store_management_dev';
+            break;
+        }
+        case 'production': {
+            this.name = 'store_management';
+            break;
+        }
+    }
+
+    return this.name;
+}
 
 class Database {
     constructor(env) {
@@ -13,7 +40,7 @@ class Database {
     createSequelize() {
         this.sequelize = new Sequelize(
             `mysql://root:1@localhost/${this.name}`,
-            { logging: false }
+            { logging: data => console.log(data) }
         );
     }
 
@@ -21,15 +48,23 @@ class Database {
         switch (this.env) {
             case 'test': {
                 this.name = 'store_management_test';
+                break;
             }
 
             case 'dev': {
                 this.name = 'store_management_dev';
+                break;
+            }
+            case 'production': {
+                this.name = 'store_management';
+                break;
             }
         }
+    }
 
-        this.name = 'store_management';
+    getSequelize() {
+        return this.sequelize;
     }
 }
 
-module.exports = Database;
+module.exports = sequelize;
