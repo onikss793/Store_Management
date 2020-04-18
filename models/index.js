@@ -6,7 +6,8 @@ const initModels = require('models/initModels'),
 		'Reservation',
 		'Service',
 		'Store',
-		'Client'
+		'Client',
+		'Vacation'
 	);
 
 // models.Brand.hasMany(models.Store);
