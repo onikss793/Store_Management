@@ -1,18 +1,70 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 
-let sequelize;
+const sequelize = new Sequelize(
+    `mysql://root:1@localhost/${getDbName(process.env.NODE_ENV)}`,
+    {
+        logging: false
+    }
+);
 
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
+function getDbName(env) {
+    switch (env) {
+        case 'test': {
+            this.name = 'store_management_test';
+            break;
+        }
 
-if (process.env.NODE_ENV === 'test') {
-  sequelize = new Sequelize('test_database', DB_USER, DB_PASSWORD, {
-    dialect: 'mysql'
-  });
-} else {
-  sequelize = new Sequelize('store_management', DB_USER, DB_PASSWORD, {
-    dialect: 'mysql'
-  });
+        case 'dev': {
+            this.name = 'store_management_dev';
+            break;
+        }
+        case 'production': {
+            this.name = 'store_management';
+            break;
+        }
+    }
+
+    return this.name;
+}
+
+class Database {
+    constructor(env) {
+        this.env = env;
+
+        this.getDatabaseName();
+        this.createSequelize();
+
+        return this.sequelize;
+    }
+
+    createSequelize() {
+        this.sequelize = new Sequelize(
+            `mysql://root:1@localhost/${this.name}`,
+            { logging: data => console.log(data) }
+        );
+    }
+
+    getDatabaseName() {
+        switch (this.env) {
+            case 'test': {
+                this.name = 'store_management_test';
+                break;
+            }
+
+            case 'dev': {
+                this.name = 'store_management_dev';
+                break;
+            }
+            case 'production': {
+                this.name = 'store_management';
+                break;
+            }
+        }
+    }
+
+    getSequelize() {
+        return this.sequelize;
+    }
 }
 
 module.exports = sequelize;
