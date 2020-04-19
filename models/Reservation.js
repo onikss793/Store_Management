@@ -1,10 +1,10 @@
-module.exports = (DataTypes, db) =>
-	db.define(
-		'reservations',
-		{
-			employee_id: { type: DataTypes.INTEGER, allowNull: false },
-			client: { type: DataTypes.STRING, allowNull: false },
-			service: { type: DataTypes.INTEGER, allowNull: false },
+module.exports = (DataTypes, db) => {
+	return db.define('reservations', {
+			employee_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false
+			},
+			client_id: { type: DataTypes.INTEGER, allowNull: false },
 			store_id: { type: DataTypes.INTEGER, allowNull: false },
 			service_id: { type: DataTypes.INTEGER, allowNull: false },
 			start_at: { type: 'TIMESTAMP', allowNull: false },
@@ -13,7 +13,8 @@ module.exports = (DataTypes, db) =>
 				type: DataTypes.ENUM,
 				values: ['ready', 'done', 'canceled'],
 				defaultValue: 'ready'
-			}
-		},
-		{ paranoid: true, underscored: true }
+			},
+			memo: { type: DataTypes.STRING(50) }
+		}, { paranoid: true, underscored: true }
 	);
+}
