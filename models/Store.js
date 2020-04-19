@@ -2,7 +2,6 @@ module.exports = (DataTypes, db) =>
 	db.define('stores', {
 			store_name: {
 				type: DataTypes.STRING(30),
-				unique: true,
 				allowNull: false
 			},
 			password: { type: DataTypes.STRING(90), allowNull: false },

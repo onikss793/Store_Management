@@ -1,6 +1,11 @@
-const db = require('database');
+const db = require('database'),
+	bcrypt = require('bcrypt'),
+	app = require('../app'),
+	dao = require('../dao');
 
-module.exports = async () => {
+const request = require('supertest')(app);
+
+const load = async () => {
 	try {
 		await db.authenticate()
 		        .then(() =>
@@ -11,4 +16,46 @@ module.exports = async () => {
 	} catch (err) {
 		console.log('Setup Error: ', err);
 	}
+};
+
+const teardown = async () => {
+	try {
+		await db.sync({ force: true });
+	} catch (err) {
+		console.log('Setup Error: ', err);
+	}
+};
+
+const getStoreData = async () => {
+	const store_data = {
+		store_name: '선릉 1호점',
+		password: '1111',
+		brand_id: 1,
+		is_admin: false
+	};
+	store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
+
+	return store_data;
+};
+
+const loadStoreList = async () => {
+	const store_data = [...require('./stores.json')];
+
+	const store_list = await Promise.all(store_data.map(async store => {
+		store.password = await bcrypt.hash(store.password, Number(process.env.SALT_ROUNDS));
+
+		return store;
+	}));
+
+	for await (const store of store_list) {
+		await dao.store.insertStore(store);
+	}
+}
+
+module.exports = {
+	load,
+	teardown,
+	request,
+	getStoreData,
+	loadStoreList
 };
