@@ -1,26 +1,16 @@
-const app = require('../../app'),
-	setup = require('../setup'),
-	request = require('supertest')(app),
-	db = require('../../database'),
-	bcrypt = require('bcrypt'),
+const { load, teardown, request, getStoreData } = require('../setup'),
 	dao = require('../../dao');
 
 describe('Test Login Controller', () => {
 	beforeAll(async () => {
-		await setup();
+		await load();
 
-		const store_data = {
-			store_name: '선릉 1호점',
-			password: '1111',
-			brand_id: 1,
-			is_admin: false
-		};
-		store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
+		const store_data = await getStoreData();
 
 		await dao.store.insertStore(store_data);
 	});
 	afterAll(async () => {
-		await db.sync({ force: true });
+		await teardown()
 	})
 
 	it('should send 400', async () => {
