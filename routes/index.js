@@ -1,5 +1,6 @@
 const accountRouter = require('./account'),
 	storeRouter = require('./store'),
+	employeeRouter = require('./employee'),
 	{ globalErrorHandler, notFound } = require('middlewares/errors');
 
 const exec = (app) => (routerModule) => {
@@ -13,6 +14,7 @@ const routes = app => {
 	app.use('/account', accountRouter);
 
 	router(storeRouter);
+	router(employeeRouter)
 
 	app.use(notFound);
 	app.use(globalErrorHandler);
