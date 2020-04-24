@@ -27,18 +27,8 @@ const storeList = async (req, res, next) => {
 	try {
 		const stores = await dao.store.selectStoreList('brand_id');
 
-		const data = await Promise.all(stores.map(async d => {
-			const store = d.toJSON();
-
-			store.brand_name = dao.brand.selectBrand({ id: store.brand_id })
-			   .then(d => d && d.toJSON()).brand_name;
-
-			return store;
-		}));
-
-		res.status(200).json(data);
+		res.status(200).json(stores);
 	} catch (err) {
-		console.log('ERROR: ', err)
 		next(err);
 	}
 }

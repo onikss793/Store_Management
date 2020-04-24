@@ -4,4 +4,8 @@ const selectBrand = (index) => {
 	return Brand.findOne({ where: { ...index }});
 };
 
-module.exports = { selectBrand }
+const insertBrand = (data) => {
+	return Brand.create(data);
+}
+
+module.exports = { selectBrand, insertBrand }

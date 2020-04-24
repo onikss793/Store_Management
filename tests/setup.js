@@ -8,10 +8,10 @@ const request = require('supertest')(app);
 const load = async () => {
 	try {
 		await db.authenticate()
-			.then(() =>
-				console.log('TEST_DB Connected to: ', db.config.database)
-			)
-			.catch(err => console.error('TEST_DB Connection Error:', err));
+		        .then(() =>
+			        console.log('TEST_DB Connected to: ', db.config.database)
+		        )
+		        .catch(err => console.error('TEST_DB Connection Error:', err));
 		await db.sync({ force: true });
 	} catch (err) {
 		console.log('Setup Error: ', err);
@@ -29,13 +29,21 @@ const teardown = async () => {
 const getStoreData = async () => {
 	const store_data = {
 		store_name: '선릉 1호점',
-		password  : '1111',
-		brand_id  : 1,
-		is_admin  : false
+		password: '1111',
+		brand_id: 1,
+		is_admin: false
 	};
 	store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
 
 	return store_data;
+};
+
+const loadBrandList = async () => {
+	const brand_list = [...require('./brands.json')];
+
+	for await (const brand of brand_list) {
+		await dao.brand.insertBrand(brand);
+	}
 };
 
 const loadStoreList = async () => {
@@ -55,9 +63,9 @@ const loadStoreList = async () => {
 const login = async () => {
 	const store_data = {
 		store_name: 'test',
-		password  : 'test',
-		brand_id  : 1,
-		is_admin  : true
+		password: 'test',
+		brand_id: 1,
+		is_admin: true
 	};
 	store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
 	await dao.store.insertStore(store_data);
@@ -73,5 +81,6 @@ module.exports = {
 	request,
 	getStoreData,
 	loadStoreList,
-	login
+	login,
+	loadBrandList
 };
