@@ -3,6 +3,7 @@ const accountRouter = require('./account'),
 	employeeRouter = require('./employee'),
 	clientRouter = require('./client'),
 	serviceRouter = require('./service'),
+	reservationRouter = require('./reservation'),
 	{ globalErrorHandler, notFound } = require('middlewares/errors');
 
 const exec = (app) => (routerModule) => {
@@ -19,6 +20,7 @@ const routes = app => {
 	router(employeeRouter);
 	router(clientRouter);
 	router(serviceRouter);
+	router(reservationRouter);
 
 	app.use(notFound);
 	app.use(globalErrorHandler);
