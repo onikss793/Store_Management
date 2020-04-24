@@ -1,4 +1,4 @@
-const { load, teardown, request, getStoreData, loadStoreList, login } = require('../setup');
+const { load, teardown, request, getStoreData, loadStoreList, login, loadBrandList } = require('../setup');
 
 describe('Test Store Create Controller', () => {
 	beforeAll(async () => {
@@ -14,9 +14,9 @@ describe('Test Store Create Controller', () => {
 		const token = await login();
 
 		const result = await request.post('/store')
-									.send(data)
-									.set('Authorization', token)
-									.then(res => res.toJSON());
+		                            .send(data)
+		                            .set('Authorization', token)
+		                            .then(res => res.toJSON());
 
 		expect(result.status).toEqual(200);
 	});
@@ -24,30 +24,30 @@ describe('Test Store Create Controller', () => {
 	it('should throw 400 error', async () => {
 		const brand_null = {
 				store_name: '1234',
-				password  : '1111',
-				brand_id  : null
+				password: '1111',
+				brand_id: null
 			},
 			store_name_null = {
 				store_name: '',
-				password  : '1111',
-				brand_id  : 1
+				password: '1111',
+				brand_id: 1
 			},
 			password_null = {
 				store_name: 'hello',
-				password  : '',
-				brand_id  : 1
+				password: '',
+				brand_id: 1
 			};
 
 		const token = await login();
 		const brand_result = await request.post('/store').set('Authorization', token)
-			.send(brand_null)
-			.then(res => res.toJSON()),
+		                                  .send(brand_null)
+		                                  .then(res => res.toJSON()),
 			store_result = await request.post('/store').set('Authorization', token)
-				.send(store_name_null)
-				.then(res => res.toJSON()),
+			                            .send(store_name_null)
+			                            .then(res => res.toJSON()),
 			password_result = await request.post('/store').set('Authorization', token)
-				.send(password_null)
-				.then(res => res.toJSON());
+			                               .send(password_null)
+			                               .then(res => res.toJSON());
 
 		expect(brand_result.status).toEqual(400);
 		expect(store_result.status).toEqual(400);
@@ -58,6 +58,7 @@ describe('Test Store Create Controller', () => {
 describe('Test Store List Controller', () => {
 	beforeAll(async () => {
 		await load();
+		await loadBrandList();
 		await loadStoreList();
 	});
 
