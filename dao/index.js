@@ -3,5 +3,6 @@ module.exports = {
 	brand: require('./brand'),
 	employee: require('./employee'),
 	client: require('./client'),
-	service: require('./service')
+	service: require('./service'),
+	reservation: require('./reservation')
 }
