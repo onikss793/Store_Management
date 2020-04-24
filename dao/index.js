@@ -1,5 +1,6 @@
 module.exports = {
 	store: require('./store'),
 	brand: require('./brand'),
-	employee: require('./employee')
+	employee: require('./employee'),
+	client: require('./client')
 }
