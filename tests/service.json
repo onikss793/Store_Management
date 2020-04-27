@@ -1,0 +1,22 @@
+[
+  {
+    "service_name": "젤 네일",
+    "color": "rgba(0,0,0,1)",
+    "store_id": 1
+  },
+  {
+    "service_name": "패디큐어",
+    "color": "rgba(0,0,0,1)",
+    "store_id": 1
+  },
+  {
+    "service_name": "화려한 네일",
+    "color": "rgba(0,0,0,1)",
+    "store_id": 1
+  },
+  {
+    "service_name": "수수한 네일",
+    "color": "rgba(0,0,0,1)",
+    "store_id": 1
+  }
+]

@@ -70,8 +70,6 @@ describe('Test Store List Controller', () => {
 		const token = await login();
 		const result = await request.get('/store').set('Authorization', token).then(res => res.toJSON());
 
-		console.log(JSON.parse(result.text));
-
 		expect(result.status).toEqual(200);
 	});
 });
