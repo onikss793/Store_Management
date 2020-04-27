@@ -12,7 +12,16 @@ const globalErrorHandler = (err, req, res, next) => {
   (err.message === 'Conflict' || err.message === 'Validation Error') &&
     res.status(409).json({ error: err.message });
 
-  res.status(err.status).json({ error: err.message });
+  handleTestErrors(err, res);
 };
 
 module.exports = { notFound, globalErrorHandler };
+
+const handleTestErrors = ({ status, message }, res) => {
+	if (process.env.NODE_ENV === 'test') {
+		console.log('status: ', status, '\n', 'error: ', message);
+		res.status(status).json();
+	} else {
+		res.status(status).json({ error: message });
+	}
+}

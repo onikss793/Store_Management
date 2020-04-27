@@ -1,4 +1,6 @@
-const reservationDao = require('../../dao').reservation;
+const reservationDao = require('../../dao').reservation,
+	helper = require('./helper'),
+	moment = require('moment');
 
 const createReservation = async (req, res, next) => {
 	try {
@@ -14,12 +16,29 @@ const createReservation = async (req, res, next) => {
 			memo
 		};
 
-		const result = await reservationDao.insertReservation(data);
-		console.log(result.toJSON());
+		await reservationDao.insertReservation(data);
+
 		res.status(200).json();
 	} catch(err) {
 		next(err);
 	}
 };
 
-module.exports = { createReservation };
+const getReservationList = async (req, res, next) => {
+	try {
+		const store_id = req.params.store_id;
+		const date = moment(req.query.date); // "2020-05-31T15:00:00.000Z"
+
+		const start_date = date.startOf('day').toISOString();
+		const end_date = date.endOf('day').toISOString();
+
+		const result = await reservationDao.selectReservation(store_id, start_date, end_date);
+		const data = helper.convertRawToReservationList(result);
+
+		res.status(200).json(data);
+	} catch(err) {
+		next(err);
+	}
+}
+
+module.exports = { createReservation, getReservationList };
