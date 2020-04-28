@@ -4,6 +4,7 @@ const accountRouter = require('./account'),
 	clientRouter = require('./client'),
 	serviceRouter = require('./service'),
 	reservationRouter = require('./reservation'),
+	brandRouter = require('./brand'),
 	{ globalErrorHandler, notFound } = require('middlewares/errors');
 
 const exec = (app) => (routerModule) => {
@@ -21,6 +22,7 @@ const routes = app => {
 	router(clientRouter);
 	router(serviceRouter);
 	router(reservationRouter);
+	router(brandRouter);
 
 	app.use(notFound);
 	app.use(globalErrorHandler);
