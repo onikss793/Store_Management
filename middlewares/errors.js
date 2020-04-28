@@ -19,7 +19,7 @@ module.exports = { notFound, globalErrorHandler };
 
 const handleTestErrors = ({ status, message }, res) => {
 	if (process.env.NODE_ENV === 'test') {
-		console.log('status: ', status, '\n', 'error: ', message);
+		console.log('ERROR: ', status, ' ',message);
 		res.status(status).json();
 	} else {
 		res.status(status).json({ error: message });

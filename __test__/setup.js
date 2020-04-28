@@ -8,9 +8,7 @@ const request = require('supertest')(app);
 const load = async () => {
 	try {
 		await db.authenticate()
-		        .then(() =>
-			        console.log('TEST_DB Connected to: ', db.config.database)
-		        )
+		        .then()
 		        .catch(err => console.error('TEST_DB Connection Error:', err));
 		await db.sync({ force: true });
 	} catch (err) {
@@ -20,7 +18,8 @@ const load = async () => {
 
 const teardown = async () => {
 	try {
-		await db.sync({force: false });
+		await db.sync({ force: false });
+		await db.close();
 	} catch (err) {
 		console.log('Setup Error: ', err);
 	}
@@ -74,7 +73,7 @@ const loadEmployees = async () => {
 	for await (const employee of employee_data) {
 		await dao.employee.insertEmployee(employee);
 	}
-}
+};
 
 const loadServices = async () => {
 	const service_data = [...require('./service.json')];
@@ -82,7 +81,7 @@ const loadServices = async () => {
 	for await (const service of service_data) {
 		await dao.service.insertService(service);
 	}
-}
+};
 
 const loadClient = async () => {
 	const client_data = [...require('./clients.json')];
@@ -90,7 +89,7 @@ const loadClient = async () => {
 	for await (const client of client_data) {
 		await dao.client.insertClient(client);
 	}
-}
+};
 
 const login = async () => {
 	const store_data = {

@@ -6,7 +6,7 @@ describe('Test Store Create Controller', () => {
 	});
 
 	afterAll(async () => {
-		await teardown();
+
 	});
 
 	it('should send 200 when create store', async () => {
