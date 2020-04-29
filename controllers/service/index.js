@@ -1,4 +1,18 @@
-const serviceDao = require('../../dao').service;
+const serviceDao = require('../../dao').service,
+	{ getResponseForList } = require('./helper')
+
+const getServiceListByStoreId = async (req, res, next) => {
+	try {
+		const store_id = req.params.store_id;
+		const data = await serviceDao.selectServicesByStoreId(store_id)
+		                             .then(d => d.length && d.map(o => o.toJSON()));
+		const response = getResponseForList(data);
+
+		res.status(200).json(response);
+	} catch(err) {
+		next(err);
+	}
+};
 
 const createService = async (req, res, next) => {
 	try {
@@ -19,4 +33,4 @@ const createService = async (req, res, next) => {
 	}
 };
 
-module.exports = { createService };
+module.exports = { createService, getServiceListByStoreId };

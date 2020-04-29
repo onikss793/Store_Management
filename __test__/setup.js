@@ -5,6 +5,11 @@ const db = require('database'),
 
 const request = require('supertest')(app);
 
+const getApi = async (url) => {
+	const token = await login();
+	return request.get(url).set('Authorization', token).then(res => res.toJSON());
+};
+
 const load = async () => {
 	try {
 		await db.authenticate()
@@ -117,5 +122,6 @@ module.exports = {
 	loadReservationList,
 	loadEmployees,
 	loadServices,
-	loadClient
+	loadClient,
+	getApi
 };

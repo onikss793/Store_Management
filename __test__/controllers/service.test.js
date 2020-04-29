@@ -1,11 +1,8 @@
-const { load, teardown, request, login } = require('../setup');
+const { load, teardown, request, login, getApi } = require('../setup');
 
 describe('Test Service Create Controller', () => {
 	beforeAll(async () => {
 		await load();
-	});
-	afterAll(async () => {
-		await teardown();
 	});
 
 	it('should send 200 when create service', async () => {
@@ -24,3 +21,18 @@ describe('Test Service Create Controller', () => {
 		expect(response.status).toEqual(200);
 	});
 });
+
+describe('Test Service List Controller', () => {
+	afterAll(async () => {
+		await teardown();
+	});
+
+	it('should send 200 when select service list', async () => {
+		const response = await getApi('/service/1');
+		const data = JSON.parse(response.text);
+
+		expect(response.status).toEqual(200);
+		expect(data[0]).toHaveProperty('service_name', '젤 네일');
+		expect(data[0]).toHaveProperty('color', 'rgb(255, 255, 255)');
+	});
+})

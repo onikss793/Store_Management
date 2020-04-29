@@ -5,6 +5,7 @@ const router = require('express').Router(),
 const preMiddleware = [authMiddleware];
 const url = '/service';
 
+router.get('/:store_id', serviceController.getServiceListByStoreId)
 router.post('/', serviceController.createService);
 
 module.exports = { url, preMiddleware, router };
