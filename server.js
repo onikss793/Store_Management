@@ -7,7 +7,7 @@ const db = require('database');
 db.authenticate()
     .then(() => console.log('DB Connected to: ', db.config.database))
     .catch(err => console.error('DB Connection Error:', err));
-db.sync({ force: true });
+db.sync({ alter: true });
 
 http.createServer(app).listen(PORT, () =>
     console.log('Server Listening to PORT: ', PORT)
