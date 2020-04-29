@@ -5,6 +5,7 @@ const router = require('express').Router(),
 const preMiddleware = [authMiddleware];
 const url = '/brand';
 
+router.get('/', brandController.getBrandList);
 router.post('/', brandController.createBrand);
 
 module.exports = { url, router, preMiddleware };

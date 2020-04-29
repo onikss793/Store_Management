@@ -1,5 +1,17 @@
 const brandDao = require('../../dao').brand,
-	utils = require('../../utils');
+	utils = require('../../utils'),
+	{ responseForList } = require('./helper');
+
+const getBrandList = async (req, res, next) => {
+	try {
+		const data = await brandDao.selectBrands().then(d => d.length && d.map(o => o.toJSON()));
+		const response = responseForList(data);
+
+		res.status(200).json(response);
+	} catch(err) {
+		next(err);
+	}
+}
 
 const createBrand = async (req, res, next) => {
 	try {
@@ -16,4 +28,4 @@ const createBrand = async (req, res, next) => {
 	}
 };
 
-module.exports = { createBrand };
+module.exports = { createBrand, getBrandList };
