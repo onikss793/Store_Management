@@ -1,4 +1,4 @@
-const { load, teardown, request, login } = require('../setup');
+const { load, teardown, getApi, postApi } = require('../setup');
 
 describe('Test Client Create Controller', () => {
 	beforeAll(async () => {
@@ -6,18 +6,13 @@ describe('Test Client Create Controller', () => {
 	});
 
 	it('should send 200 when create client', async () => {
-		const token = await login();
 		const data = {
 			client_name: 'Minsoo Kim',
 			phone_number: '01012345678',
 			info: 'Nice Customer',
 			store_id: 1
 		};
-
-		const response = await request.post('/client')
-		                              .set('Authorization', token)
-		                              .send(data)
-		                              .then(res => res.toJSON());
+		const response = await postApi('/client', data);
 
 		expect(response.status).toEqual(200);
 	});
@@ -28,11 +23,8 @@ describe('Test Client Get Controller', () => {
 		await teardown();
 	});
 
-	it('should sned 200 when select client by store_id', async () => {
-		const token = await login();
-		const response = await request.get('/client/1')
-		                              .set('Authorization', token)
-		                              .then(res => res.toJSON());
+	it('should send 200 when select client by store_id', async () => {
+		const response = await getApi('/client/1');
 		const data = JSON.parse(response.text);
 
 		expect(response.status).toEqual(200);

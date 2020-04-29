@@ -1,22 +1,13 @@
-const { load, teardown, request, getStoreData, loadStoreList, login, loadBrandList } = require('../setup');
+const { load, teardown, getStoreData, loadStoreList, loadBrandList, getApi, postApi } = require('../setup');
 
 describe('Test Store Create Controller', () => {
 	beforeAll(async () => {
 		await load();
 	});
 
-	afterAll(async () => {
-
-	});
-
 	it('should send 200 when create store', async () => {
 		const data = await getStoreData();
-		const token = await login();
-
-		const result = await request.post('/store')
-		                            .send(data)
-		                            .set('Authorization', token)
-		                            .then(res => res.toJSON());
+		const result = await postApi('/store', data);
 
 		expect(result.status).toEqual(200);
 	});
@@ -37,17 +28,9 @@ describe('Test Store Create Controller', () => {
 				password: '',
 				brand_id: 1
 			};
-
-		const token = await login();
-		const brand_result = await request.post('/store').set('Authorization', token)
-		                                  .send(brand_null)
-		                                  .then(res => res.toJSON()),
-			store_result = await request.post('/store').set('Authorization', token)
-			                            .send(store_name_null)
-			                            .then(res => res.toJSON()),
-			password_result = await request.post('/store').set('Authorization', token)
-			                               .send(password_null)
-			                               .then(res => res.toJSON());
+		const brand_result = await postApi('/store', brand_null);
+		const store_result = await postApi('/store', store_name_null);
+		const password_result = await postApi('/store', password_null);
 
 		expect(brand_result.status).toEqual(400);
 		expect(store_result.status).toEqual(400);
@@ -67,8 +50,7 @@ describe('Test Store List Controller', () => {
 	});
 
 	it('should send 200', async () => {
-		const token = await login();
-		const result = await request.get('/store').set('Authorization', token).then(res => res.toJSON());
+		const result = await getApi('/store');
 
 		expect(result.status).toEqual(200);
 	});

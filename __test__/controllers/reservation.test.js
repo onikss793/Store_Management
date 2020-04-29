@@ -1,13 +1,13 @@
 const {
 	load,
 	teardown,
-	request,
-	login,
 	loadReservationList,
 	loadStoreList,
 	loadEmployees,
 	loadServices,
-	loadClient
+	loadClient,
+	postApi,
+	getApi
 } = require('../setup');
 
 describe('Test Reservation Create Controller', () => {
@@ -24,7 +24,6 @@ describe('Test Reservation Create Controller', () => {
 	});
 
 	it('should send 200 when create reservation', async () => {
-		const token = await login();
 		const data = {
 			employee_id: 1,
 			client_id: 2,
@@ -34,36 +33,22 @@ describe('Test Reservation Create Controller', () => {
 			store_id: 1,
 			memo: 'This is very important reservation!'
 		};
-
-		const response = await request.post('/reservation')
-		                              .set('Authorization', token)
-		                              .send(data)
-		                              .then(res => res.toJSON());
+		const response = await postApi('/reservation', data);
 
 		expect(response.status).toEqual(200);
 	});
 
 	it('should send 200 when select reservation', async () => {
-		const token = await login();
-
-		const response = await request.post('/reservation/1?date=2020-05-31T15:00:00.000Z')
-		                              .set('Authorization', token)
-		                              .then(res => res.toJSON());
+		const response = await getApi('/reservation/1?date=2020-05-31T15:00:00.000Z');
 
 		expect(response.status).toEqual(200);
 	});
 
 	it('should match data form of reservation list', async () => {
-		const token= await login();
-
-		const response = await request.post('/reservation/1?date=2020-05-31T15:00:00.000Z')
-			.set('Authorization', token)
-			.then(res => res.toJSON());
+		const response = await getApi('/reservation/1?date=2020-05-31T15:00:00.000Z');
 
 		const data = JSON.parse(response.text)
-		// console.log('reservation count: ', data.length);
-		// console.log('data: ', data);
-		// console.log('all: ', await require('../../dao/reservation').selectAll().map(d => d.toJSON()));
+
 		data.forEach(res => {
 			expect(res).toHaveProperty('id');
 			expect(res).toHaveProperty('employee.employee_name');
