@@ -1,4 +1,4 @@
-const { load, teardown, request, login } = require('../setup');
+const { load, teardown, postApi, getApi} = require('../setup');
 
 describe('Test Employee Create Controller', () => {
 	beforeAll(async () => {
@@ -6,13 +6,8 @@ describe('Test Employee Create Controller', () => {
 	});
 
 	it('should send 200 when create employee', async () => {
-		const token = await login();
 		const data = { employee_name: 'test', enrolled_in: '2020-04-29T11:04:38.000Z' };
-
-		const response = await request.post('/employee')
-		                              .set('Authorization', token)
-		                              .send(data)
-		                              .then(res => res.toJSON());
+		const response = await postApi('/employee', data);
 
 		expect(response.status).toEqual(200);
 	});
@@ -24,19 +19,13 @@ describe('Test Employee Select By StoreId Controller', () => {
 	});
 
 	it('should send 404 when select employees without store_id', async () => {
-		const token = await login();
-		const response = await request.get('/employee')
-		                              .set('Authorization', token)
-		                              .then(res => res.toJSON());
+		const response = await getApi('/employee')
 
 		expect(response.status).toEqual(404);
 	});
 
 	it('should send 200 when select employees by store_id', async () => {
-		const token = await login();
-		const response = await request.get('/employee/1')
-		                              .set('Authorization', token)
-		                              .then(res => res.toJSON());
+		const response = await getApi('/employee/1')
 		const data = JSON.parse(response.text);
 
 		expect(response.status).toEqual(200);

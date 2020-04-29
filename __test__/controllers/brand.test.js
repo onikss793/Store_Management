@@ -1,4 +1,4 @@
-const { load, teardown, request, login } = require('../setup');
+const { load, teardown, postApi, getApi } = require('../setup');
 
 describe('Test Brand Create Controller', () => {
 	beforeAll(async () => {
@@ -9,13 +9,8 @@ describe('Test Brand Create Controller', () => {
 	});
 
 	it('should send 200 when create brand', async () => {
-		const token = await login();
 		const data = { brand_name: 'test' };
-
-		const response = await request.post('/brand')
-		                              .set('Authorization', token)
-		                              .send(data)
-		                              .then(res => res.toJSON());
+		const response = await postApi('/brand', data);
 
 		expect(response.status).toEqual(200);
 	});
