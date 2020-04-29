@@ -1,5 +1,6 @@
-const dao = require('../../dao'),
-	utils = require('../../utils');
+const employeeDao = require('../../dao').employee,
+	utils = require('../../utils'),
+	{ renderResponseForList } = require('./helper');
 
 const createEmployee = async (req, res, next) => {
 	try {
@@ -9,7 +10,7 @@ const createEmployee = async (req, res, next) => {
 		const store_id = req.store_id;
 		const { employee_name, enrolled_in } = req.body;
 
-		await dao.employee.insertEmployee({ employee_name, enrolled_in, store_id });
+		await employeeDao.insertEmployee({ employee_name, enrolled_in, store_id });
 
 		res.status(200).json();
 	} catch (err) {
@@ -17,4 +18,18 @@ const createEmployee = async (req, res, next) => {
 	}
 };
 
-module.exports = { createEmployee };
+const getEmployeeListByStore = async (req, res, next) => {
+	try {
+		const store_id = req.params.store_id;
+		const data = await employeeDao.selectEmployeesByStoreId(store_id).then(d => {
+			return d.length && d.map(o => o.toJSON());
+		});
+		const response = renderResponseForList(data);
+
+		res.status(200).json(response);
+	} catch(err) {
+		next(err);
+	}
+}
+
+module.exports = { createEmployee, getEmployeeListByStore };
