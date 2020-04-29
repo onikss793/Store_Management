@@ -27,9 +27,24 @@ const getEmployeeListByStore = async (req, res, next) => {
 		const response = renderResponseForList(data);
 
 		res.status(200).json(response);
+	} catch (err) {
+		next(err);
+	}
+};
+
+const createVacation = async (req, res, next) => {
+	try {
+		const properties = ['employee_id', 'start_at', 'finish_at'];
+		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
+
+		const { employee_id, start_at, finish_at } = req.body;
+
+		await employeeDao.insertVacation({ employee_id, start_at, finish_at });
+
+		res.status(200).json();
 	} catch(err) {
 		next(err);
 	}
 }
 
-module.exports = { createEmployee, getEmployeeListByStore };
+module.exports = { createEmployee, getEmployeeListByStore, createVacation };
