@@ -1,4 +1,4 @@
-const JWT_SECRET = process.env.JWT_SECRET || 'test',
+const JWT_SECRET = process.env.SECRET_KEY || 'test',
 	jwt = require('jsonwebtoken');
 
 const signJwt = (data) => {
