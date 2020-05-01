@@ -113,6 +113,10 @@ const login = async () => {
 	return JSON.parse(response.text).token;
 };
 
+const simpleGetReservation = async (id) => {
+	return await dao.reservation.simpleSelectReservation(id).then(d => d && d.toJSON());
+}
+
 module.exports = {
 	load,
 	teardown,
@@ -126,5 +130,6 @@ module.exports = {
 	loadServices,
 	loadClient,
 	getApi,
-	postApi
+	postApi,
+	simpleGetReservation
 };

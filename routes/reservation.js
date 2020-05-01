@@ -7,5 +7,6 @@ const url = '/reservation';
 
 router.get('/:store_id', reservationController.getReservationList) // querystring data=timestamp
 router.post('/', reservationController.createReservation);
+router.post('/:reservation_id', reservationController.updateReservation)
 
 module.exports = { url, router, preMiddleware };

@@ -41,4 +41,17 @@ const getReservationList = async (req, res, next) => {
 	}
 }
 
-module.exports = { createReservation, getReservationList };
+const updateReservation = async (req, res, next) => {
+	try {
+		const reservation_id = req.params.reservation_id;
+		const data = req.body;
+
+		await reservationDao.updateReservation(reservation_id, { ...data });
+
+		res.status(200).json();
+	} catch(err) {
+		next(err);
+	}
+}
+
+module.exports = { createReservation, getReservationList, updateReservation };
