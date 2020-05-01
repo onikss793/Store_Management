@@ -18,8 +18,10 @@ const getClientListByStoreId = async (req, res, next) => {
 const createClient = async (req, res, next) => {
 	try {
 		const store_id = req.store_id;
-		const { client_name, phone_number, info } = req.body;
+		const properties = ['client_name', 'phone_number', 'info'];
+		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
 
+		const { client_name, phone_number, info } = req.body;
 		const data = {
 			client_name,
 			phone_number,
@@ -35,4 +37,17 @@ const createClient = async (req, res, next) => {
 	}
 };
 
-module.exports = { createClient, getClientListByStoreId };
+const updateClient = async (req, res, next) => {
+	try {
+		const data = req.body;
+		const client_id = req.params.client_id;
+
+		await clientDao.updateClient(client_id, { ...data });
+
+		res.status(200).json();
+	} catch (err) {
+		next(err);
+	}
+};
+
+module.exports = { createClient, getClientListByStoreId, updateClient };
