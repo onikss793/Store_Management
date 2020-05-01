@@ -13,15 +13,6 @@ describe('Test Login Controller', () => {
 		await teardown()
 	})
 
-	it('should send 400', async () => {
-		const response = await postApi('/account', {
-			name: null,
-			password: null
-		});
-
-		expect(response.status).toEqual(400);
-	});
-
 	it('should send 200 OK', async () => {
 		const response = await postApi('/account', {
 			name: '선릉 1호점',
@@ -29,6 +20,15 @@ describe('Test Login Controller', () => {
 		})
 
 		expect(response.status).toEqual(200);
+	});
+
+	it('should send 400', async () => {
+		const response = await postApi('/account', {
+			name: null,
+			password: null
+		});
+
+		expect(response.status).toEqual(400);
 	});
 
 	it('should send 401 Auth Failed', async () => {
