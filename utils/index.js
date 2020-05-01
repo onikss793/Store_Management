@@ -1,4 +1,5 @@
 module.exports = {
 	checkRequest: require('./checkRequest'),
-	throwError: require('./throwError')
+	throwError: require('./throwError'),
+	dev: require('./devData')
 }
