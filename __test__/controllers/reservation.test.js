@@ -2,7 +2,6 @@ const {
 	load,
 	teardown,
 	loadReservationList,
-	loadStoreList,
 	loadEmployees,
 	loadServices,
 	loadClient,
@@ -13,7 +12,6 @@ const {
 describe('Test Reservation Create Controller', () => {
 	beforeAll(async () => {
 		await load();
-		await loadStoreList();
 		await loadEmployees();
 		await loadServices();
 		await loadClient();

@@ -3,6 +3,7 @@ const { load, teardown, getStoreData, loadStoreList, loadBrandList, getApi, post
 describe('Test Store Create Controller', () => {
 	beforeAll(async () => {
 		await load();
+		await loadBrandList();
 	});
 
 	it('should send 200 when create store', async () => {
@@ -39,12 +40,6 @@ describe('Test Store Create Controller', () => {
 });
 
 describe('Test Store List Controller', () => {
-	beforeAll(async () => {
-		await load();
-		await loadBrandList();
-		await loadStoreList();
-	});
-
 	afterAll(async () => {
 		await teardown();
 	});

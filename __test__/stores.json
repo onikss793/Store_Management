@@ -21,7 +21,7 @@
     "store_name": "을지로 점",
     "password": "1111",
     "brand_id": 1,
-    "is_admin": false
+    "is_admin": true
   },
   {
     "store_name": "서울역 점",
@@ -31,7 +31,7 @@
   },
   {
     "store_name": "분당점",
-    "password": "1111",
+    "password": "test",
     "brand_id": 1,
     "is_admin": false
   }

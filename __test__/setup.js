@@ -4,11 +4,12 @@ const db = require('database'),
 	dao = require('../dao');
 
 const request = require('supertest')(app);
+const SALT = process.env.SALT_ROUNDS || 10;
 
 const postApi = async (url, data) => {
 	const token = await login();
 	return request.post(url).set('Authorization', token).send(data).then(res => res.toJSON());
-}
+};
 
 const getApi = async (url) => {
 	const token = await login();
@@ -18,9 +19,9 @@ const getApi = async (url) => {
 const load = async () => {
 	try {
 		await db.authenticate()
-		        .then()
 		        .catch(err => console.error('TEST_DB Connection Error:', err));
 		await db.sync({ force: true });
+		await loadStoreList();
 	} catch (err) {
 		console.log('Setup Error: ', err);
 	}
@@ -28,7 +29,7 @@ const load = async () => {
 
 const teardown = async () => {
 	try {
-		await db.sync({ force: false });
+		await db.sync({ force: true });
 		await db.close();
 	} catch (err) {
 		console.log('Setup Error: ', err);
@@ -37,12 +38,12 @@ const teardown = async () => {
 
 const getStoreData = async () => {
 	const store_data = {
-		store_name: '선릉 1호점',
-		password: '1111',
+		store_name: 'create store',
+		password: 'test',
 		brand_id: 1,
 		is_admin: false
 	};
-	store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
+	store_data.password = await bcrypt.hash(store_data.password, SALT);
 
 	return store_data;
 };
@@ -56,12 +57,16 @@ const loadBrandList = async () => {
 };
 
 const loadStoreList = async () => {
-	const store_data = [...require('./stores.json')];
+	const store_data = Array.from(require('./stores.json'));
+	const store_list = await Promise.all(store_data.map(async ({ store_name, brand_id, is_admin, password }) => {
+		const hashed_password = await bcrypt.hash(password, SALT);
 
-	const store_list = await Promise.all(store_data.map(async store => {
-		store.password = await bcrypt.hash(store.password, Number(process.env.SALT_ROUNDS));
-
-		return store;
+		return {
+			password: hashed_password,
+			store_name,
+			brand_id,
+			is_admin
+		};
 	}));
 
 	for await (const store of store_list) {
@@ -102,16 +107,8 @@ const loadClient = async () => {
 };
 
 const login = async () => {
-	const store_data = {
-		store_name: 'test',
-		password: 'test',
-		brand_id: 1,
-		is_admin: true
-	};
-	store_data.password = await bcrypt.hash(store_data.password, Number(process.env.SALT_ROUNDS));
-	await dao.store.insertStore(store_data);
-
-	const response = await request.post('/account').send({ name: 'test', password: 'test' }).then(res => res.toJSON());
+	const { store_name: name, password } = require('./stores.json')[0];
+	const response = await request.post('/account').send({ name, password }).then(res => res.toJSON());
 
 	return JSON.parse(response.text).token;
 };
