@@ -2,6 +2,10 @@ const { Reservation } = require('../models'),
 	{ QueryTypes } = require('sequelize'),
 	Sequelize = require('../database');
 
+const simpleSelectReservation = (reservation_id) => {
+	return Reservation.findByPk(reservation_id);
+}
+
 const selectReservation = (store_id, start_date, end_date) => {
 	return Sequelize.query(`
 		SELECT
@@ -28,8 +32,8 @@ const selectReservation = (store_id, start_date, end_date) => {
 				services AS s ON r.service_id = s.id
 		WHERE r.store_id = ${ store_id }
 		AND r.deleted_at IS NULL
-		AND r.start_at >= '${start_date}'
-		AND r.finish_at <= '${end_date}' 
+		AND r.start_at >= '${ start_date }'
+		AND r.finish_at <= '${ end_date }' 
 		ORDER BY r.start_at
 	`, {
 		types: QueryTypes.SELECT,
@@ -42,11 +46,15 @@ const selectAll = () => {
 	SELECT 
 		* 
 	FROM reservations 
-	`, { types: QueryTypes.SELECT, model: Reservation })
-}
+	`, { types: QueryTypes.SELECT, model: Reservation });
+};
 
 const insertReservation = (data) => {
 	return Reservation.create(data);
 };
 
-module.exports = { insertReservation, selectReservation, selectAll };
+const updateReservation = (reservation_id, data) => {
+	return Reservation.update({ ...data }, { where: { id: reservation_id } });
+};
+
+module.exports = { insertReservation, selectReservation, selectAll, updateReservation, simpleSelectReservation };

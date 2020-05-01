@@ -6,7 +6,8 @@ const {
 	loadServices,
 	loadClient,
 	postApi,
-	getApi
+	getApi,
+	simpleGetReservation
 } = require('../setup');
 
 describe('Test Reservation Create Controller', () => {
@@ -16,9 +17,6 @@ describe('Test Reservation Create Controller', () => {
 		await loadServices();
 		await loadClient();
 		await loadReservationList();
-	});
-	afterAll(async () => {
-		await teardown();
 	});
 
 	it('should send 200 when create reservation', async () => {
@@ -63,3 +61,32 @@ describe('Test Reservation Create Controller', () => {
 		})
 	})
 });
+
+describe('should update reservation', () => {
+	afterAll(async () => {
+		await teardown();
+	});
+
+	it('should send 200 when update reservation', async () => {
+		const data = {
+			employee_id: 3,
+			client_id: 3,
+			service_id: 3,
+			start_at: new Date(2021, 5, 1, 12, 30),
+			finish_at: new Date(2021, 5, 1, 13),
+			status: 'canceled',
+			memo: 'updated!!'
+		}
+		const response = await postApi('/reservation/1', data);
+		const reservation = await simpleGetReservation(1);
+
+		expect(response.status).toEqual(200);
+		expect(reservation).toHaveProperty('employee_id', data.employee_id);
+		expect(reservation).toHaveProperty('client_id', data.client_id);
+		expect(reservation).toHaveProperty('service_id', data.service_id);
+		expect(reservation).toHaveProperty('start_at', data.start_at);
+		expect(reservation).toHaveProperty('finish_at', data.finish_at);
+		expect(reservation).toHaveProperty('status', data.status);
+		expect(reservation).toHaveProperty('memo', data.memo);
+	});
+})
