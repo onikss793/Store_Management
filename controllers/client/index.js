@@ -1,6 +1,7 @@
 const clientDao = require('../../dao').client,
 	utils = require('../../utils'),
-	{ getResponseForList } = require('./helper');
+	{ getResponseForList } = require('./helper'),
+	db = require('../../database');
 
 const getClientListByStoreId = async (req, res, next) => {
 	try {
@@ -29,7 +30,9 @@ const createClient = async (req, res, next) => {
 			store_id
 		};
 
-		await clientDao.insertClient(data);
+		await db.transaction(async t => {
+			await clientDao.insertClient(data, t);
+		});
 
 		res.status(200).json();
 	} catch (err) {
@@ -42,7 +45,9 @@ const updateClient = async (req, res, next) => {
 		const data = req.body;
 		const client_id = req.params.client_id;
 
-		await clientDao.updateClient(client_id, { ...data });
+		await db.transaction(async t => {
+			await clientDao.updateClient(client_id, { ...data }, t);
+		});
 
 		res.status(200).json();
 	} catch (err) {

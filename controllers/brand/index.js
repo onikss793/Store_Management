@@ -1,6 +1,7 @@
 const brandDao = require('../../dao').brand,
 	utils = require('../../utils'),
-	{ responseForList } = require('./helper');
+	{ responseForList } = require('./helper'),
+	db = require('../../database');
 
 const getBrandList = async (req, res, next) => {
 	try {
@@ -8,10 +9,10 @@ const getBrandList = async (req, res, next) => {
 		const response = responseForList(data);
 
 		res.status(200).json(response);
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
-}
+};
 
 const createBrand = async (req, res, next) => {
 	try {
@@ -20,10 +21,12 @@ const createBrand = async (req, res, next) => {
 		}
 		const { brand_name } = req.body;
 
-		await brandDao.insertBrand({ brand_name });
+		await db.transaction(async t => {
+			return await brandDao.insertBrand({ brand_name }, t);
+		});
 
 		res.status(200).json();
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
 };

@@ -6,8 +6,8 @@ const selectStore = (index) => {
 	return Store.findOne({ where: { ...index } });
 };
 
-const insertStore = (data) => {
-	return Store.create(data);
+const insertStore = (data, transaction) => {
+	return Store.create(data, { transaction });
 };
 
 const selectStoreList = () => {

@@ -1,6 +1,7 @@
 const employeeDao = require('../../dao').employee,
 	utils = require('../../utils'),
-	{ renderResponseForList } = require('./helper');
+	{ renderResponseForList } = require('./helper'),
+	db = require('../../database');
 
 const createEmployee = async (req, res, next) => {
 	try {
@@ -39,7 +40,9 @@ const createVacation = async (req, res, next) => {
 
 		const { employee_id, start_at, finish_at } = req.body;
 
-		await employeeDao.insertVacation({ employee_id, start_at, finish_at });
+		await db.transaction(async t => {
+			return await employeeDao.insertVacation({ employee_id, start_at, finish_at }, t);
+		});
 
 		res.status(200).json();
 	} catch(err) {

@@ -14,12 +14,14 @@ const login = async (req, res, next) => {
 		                            .then(data => data && data.toJSON());
 
 		if (helper.dataExist(store_data)) {
-			await bcrypt.compare(password, store_data.password)
-				? res.status(200).json({
+			if (await bcrypt.compare(password, store_data.password)) {
+				res.status(200).json({
 					...helper.renderStoreData(store_data),
 					token: helper.signJwt(store_data)
-				})
-				: next(utils.throwError(401, 'Wrong Password'))
+				});
+			} else {
+				next(utils.throwError(401, 'Wrong Password'));
+			}
 		} else {
 			next(utils.throwError(401, 'No Match For Store Name'));
 		}

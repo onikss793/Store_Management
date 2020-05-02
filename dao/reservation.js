@@ -4,7 +4,7 @@ const { Reservation } = require('../models'),
 
 const simpleSelectReservation = (reservation_id) => {
 	return Reservation.findByPk(reservation_id);
-}
+};
 
 const selectReservation = (store_id, start_date, end_date) => {
 	return Sequelize.query(`
@@ -53,8 +53,8 @@ const insertReservation = (data) => {
 	return Reservation.create(data);
 };
 
-const updateReservation = (reservation_id, data) => {
-	return Reservation.update({ ...data }, { where: { id: reservation_id } });
+const updateReservation = (reservation_id, data, transaction) => {
+	return Reservation.update({ ...data }, { where: { id: reservation_id }, transaction });
 };
 
 module.exports = { insertReservation, selectReservation, selectAll, updateReservation, simpleSelectReservation };
