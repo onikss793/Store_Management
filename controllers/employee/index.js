@@ -45,9 +45,9 @@ const createVacation = async (req, res, next) => {
 		});
 
 		res.status(200).json();
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
-}
+};
 
 module.exports = { createEmployee, getEmployeeListByStore, createVacation };
