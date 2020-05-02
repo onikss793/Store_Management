@@ -1,6 +1,7 @@
 const reservationDao = require('../../dao').reservation,
 	helper = require('./helper'),
-	moment = require('moment');
+	moment = require('moment'),
+	db = require('../../database');
 
 const createReservation = async (req, res, next) => {
 	try {
@@ -46,7 +47,9 @@ const updateReservation = async (req, res, next) => {
 		const reservation_id = req.params.reservation_id;
 		const data = req.body;
 
-		await reservationDao.updateReservation(reservation_id, { ...data });
+		await db.transaction(async t => {
+			return await reservationDao.updateReservation(reservation_id, { ...data }, t);
+		});
 
 		res.status(200).json();
 	} catch(err) {

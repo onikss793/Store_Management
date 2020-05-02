@@ -1,6 +1,7 @@
-const dao = require('../../dao'),
+const storeDao = require('../../dao').store,
 	bcrypt = require('bcrypt'),
-	utils = require('../../utils');
+	utils = require('../../utils'),
+	db = require('../../database');
 
 const createStore = async (req, res, next) => {
 	try {
@@ -15,7 +16,9 @@ const createStore = async (req, res, next) => {
 		const data = req.body;
 		data.password = await bcrypt.hash(data.password, salt);
 
-		await dao.store.insertStore(data);
+		await db.transaction(async t => {
+			return await storeDao.insertStore(data, t);
+		});
 
 		res.status(200).json();
 	} catch (err) {
@@ -25,12 +28,12 @@ const createStore = async (req, res, next) => {
 
 const storeList = async (req, res, next) => {
 	try {
-		const stores = await dao.store.selectStoreList('brand_id');
+		const stores = await storeDao.selectStoreList('brand_id');
 
 		res.status(200).json(stores);
 	} catch (err) {
 		next(err);
 	}
-}
+};
 
 module.exports = { createStore, storeList };

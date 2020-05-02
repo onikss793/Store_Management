@@ -1,5 +1,6 @@
 const serviceDao = require('../../dao').service,
-	{ getResponseForList } = require('./helper')
+	{ getResponseForList } = require('./helper'),
+	db = require('../../database');
 
 const getServiceListByStoreId = async (req, res, next) => {
 	try {
@@ -9,7 +10,7 @@ const getServiceListByStoreId = async (req, res, next) => {
 		const response = getResponseForList(data);
 
 		res.status(200).json(response);
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
 };
@@ -25,10 +26,12 @@ const createService = async (req, res, next) => {
 			store_id
 		};
 
-		await serviceDao.insertService(data);
+		await db.transaction(async t => {
+			return await serviceDao.insertService(data, t);
+		});
 
 		res.status(200).json();
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
 };

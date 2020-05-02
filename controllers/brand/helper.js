@@ -1,4 +1,7 @@
 const responseForList = (data) => {
+	if (!data) {
+		return [];
+	}
 	return data.map(({ id, brand_name }) => {
 		return {
 			id,
