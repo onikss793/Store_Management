@@ -43,7 +43,7 @@ describe('Test Reservation Create Controller', () => {
 	it('should match data form of reservation list', async () => {
 		const response = await getApi('/reservation/1?date=2020-05-31T15:00:00.000Z');
 
-		const data = JSON.parse(response.text)
+		const data = JSON.parse(response.text);
 
 		data.forEach(res => {
 			expect(res).toHaveProperty('id');
@@ -58,8 +58,8 @@ describe('Test Reservation Create Controller', () => {
 			expect(res).toHaveProperty('finish_at');
 			expect(res).toHaveProperty('status');
 			expect(res).toHaveProperty('memo');
-		})
-	})
+		});
+	});
 });
 
 describe('should update reservation', () => {
@@ -76,7 +76,7 @@ describe('should update reservation', () => {
 			finish_at: new Date(2021, 5, 1, 13),
 			status: 'canceled',
 			memo: 'updated!!'
-		}
+		};
 		const response = await postApi('/reservation/1', data);
 		const reservation = await simpleGetReservation(1);
 
@@ -89,4 +89,4 @@ describe('should update reservation', () => {
 		expect(reservation).toHaveProperty('status', data.status);
 		expect(reservation).toHaveProperty('memo', data.memo);
 	});
-})
+});

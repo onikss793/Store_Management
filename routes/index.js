@@ -5,7 +5,7 @@ const accountRouter = require('./account'),
 	serviceRouter = require('./service'),
 	reservationRouter = require('./reservation'),
 	brandRouter = require('./brand'),
-	{ globalErrorHandler, notFound } = require('middlewares/errors');
+	{ globalErrorHandler, notFound } = require('../middlewares/errors');
 
 const exec = (app) => (routerModule) => {
 	const { url, router, preMiddleware } = routerModule;
@@ -14,12 +14,11 @@ const exec = (app) => (routerModule) => {
 
 const routes = app => {
 	const router = exec(app);
+	app.get('/setup', require('./setup'));
+	app.get('/authTest', require('../middlewares/auth'), require('./authTest'));
+
 	app.use('/ping', (req, res) => res.send('pong'));
 	app.use('/account', accountRouter);
-	app.get('/authTest', require('../middlewares/auth'), (req, res) => {
-		const { superuser, is_admin, store_id } = req;
-		res.status(200).json({ superuser, is_admin, store_id });
-	});
 
 	router(storeRouter);
 	router(employeeRouter);
