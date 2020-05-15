@@ -2,7 +2,7 @@
 
 ### Lambda로 우선적 배포
 
-endpoint: `https://zpqvj0adp8.execute-api.ap-northeast-2.amazonaws.com/prod/{proxy+}`
+endpoint: `https://oyiheo7fud.execute-api.ap-northeast-2.amazonaws.com/prod/{proxy+}`
 
 `npm run dev`: 로컬 서버 :8000
 
