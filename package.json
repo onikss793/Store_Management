@@ -1,35 +1,41 @@
 {
-    "name": "store_management",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "NODE_PATH=./ NODE_ENV=test jest --watch --detectOpenHandles",
-        "dev": "NODE_PATH=./ NODE_ENV=dev nodemon server.js",
-        "start": "NODE_PATH=./ NODE_ENV=production node server.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "bcrypt": "^3.0.8",
-        "body-parser": "^1.19.0",
-        "cors": "^2.8.5",
-        "dotenv": "^8.2.0",
-        "express": "^4.17.1",
-        "jsonwebtoken": "^8.5.1",
-        "moment": "^2.24.0",
-        "morgan": "^1.10.0",
-        "mysql": "^2.17.1",
-        "mysql2": "^2.1.0",
-        "nodemon": "^2.0.2",
-        "sequelize": "^5.21.3"
-    },
-    "devDependencies": {
-        "@types/jest": "^25.2.1",
-        "jest": "^25.2.3",
-        "sequelize-mock": "^0.10.2",
-        "sqlite": "^3.0.3",
-        "supertest": "^4.0.2"
-    }
+  "name": "store_management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_PATH=./ NODE_ENV=test jest --watch --detectOpenHandles",
+    "dev": "NODE_PATH=./ NODE_ENV=dev nodemon server.js",
+    "start": "NODE_PATH=./ NODE_ENV=production node server.js",
+    "build:dev": "NODE_ENV=lambda serverless offline",
+    "build:prod": "serverless deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-serverless-express": "^3.3.8",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.17.1",
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.2",
+    "sequelize": "^5.21.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.2.3",
+    "sequelize-mock": "^0.10.2",
+    "serverless": "^1.69.0",
+    "serverless-offline": "^6.1.4",
+    "supertest": "^4.0.2"
+  }
 }

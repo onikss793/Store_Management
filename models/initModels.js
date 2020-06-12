@@ -1,5 +1,5 @@
 const { DataTypes, Sequelize } = require('sequelize');
-const db = require('database');
+const db = require('../database');
 
 module.exports = (...names) => {
 	return names.reduce((acc, curr) => {

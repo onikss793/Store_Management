@@ -1,5 +1,12 @@
 const JWT_SECRET = process.env.SECRET_KEY || 'test',
-	jwt = require('jsonwebtoken');
+	jwt = require('jsonwebtoken'),
+	cryptonite = require('../../utils').cryptonite;
+
+const compareCrypto = (given, original) => {
+	const hashed = cryptonite(given);
+
+	return hashed === original;
+}
 
 const signJwt = (data) => {
 	return jwt.sign({ id: data.id }, JWT_SECRET);
@@ -18,4 +25,4 @@ const renderStoreData = (data) => {
 	}
 }
 
-module.exports = { signJwt, dataExist, renderStoreData };
+module.exports = { signJwt, dataExist, renderStoreData, compareCrypto };

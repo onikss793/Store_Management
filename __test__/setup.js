@@ -1,10 +1,8 @@
 const db = require('database'),
-	bcrypt = require('bcrypt'),
+	{ cryptonite } = require('../utils'),
 	app = require('../app'),
 	dao = require('../dao');
-
 const request = require('supertest')(app);
-const SALT = process.env.SALT_ROUNDS || 10;
 
 const postApi = async (url, data) => {
 	const token = await login();
@@ -43,7 +41,7 @@ const getStoreData = async () => {
 		brand_id: 1,
 		is_admin: false
 	};
-	store_data.password = await bcrypt.hash(store_data.password, SALT);
+	store_data.password = cryptonite(store_data.password);
 
 	return store_data;
 };
@@ -59,7 +57,7 @@ const loadBrandList = async () => {
 const loadStoreList = async () => {
 	const store_data = Array.from(require('./stores.json'));
 	const store_list = await Promise.all(store_data.map(async ({ store_name, brand_id, is_admin, password }) => {
-		const hashed_password = await bcrypt.hash(password, SALT);
+		const hashed_password = cryptonite(password);
 
 		return {
 			password: hashed_password,
@@ -113,8 +111,8 @@ const login = async () => {
 	return JSON.parse(response.text).token;
 };
 
-const simpleGetReservation = async (id) => {
-	return await dao.reservation.simpleSelectReservation(id).then(d => d && d.toJSON());
+const simpleGetReservation = (id) => {
+	return dao.reservation.simpleSelectReservation(id).then(d => d && d.toJSON());
 }
 
 module.exports = {

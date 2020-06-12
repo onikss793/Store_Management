@@ -1,5 +1,4 @@
-const bcrypt = require('bcrypt'),
-	utils = require('../../utils'),
+const utils = require('../../utils'),
 	dao = require('../../dao'),
 	helper = require('./helper');
 
@@ -14,7 +13,7 @@ const login = async (req, res, next) => {
 		                            .then(data => data && data.toJSON());
 
 		if (helper.dataExist(store_data)) {
-			if (await bcrypt.compare(password, store_data.password)) {
+			if (helper.compareCrypto(password, store_data.password)) {
 				res.status(200).json({
 					...helper.renderStoreData(store_data),
 					token: helper.signJwt(store_data)

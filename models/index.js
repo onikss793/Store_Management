@@ -1,4 +1,4 @@
-const initModels = require('models/initModels'),
+const initModels = require('./initModels'),
 	models = initModels(
 		'Brand',
 		'Color',

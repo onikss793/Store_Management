@@ -1,5 +1,4 @@
 const storeDao = require('../../dao').store,
-	bcrypt = require('bcrypt'),
 	utils = require('../../utils'),
 	db = require('../../database');
 
@@ -12,9 +11,8 @@ const createStore = async (req, res, next) => {
 		];
 		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
 
-		const salt = Number(process.env.SALT_ROUNDS);
 		const data = req.body;
-		data.password = await bcrypt.hash(data.password, salt);
+		data.password = utils.cryptonite(data.password);
 
 		await db.transaction(async t => {
 			return await storeDao.insertStore(data, t);
