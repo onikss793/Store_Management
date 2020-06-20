@@ -1,5 +1,7 @@
-const initModels = require('./initModels'),
-	models = initModels(
+const initModels = require('./initModels');
+module.exports = (sequelize) => initModels({
+	sequelize,
+	models: [
 		'Brand',
 		'Color',
 		'Employee',
@@ -8,18 +10,5 @@ const initModels = require('./initModels'),
 		'Store',
 		'Client',
 		'Vacation'
-	);
-
-// models.Brand.hasMany(models.Store);
-//
-// models.Color.hasOne(models.Service);
-//
-// models.Store.hasMany(models.Employee);
-//
-// models.Employee.hasMany(models.Reservation);
-// models.Service.hasMany(models.Reservation);
-// models.Store.hasMany(models.Reservation);
-
-module.exports = {
-	...models
-};
+	]
+});

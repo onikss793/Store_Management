@@ -1,32 +1,40 @@
-const storeDao = require('../../dao').store,
-	utils = require('../../utils'),
-	db = require('../../database');
+const utils = require('../../utils');
+const { database } = require('../../database');
+const { Dao, query } = require('../../dao');
+
+const storeDao = new Dao(database, 'Store');
 
 const createStore = async (req, res, next) => {
+	let transaction;
+	const properties = [
+		'store_name',
+		'password',
+		'brand_id'
+	];
+
 	try {
-		const properties = [
-			'store_name',
-			'password',
-			'brand_id'
-		];
-		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
+		if (utils.checkRequest(req, properties)) {
+			const data = req.body;
+			data.password = utils.cryptonite(data.password);
 
-		const data = req.body;
-		data.password = utils.cryptonite(data.password);
+			transaction = await database.transaction();
+			await storeDao.insertOne(data, transaction);
+			await transaction.commit();
 
-		await db.transaction(async t => {
-			return await storeDao.insertStore(data, t);
-		});
-
-		res.status(200).json();
+			res.status(200).json();
+		} else {
+			next(utils.throwError(400, 'Bad Request'));
+		}
 	} catch (err) {
+		if (transaction) await transaction.rollback();
 		next(err);
 	}
 };
 
 const storeList = async (req, res, next) => {
 	try {
-		const stores = await storeDao.selectStoreList('brand_id');
+		const { selectStoreList } = query.store;
+		const [stores] = await database.query(selectStoreList());
 
 		res.status(200).json(stores);
 	} catch (err) {

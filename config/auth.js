@@ -7,6 +7,12 @@ module.exports = {
 			brand_id: 1,
 			is_admin: true,
 			password: cryptonite('password')
+		},
+		prod: {
+			store_name: '',
+			brand_id: 1,
+			is_admin: true,
+			password: cryptonite('')
 		}
 	}
 }

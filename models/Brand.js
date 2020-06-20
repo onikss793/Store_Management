@@ -1,5 +1,5 @@
-module.exports = (DataTypes, db) => {
-	return db.define('brands', {
+module.exports = (DataTypes, sequelize) => {
+	return sequelize.define('brands', {
 		brand_name: {
 			type: DataTypes.STRING(20),
 			unique: true,

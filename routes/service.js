@@ -1,11 +1,12 @@
-const router = require('express').Router(),
-	authMiddleware = require('../middlewares/auth'),
-	serviceController = require('../controllers/service');
+const router = require('express').Router();
+const authMiddleware = require('../middlewares/auth');
+const { serviceController } = require('../controllers');
 
-const preMiddleware = [authMiddleware];
-const url = '/service';
-
-router.get('/:store_id', serviceController.getServiceListByStoreId)
+router.get('/:store_id', serviceController.getServiceListByStoreId);
 router.post('/', serviceController.createService);
 
-module.exports = { url, preMiddleware, router };
+module.exports = {
+	url: '/service',
+	preMiddleware: [authMiddleware],
+	runner: router
+};

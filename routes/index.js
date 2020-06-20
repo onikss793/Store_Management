@@ -1,34 +1,40 @@
-const accountRouter = require('./account'),
-	storeRouter = require('./store'),
-	employeeRouter = require('./employee'),
-	clientRouter = require('./client'),
-	serviceRouter = require('./service'),
-	reservationRouter = require('./reservation'),
-	brandRouter = require('./brand'),
-	{ globalErrorHandler, notFound } = require('../middlewares/errors');
+const accountRouter = require('./account');
+const brandRouter = require('./brand');
+const clientRouter = require('./client');
+const employeeRouter = require('./employee');
+const reservationRouter = require('./reservation');
+const serviceRouter = require('./service');
+const storeRouter = require('./store');
+const setupRouter = require('./setup');
+const { globalErrorHandler, notFound } = require('../middlewares/errors');
 
-const exec = (app) => (routerModule) => {
-	const { url, router, preMiddleware } = routerModule;
-	app.use(url, ...preMiddleware, router);
-};
-
-const routes = app => {
-	const router = exec(app);
-	app.get('/setup', require('./setup'));
+const forTest = (app) => {
 	app.get('/authTest', require('../middlewares/auth'), require('./authTest'));
-
-	app.use('/ping', (req, res) => res.send('pong'));
-	app.use('/account', accountRouter);
-
-	router(storeRouter);
-	router(employeeRouter);
-	router(clientRouter);
-	router(serviceRouter);
-	router(reservationRouter);
-	router(brandRouter);
-
+};
+const ping = (app) => {
+	app.use('/ping', setupRouter);
+};
+const errorHandler = (app) => {
 	app.use(notFound);
 	app.use(globalErrorHandler);
 };
+const exec = (app) => (routerModule) => {
+	const { url, preMiddleware, runner } = routerModule;
+	app.use(url, ...preMiddleware, runner);
+};
 
-module.exports = routes;
+module.exports = app => {
+	const router = exec(app);
+	forTest(app);
+	ping(app);
+
+	router(accountRouter);
+	router(brandRouter);
+	router(clientRouter);
+	router(employeeRouter);
+	router(reservationRouter);
+	router(serviceRouter);
+	router(storeRouter);
+
+	errorHandler(app);
+};

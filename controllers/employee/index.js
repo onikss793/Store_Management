@@ -1,20 +1,30 @@
-const employeeDao = require('../../dao').employee,
-	utils = require('../../utils'),
-	{ renderResponseForList } = require('./helper'),
-	db = require('../../database');
+const utils = require('../../utils');
+const { renderResponseForList } = require('./helper');
+const { database } = require('../../database');
+const { Dao, query } = require('../../dao');
+
+const employeeDao = new Dao(database, 'Employee');
+const vacationDao = new Dao(database, 'Vacation');
 
 const createEmployee = async (req, res, next) => {
+	let transaction;
+	const properties = ['employee_name', 'enrolled_in'];
+
 	try {
-		const properties = ['employee_name', 'enrolled_in'];
-		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
+		if (utils.checkRequest(req, properties)) {
+			const store_id = req.store_id;
+			const { employee_name, enrolled_in } = req.body;
 
-		const store_id = req.store_id;
-		const { employee_name, enrolled_in } = req.body;
+			transaction = await database.transaction();
+			await employeeDao.insertOne({ employee_name, enrolled_in, store_id }, transaction);
+			await transaction.commit();
 
-		await employeeDao.insertEmployee({ employee_name, enrolled_in, store_id });
-
-		res.status(200).json();
+			res.status(200).json();
+		} else {
+			next(utils.throwError(400, 'Bad Request'));
+		}
 	} catch (err) {
+		if (transaction) await transaction.rollback();
 		next(err);
 	}
 };
@@ -22,9 +32,8 @@ const createEmployee = async (req, res, next) => {
 const getEmployeeListByStore = async (req, res, next) => {
 	try {
 		const store_id = req.params.store_id;
-		const data = await employeeDao.selectEmployeesByStoreId(store_id).then(d => {
-			return d.length && d.map(o => o.toJSON());
-		});
+		const { selectEmployeesByStoreId } = query.employee;
+		const [data] = await database.query(selectEmployeesByStoreId(store_id));
 		const response = renderResponseForList(data);
 
 		res.status(200).json(response);
@@ -34,18 +43,23 @@ const getEmployeeListByStore = async (req, res, next) => {
 };
 
 const createVacation = async (req, res, next) => {
+	let transaction;
+	const properties = ['employee_id', 'start_at', 'finish_at'];
+
 	try {
-		const properties = ['employee_id', 'start_at', 'finish_at'];
-		!utils.checkRequest(req, properties) && next(utils.throwError(400, 'Bad Request'));
+		if (utils.checkRequest(req, properties)) {
+			const { employee_id, start_at, finish_at } = req.body;
 
-		const { employee_id, start_at, finish_at } = req.body;
+			transaction = await database.transaction();
+			await vacationDao.insertOne({ employee_id, start_at, finish_at }, transaction);
+			await transaction.commit();
 
-		await db.transaction(async t => {
-			return await employeeDao.insertVacation({ employee_id, start_at, finish_at }, t);
-		});
-
-		res.status(200).json();
+			res.status(200).json();
+		} else {
+			next(utils.throwError(400, 'Bad Request'));
+		}
 	} catch (err) {
+		if (transaction) await transaction.rollback();
 		next(err);
 	}
 };

@@ -15,7 +15,7 @@ const convertRawToReservationList = (data) => {
 			info,
 			service_name,
 			color
-		} = r.toJSON();
+		} = r;
 		return {
 			id,
 			employee: {
@@ -37,8 +37,8 @@ const convertRawToReservationList = (data) => {
 			finish_at,
 			memo,
 			status
-		}
+		};
 	});
-}
+};
 
-module.exports = {convertRawToReservationList}
+module.exports = { convertRawToReservationList };

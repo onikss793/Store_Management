@@ -18,13 +18,13 @@
     "is_admin": false
   },
   {
-    "store_name": "을지로 점",
+    "store_name": "을지로점",
     "password": "1111",
     "brand_id": 1,
     "is_admin": true
   },
   {
-    "store_name": "서울역 점",
+    "store_name": "서울역점",
     "password": "1111",
     "brand_id": 1,
     "is_admin": false

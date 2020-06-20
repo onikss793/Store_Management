@@ -1,12 +1,15 @@
-const serviceDao = require('../../dao').service,
-	{ getResponseForList } = require('./helper'),
-	db = require('../../database');
+const { getResponseForList } = require('./helper');
+const utils = require('../../utils');
+const { database } = require('../../database');
+const { Dao, query } = require('../../dao');
+
+const serviceDao = new Dao(database, 'Service');
 
 const getServiceListByStoreId = async (req, res, next) => {
 	try {
 		const store_id = req.params.store_id;
-		const data = await serviceDao.selectServicesByStoreId(store_id)
-		                             .then(d => d.length && d.map(o => o.toJSON()));
+		const data = await serviceDao.selectAll({ store_id });
+
 		const response = getResponseForList(data);
 
 		res.status(200).json(response);
@@ -16,22 +19,34 @@ const getServiceListByStoreId = async (req, res, next) => {
 };
 
 const createService = async (req, res, next) => {
+	let transaction;
+	const properties = [
+		'service_name',
+		'color',
+		'store_id'
+	];
+
 	try {
-		const store_id = req.store_id;
-		const { service_name, color } = req.body;
+		if (utils.checkRequest(req, properties)) {
+			const store_id = req.store_id;
+			const { service_name, color } = req.body;
 
-		const data = {
-			service_name,
-			color,
-			store_id
-		};
+			const data = {
+				service_name,
+				color,
+				store_id
+			};
 
-		await db.transaction(async t => {
-			return await serviceDao.insertService(data, t);
-		});
+			transaction = await database.transaction();
+			await serviceDao.insertOne(data, transaction);
+			await transaction.commit();
 
-		res.status(200).json();
+			res.status(200).json();
+		} else {
+			next(utils.throwError(400, 'Bad Request'));
+		}
 	} catch (err) {
+		if (transaction) await transaction.rollback();
 		next(err);
 	}
 };
