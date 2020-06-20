@@ -1,13 +1,14 @@
-const jwt = require('jsonwebtoken'),
-	utils = require('../utils'),
-	storeDao = require('../dao').store;
+const jwt = require('jsonwebtoken');
+const { database } = require('../database');
+const { Dao } = require('../dao');
+const storeDao = new Dao(database, 'Store');
 
 module.exports = async (req, res, next) => {
 	try {
 		const token = req.headers.authorization;
 		const decoded = jwt.verify(token, process.env.SECRET_KEY || 'test');
 
-		const storeData = await storeDao.selectStore({ id: decoded.id }).then(d => d && d.toJSON());
+		const storeData = await storeDao.selectOne({ id: decoded.id }).then(d => d && d.toJSON());
 
 		if (storeData.id === 1 || storeData.id === 2) {
 			req.superuser = true;
@@ -20,6 +21,8 @@ module.exports = async (req, res, next) => {
 		req.store_id = decoded.id;
 		next();
 	} catch (err) {
-		next(utils.throwError(401, `Authorization Fail: ${ err.message }`));
+		const error = new Error(`Authorization Fail: ${err.message}`);
+		error.code = 401;
+		throw error;
 	}
 };

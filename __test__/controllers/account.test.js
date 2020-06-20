@@ -1,51 +1,52 @@
-const { load, teardown, getStoreData, postApi, getApi } = require('../setup'),
-	dao = require('../../dao');
+const Test = new (require('../Test'))();
+const storeList = require('../stores.json');
+const timeout = 60000;
+
+beforeAll(async () => {
+	await Test.loadDB();
+	await Test.loadStoreList();
+}, timeout);
+afterAll(async () => {
+	await Test.tearDown();
+}, timeout);
 
 describe('Test Login Controller', () => {
-	beforeAll(async () => {
-		await load();
-
-		const store_data = await getStoreData();
-
-		await dao.store.insertStore(store_data);
-	});
-	afterAll(async () => {
-		await teardown()
-	})
-
 	it('should send 200 OK', async () => {
-		const response = await postApi('/account', {
-			name: '선릉 1호점',
-			password: '1111'
-		})
+		const { store_name: name, password } = Array.from(storeList)[0];
+		const response = await Test.post('/account', {
+			name,
+			password
+		});
+		const token = JSON.parse(response.text).token;
 
 		expect(response.status).toEqual(200);
-	});
+		expect(token).toEqual(expect.any(String));
+	}, timeout);
 
 	it('should send 400', async () => {
-		const response = await postApi('/account', {
+		const response = await Test.post('/account', {
 			name: null,
 			password: null
 		});
 
 		expect(response.status).toEqual(400);
-	});
+	}, timeout);
 
 	it('should send 401 Auth Failed', async () => {
-		const response = await postApi('/account', {
+		const response = await Test.post('/account', {
 			name: '선릉 1호점',
 			password: '1234'
-		})
+		});
 
 		expect(response.status).toEqual(401);
-	});
+	}, timeout);
 
 	it('should send 401 No Match', async () => {
-		const response = await postApi('/account', {
+		const response = await Test.post('/account', {
 			name: '선릉 2호점',
 			password: '1111'
-		})
+		});
 
 		expect(response.status).toEqual(401);
-	});
+	}, timeout);
 });

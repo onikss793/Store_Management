@@ -1,19 +1,30 @@
-const { load, teardown, getStoreData, loadStoreList, loadBrandList, getApi, postApi } = require('../setup');
+const Test = new (require('../Test'))();
+const timeout = 60000;
+
+beforeAll(async () => {
+	await Test.loadDB();
+	await Test.loadStoreList();
+	await Test.loadBrandList();
+	await Test.login();
+}, timeout);
+afterAll(async () => {
+	await Test.tearDown();
+}, timeout);
 
 describe('Test Store Create Controller', () => {
-	beforeAll(async () => {
-		await load();
-		await loadBrandList();
-	});
-
-	it('should send 200 when create store', async () => {
-		const data = await getStoreData();
-		const result = await postApi('/store', data);
+	test('should send 200 when create store', async () => {
+		const data = {
+			store_name: 'created store',
+			password: 'test',
+			brand_id: 1,
+			is_admin: false
+		};
+		const result = await Test.post('/store', data);
 
 		expect(result.status).toEqual(200);
-	});
+	}, timeout);
 
-	it('should throw 400 error', async () => {
+	test('should throw 400 error', async () => {
 		const brand_null = {
 				store_name: '1234',
 				password: '1111',
@@ -29,24 +40,21 @@ describe('Test Store Create Controller', () => {
 				password: '',
 				brand_id: 1
 			};
-		const brand_result = await postApi('/store', brand_null);
-		const store_result = await postApi('/store', store_name_null);
-		const password_result = await postApi('/store', password_null);
+
+		const brand_result = await Test.post('/store', brand_null);
+		const store_result = await Test.post('/store', store_name_null);
+		const password_result = await Test.post('/store', password_null);
 
 		expect(brand_result.status).toEqual(400);
 		expect(store_result.status).toEqual(400);
 		expect(password_result.status).toEqual(400);
-	});
+	}, timeout);
 });
 
 describe('Test Store List Controller', () => {
-	afterAll(async () => {
-		await teardown();
-	});
-
-	it('should send 200', async () => {
-		const result = await getApi('/store');
+	test('should send 200', async () => {
+		const result = await Test.get('/store');
 
 		expect(result.status).toEqual(200);
-	});
+	}, timeout);
 });

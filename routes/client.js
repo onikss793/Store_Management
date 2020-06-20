@@ -1,12 +1,13 @@
-const router = require('express').Router(),
-	authMiddleware = require('../middlewares/auth'),
-	clientController = require('../controllers/client');
-
-const preMiddleware = [authMiddleware];
-const url = '/client';
+const router = require('express').Router();
+const authMiddleware = require('../middlewares/auth');
+const { clientController }= require('../controllers');
 
 router.get('/:store_id', clientController.getClientListByStoreId)
 router.post('/', clientController.createClient);
 router.post('/:client_id', clientController.updateClient)
 
-module.exports = { url, preMiddleware, router };
+module.exports = {
+	url: '/client',
+	preMiddleware: [authMiddleware],
+	runner: router
+};

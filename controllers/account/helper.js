@@ -1,6 +1,6 @@
-const JWT_SECRET = process.env.SECRET_KEY || 'test',
-	jwt = require('jsonwebtoken'),
-	cryptonite = require('../../utils').cryptonite;
+const JWT_SECRET = process.env.SECRET_KEY || 'test';
+const jwt = require('jsonwebtoken');
+const cryptonite = require('../../utils').cryptonite;
 
 const compareCrypto = (given, original) => {
 	const hashed = cryptonite(given);

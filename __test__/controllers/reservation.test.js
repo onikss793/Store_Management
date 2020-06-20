@@ -1,24 +1,20 @@
-const {
-	load,
-	teardown,
-	loadReservationList,
-	loadEmployees,
-	loadServices,
-	loadClient,
-	postApi,
-	getApi,
-	simpleGetReservation
-} = require('../setup');
+const Test = new (require('../Test'))();
+const timeout = 60000;
+
+beforeAll(async () => {
+	await Test.loadDB();
+	await Test.loadStoreList();
+	await Test.loadService();
+	await Test.loadClient();
+	await Test.loadEmployeeList();
+	await Test.loadReservation();
+	await Test.login();
+}, timeout);
+afterAll(async () => {
+	await Test.tearDown();
+}, timeout);
 
 describe('Test Reservation Create Controller', () => {
-	beforeAll(async () => {
-		await load();
-		await loadEmployees();
-		await loadServices();
-		await loadClient();
-		await loadReservationList();
-	});
-
 	it('should send 200 when create reservation', async () => {
 		const data = {
 			employee_id: 1,
@@ -29,19 +25,19 @@ describe('Test Reservation Create Controller', () => {
 			store_id: 1,
 			memo: 'This is very important reservation!'
 		};
-		const response = await postApi('/reservation', data);
+		const response = await Test.post('/reservation', data);
 
 		expect(response.status).toEqual(200);
-	});
+	}, timeout);
 
 	it('should send 200 when select reservation', async () => {
-		const response = await getApi('/reservation/1?date=2020-05-31T15:00:00.000Z');
+		const response = await Test.get('/reservation/1?date=2020-05-31T15:00:00.000Z');
 
 		expect(response.status).toEqual(200);
-	});
+	}, timeout);
 
 	it('should match data form of reservation list', async () => {
-		const response = await getApi('/reservation/1?date=2020-05-31T15:00:00.000Z');
+		const response = await Test.get('/reservation/1?date=2020-05-31T15:00:00.000Z');
 
 		const data = JSON.parse(response.text);
 
@@ -59,14 +55,10 @@ describe('Test Reservation Create Controller', () => {
 			expect(res).toHaveProperty('status');
 			expect(res).toHaveProperty('memo');
 		});
-	});
+	}, timeout);
 });
 
 describe('should update reservation', () => {
-	afterAll(async () => {
-		await teardown();
-	});
-
 	it('should send 200 when update reservation', async () => {
 		const data = {
 			employee_id: 3,
@@ -77,8 +69,8 @@ describe('should update reservation', () => {
 			status: 'canceled',
 			memo: 'updated!!'
 		};
-		const response = await postApi('/reservation/1', data);
-		const reservation = await simpleGetReservation(1);
+		const response = await Test.post('/reservation/1', data);
+		const reservation = await Test.reservationDao.selectOne({ id: 1 });
 
 		expect(response.status).toEqual(200);
 		expect(reservation).toHaveProperty('employee_id', data.employee_id);
@@ -88,5 +80,5 @@ describe('should update reservation', () => {
 		expect(reservation).toHaveProperty('finish_at', data.finish_at);
 		expect(reservation).toHaveProperty('status', data.status);
 		expect(reservation).toHaveProperty('memo', data.memo);
-	});
+	}, timeout);
 });

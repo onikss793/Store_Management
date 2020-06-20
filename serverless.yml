@@ -1,0 +1,22 @@
+service: store-management
+
+app: Store-Management
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: prod                # optional, default: dev
+  region: ap-northeast-2     # optional, default: us-east-1
+  memorySize: 1024           # optional, in MB, default: 1024
+  timeout: 30                # optional, in seconds, default: 6
+  environment: ${file(./env.js)}
+
+functions:
+  api:
+    name: ${self:service}_${self:provider.stage}
+    handler: ./handler.index    # ${DIR}/${FILE}.${MODULE}
+    events:
+      - http: ANY /{proxy+}
+#
+plugins:
+  - serverless-offline
