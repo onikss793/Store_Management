@@ -105,6 +105,8 @@ dist
 serverless.yml
 
 # Config
+config/
+config/*
 
 .DS_Store
 .idea/
