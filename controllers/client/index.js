@@ -38,7 +38,7 @@ const createClient = async (req, res, next) => {
 			await clientDao.insertOne(data, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}
@@ -59,7 +59,7 @@ const updateClient = async (req, res, next) => {
 		await clientDao.updateOne({ id: client_id }, { ...data }, transaction);
 		await transaction.commit();
 
-		res.status(200).json();
+		res.status(200).json(utils.postResponse());
 	} catch (err) {
 		if (transaction) await transaction.rollback();
 		next(err);

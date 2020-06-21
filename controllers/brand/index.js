@@ -30,7 +30,7 @@ const createBrand = async (req, res, next) => {
 		await brandDao.insertOne(data, transaction);
 		await transaction.commit();
 
-		res.status(200).json();
+		res.status(200).json(utils.postResponse());
 	} catch (err) {
 		if (transaction) await transaction.rollback();
 		next(err);

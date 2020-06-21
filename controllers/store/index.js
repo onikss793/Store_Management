@@ -21,7 +21,7 @@ const createStore = async (req, res, next) => {
 			await storeDao.insertOne(data, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}

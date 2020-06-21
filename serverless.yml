@@ -5,7 +5,7 @@ app: Store-Management
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: prod                # optional, default: dev
+  stage: api                # optional, default: dev
   region: ap-northeast-2     # optional, default: us-east-1
   memorySize: 1024           # optional, in MB, default: 1024
   timeout: 30                # optional, in seconds, default: 6
