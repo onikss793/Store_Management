@@ -22,8 +22,7 @@ const createService = async (req, res, next) => {
 	let transaction;
 	const properties = [
 		'service_name',
-		'color',
-		'store_id'
+		'color'
 	];
 
 	try {
@@ -41,7 +40,7 @@ const createService = async (req, res, next) => {
 			await serviceDao.insertOne(data, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}

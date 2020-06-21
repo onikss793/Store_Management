@@ -19,7 +19,7 @@ const createEmployee = async (req, res, next) => {
 			await employeeDao.insertOne({ employee_name, enrolled_in, store_id }, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}
@@ -54,7 +54,7 @@ const createVacation = async (req, res, next) => {
 			await vacationDao.insertOne({ employee_id, start_at, finish_at }, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}

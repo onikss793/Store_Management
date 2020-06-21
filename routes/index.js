@@ -20,7 +20,7 @@ const errorHandler = (app) => {
 };
 const exec = (app) => (routerModule) => {
 	const { url, preMiddleware, runner } = routerModule;
-	app.use(url, ...preMiddleware, runner);
+	app.use('/prod' + url, ...preMiddleware, runner);
 };
 
 module.exports = app => {

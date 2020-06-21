@@ -1,5 +1,6 @@
 module.exports = {
 	checkRequest: require('./checkRequest'),
 	throwError: require('./throwError'),
-	cryptonite: require('./cryptonite')
+	cryptonite: require('./cryptonite'),
+	postResponse: require('./postResponse')
 }

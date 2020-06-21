@@ -13,14 +13,13 @@ const createReservation = async (req, res, next) => {
 		'client_id',
 		'service_id',
 		'start_at',
-		'finish_at',
-		'memo'
+		'finish_at'
 	];
 
 	try {
 		if (utils.checkRequest(req, properties)) {
 			const store_id = req.store_id;
-			const { employee_id, client_id, service_id, start_at, finish_at, memo } = req.body;
+			const { employee_id, client_id, service_id, start_at, finish_at, memo = null } = req.body;
 			const data = {
 				employee_id,
 				client_id,
@@ -35,7 +34,9 @@ const createReservation = async (req, res, next) => {
 			await reservationDao.insertOne(data, transaction);
 			await transaction.commit();
 
-			res.status(200).json();
+			res.status(200).json(utils.postResponse());
+		} else {
+			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch(err) {
 		if (transaction) await transaction.rollback();
@@ -72,7 +73,7 @@ const updateReservation = async (req, res, next) => {
 		await reservationDao.updateOne({ id: reservation_id }, { ...data }, transaction);
 		await transaction.commit();
 
-		res.status(200).json();
+		res.status(200).json(utils.postResponse());
 	} catch(err) {
 		if (transaction) await transaction.rollback();
 		next(err);
