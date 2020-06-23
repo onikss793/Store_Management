@@ -53,7 +53,7 @@ const getReservationList = async (req, res, next) => {
 		const start_date = date.startOf('day').toISOString();
 		const end_date = date.endOf('day').toISOString();
 
-		const [result] = await database.query(selectReservation(store_id, start_date, end_date));
+		const result = await database.query(selectReservation(store_id, start_date, end_date));
 		const data = helper.convertRawToReservationList(result);
 
 		res.status(200).json(data);
