@@ -4,6 +4,10 @@ module.exports = (DataTypes, sequelize) => {
 			type: DataTypes.STRING(10),
 			allowNull: false
 		},
+		phone_number: {
+			type: DataTypes.STRING(20),
+			unique: true
+		},
 		enrolled_in: {
 			type: DataTypes.DATE,
 			allowNull: false
