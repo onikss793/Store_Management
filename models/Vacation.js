@@ -1,7 +1,25 @@
-module.exports = (DataTypes, db) => {
-	return db.define('vacations', {
-		employee_id: { type: DataTypes.INTEGER, allowNull: false },
-		start_at: { type: DataTypes.DATE, allowNull: false },
-		finish_at: { type: DataTypes.DATE, allowNull: false }
-	})
-}
+module.exports = (DataTypes, sequelize) => {
+	return sequelize.define('vacations', {
+		employee_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		start_at: {
+			type: DataTypes.DATE,
+			allowNull: false
+		},
+		finish_at: {
+			type: DataTypes.DATE,
+			allowNull: false
+		},
+		created_at: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+		},
+		updated_at: {
+			type: DataTypes.DATE,
+			allowNull: true
+		}
+	}, { paranoid: true, underscored: true, timestamps: true });
+};

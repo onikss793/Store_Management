@@ -35,7 +35,7 @@ class Database {
 			return new Sequelize(this._getDBName(), 'root', '1', {
 				host: 'localhost',
 				port: 3306,
-				logging: false,
+				logging: (seq) => console.log(seq),
 				dialect: 'mysql'
 			});
 		}
@@ -44,7 +44,7 @@ class Database {
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
 				host,
 				port: 3306,
-				logging: false,
+				logging: console.info,
 				dialect: 'mysql',
 				dialectOptions: {
 					ssl: 'Amazon RDS'
@@ -78,7 +78,7 @@ class Database {
 		const transaction = await this.transaction();
 
 		try {
-			const result = await this.sequelize.query(query);
+			const [result] = await this.sequelize.query(query);
 			await transaction.commit();
 			return result;
 		} catch (err) {

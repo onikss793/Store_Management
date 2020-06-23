@@ -33,7 +33,7 @@ const getEmployeeListByStore = async (req, res, next) => {
 	try {
 		const store_id = req.params.store_id;
 		const { selectEmployeesByStoreId } = query.employee;
-		const [data] = await database.query(selectEmployeesByStoreId(store_id));
+		const data = await database.query(selectEmployeesByStoreId(store_id));
 		const response = renderResponseForList(data);
 
 		res.status(200).json(response);

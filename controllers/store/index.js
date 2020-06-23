@@ -34,7 +34,7 @@ const createStore = async (req, res, next) => {
 const storeList = async (req, res, next) => {
 	try {
 		const { selectStoreList } = query.store;
-		const [stores] = await database.query(selectStoreList());
+		const stores = await database.query(selectStoreList());
 
 		res.status(200).json(stores);
 	} catch (err) {
