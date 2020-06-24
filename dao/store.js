@@ -1,15 +1,15 @@
 const selectStoreList = () => `
 	SELECT
-	    s.id AS id,
-		s.store_name AS store_name,
-		s.brand_id AS brand_id,
-		s.is_admin AS is_admin,
-		b.brand_name AS brand_name
+	    STORE.id AS id,
+		STORE.store_name AS store_name,
+		STORE.brand_id AS brand_id,
+		STORE.is_admin AS is_admin,
+		BRAND.brand_name AS brand_name
 	FROM
-	    stores AS s
-	LEFT JOIN brands AS b ON s.brand_id = b.id
+	    stores AS STORE
+	LEFT JOIN brands AS BRAND ON STORE.brand_id = BRAND.id
 	WHERE
-		s.deleted_at IS NULL
-	ORDER BY s.brand_id`;
+		STORE.deleted_at IS NULL
+	ORDER BY STORE.brand_id`;
 
 module.exports = { selectStoreList };

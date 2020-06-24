@@ -1,30 +1,30 @@
 const selectReservation = (store_id, start_date, end_date) => `
 	SELECT
-		r.id AS id,
-		r.employee_id AS employee_id,
-		r.client_id AS client_id,
-		r.service_id AS service_id,
-		r.start_at AS start_at,
-		r.finish_at AS finish_at,
-		r.status AS status,
-		r.memo AS memo,
-		e.employee_name AS employee_name,
-		c.client_name AS client_name,
-		c.phone_number AS phone_number,
-		c.info AS info,
-		s.service_name AS service_name,
-		s.color AS color
-	FROM reservations AS r
+		RESERVATION.id AS id,
+		RESERVATION.employee_id AS employee_id,
+		RESERVATION.client_id AS client_id,
+		RESERVATION.service_id AS service_id,
+		RESERVATION.start_at AS start_at,
+		RESERVATION.finish_at AS finish_at,
+		RESERVATION.status AS status,
+		RESERVATION.memo AS memo,
+		EMPLOYEE.employee_name AS employee_name,
+		CLIENT.client_name AS client_name,
+		CLIENT.phone_number AS phone_number,
+		CLIENT.info AS info,
+		SERVICE.service_name AS service_name,
+		SERVICE.color AS color
+	FROM reservations AS RESERVATION
 		LEFT JOIN 
-			employees AS e ON r.employee_id = e.id
+			employees AS EMPLOYEE ON RESERVATION.employee_id = EMPLOYEE.id
 		LEFT JOIN
-			clients AS c ON r.client_id = c.id
+			clients AS CLIENT ON RESERVATION.client_id = CLIENT.id
 		LEFT JOIN
-			services AS s ON r.service_id = s.id
-	WHERE r.store_id = ${store_id}
-	AND r.deleted_at IS NULL
-	AND r.start_at >= '${start_date}'
-	AND r.finish_at <= '${end_date}' 
-	ORDER BY r.start_at`;
+			services AS SERVICE ON RESERVATION.service_id = SERVICE.id
+	WHERE RESERVATION.store_id = ${store_id}
+		AND RESERVATION.deleted_at IS NULL
+		AND RESERVATION.start_at >= "${start_date}"
+		AND RESERVATION.finish_at <= "${end_date}" 
+	ORDER BY RESERVATION.start_at`;
 
 module.exports = { selectReservation };

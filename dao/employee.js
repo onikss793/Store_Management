@@ -1,18 +1,22 @@
-const selectEmployeesByStoreId = (store_id) => `
+const selectEmployeesByStoreId = (store_id, date) => `
 	SELECT
-		e.id AS id,
-		e.employee_name AS employee_name,
-		e.enrolled_in AS enrolled_in,
-		e.store_id AS store_id,
-			CASE WHEN v.start_at <= CURRENT_TIMESTAMP
-				AND v.finish_at >= CURRENT_TIMESTAMP
-				THEN 'true'
+		EMPLOYEE.id AS id,
+		EMPLOYEE.employee_name AS employee_name,
+		EMPLOYEE.enrolled_in AS enrolled_in,
+		EMPLOYEE.store_id AS store_id,
+			CASE WHEN VACATION.start_at <= "${date}"
+				AND VACATION.finish_at >= "${date}"
+			THEN 'true'
 			ELSE 'false'
 			END AS vacation
 	FROM
-		employees AS e
-	LEFT JOIN vacations AS v ON e.id = v.employee_id
+		employees AS EMPLOYEE
+	LEFT JOIN 
+			vacations AS VACATION 
+		ON 
+			EMPLOYEE.id = VACATION.employee_id 
+			AND VACATION.deleted_at IS NULL
 	WHERE
-		e.deleted_at IS NULL AND e.store_id = ${store_id}`;
+		EMPLOYEE.deleted_at IS NULL AND EMPLOYEE.store_id = ${store_id}`;
 
 module.exports = { selectEmployeesByStoreId };

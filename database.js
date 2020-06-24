@@ -35,7 +35,7 @@ class Database {
 			return new Sequelize(this._getDBName(), 'root', '1', {
 				host: 'localhost',
 				port: 3306,
-				logging: (seq) => console.log(seq),
+				logging: false,
 				dialect: 'mysql'
 			});
 		}
@@ -44,7 +44,7 @@ class Database {
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
 				host,
 				port: 3306,
-				logging: console.info,
+				logging: false,
 				dialect: 'mysql',
 				dialectOptions: {
 					ssl: 'Amazon RDS'

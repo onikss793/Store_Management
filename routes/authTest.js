@@ -1,5 +1,5 @@
 module.exports = (req, res) => {
-	const { superuser, is_admin, store_id } = req;
+	const { is_admin, store_id } = req;
 
-	res.status(200).json({ superuser, is_admin, store_id });
+	res.status(200).json({ is_admin, store_id });
 };

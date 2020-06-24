@@ -18,7 +18,6 @@ describe('Test authMiddleware', () => {
 		const response = await Test.bearCall('/authTest', 'GET', token);
 		const data = JSON.parse(response.text);
 
-		expect(data).toHaveProperty('superuser', true);
 		expect(data).toHaveProperty('is_admin', true);
 		expect(data).toHaveProperty('store_id', 1);
 	}, timeout);
@@ -31,7 +30,6 @@ describe('Test authMiddleware', () => {
 		const response = await Test.bearCall('/authTest', 'GET', token);
 		const data = JSON.parse(response.text);
 
-		expect(data).toHaveProperty('superuser', false);
 		expect(data).toHaveProperty('is_admin', true);
 		expect(data).toHaveProperty('store_id', 4);
 	}, timeout);
@@ -43,7 +41,6 @@ describe('Test authMiddleware', () => {
 		const response = await Test.bearCall('/authTest', 'GET', token);
 		const data = JSON.parse(response.text);
 
-		expect(data).toHaveProperty('superuser', false);
 		expect(data).toHaveProperty('is_admin', false);
 		expect(data).toHaveProperty('store_id', 6);
 	}, timeout);

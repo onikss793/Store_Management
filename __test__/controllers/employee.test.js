@@ -13,7 +13,7 @@ afterAll(async () => {
 
 describe('Test Employee Create Controller', () => {
 	it('should send 200 when create employee', async () => {
-		const data = { employee_name: 'test', enrolled_in: '2020-04-29T11:04:38.000Z' };
+		const data = { employee_name: 'test' };
 		const response = await Test.post('/employee', data);
 
 		expect(response.status).toEqual(200);
@@ -21,20 +21,20 @@ describe('Test Employee Create Controller', () => {
 });
 
 describe('Test Employee Select By StoreId Controller', () => {
-	it('should send 404 when select employees without store_id', async () => {
+	it('should send 200 when select employees without store_id', async () => {
+		// store_id querystring 없이 만들 경우, token 에서 추출한 매장 아이디 사용
 		const response = await Test.get('/employee');
 
-		expect(response.status).toEqual(404);
+		expect(response.status).toEqual(200);
 	}, timeout);
 
 	it('should send 200 when select employees by store_id', async () => {
-		const response = await Test.get('/employee/1');
+		const response = await Test.get('/employee?store_id=1');
 		const data = JSON.parse(response.text);
 
 		expect(response.status).toEqual(200);
 		expect(data[0]).toHaveProperty('id', 1);
 		expect(data[0]).toHaveProperty('employee_name', 'Charles');
-		expect(data[0]).toHaveProperty('enrolled_in', '2020-03-31T15:00:00.000Z');
 	}, timeout);
 });
 
