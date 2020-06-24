@@ -10,7 +10,7 @@ module.exports = (DataTypes, sequelize) => {
 		},
 		enrolled_in: {
 			type: DataTypes.DATE,
-			allowNull: false
+			allowNull: true
 		},
 		store_id: {
 			type: DataTypes.INTEGER,

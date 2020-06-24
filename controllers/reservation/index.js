@@ -10,24 +10,23 @@ const createReservation = async (req, res, next) => {
 	let transaction;
 	const properties = [
 		'employee_id',
-		'client_id',
-		'service_id',
+		// 'client_id',
+		// 'service_id',
 		'start_at',
-		'finish_at'
+		'finish_at',
+		'memo'
 	];
 
 	try {
 		if (utils.checkRequest(req, properties)) {
 			const store_id = req.store_id;
-			const { employee_id, client_id, service_id, start_at, finish_at, memo = null } = req.body;
+			const { employee_id, start_at, finish_at, memo } = req.body;
 			const data = {
-				employee_id,
-				client_id,
-				service_id,
-				start_at,
-				finish_at,
 				store_id,
-				memo
+				employee_id,
+				memo,
+				start_at,
+				finish_at
 			};
 
 			transaction = await database.transaction();

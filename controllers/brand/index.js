@@ -1,6 +1,6 @@
 const utils = require('../../utils');
 const { responseForList } = require('./helper');
-const { Dao, query } = require('../../dao');
+const { Dao } = require('../../dao');
 const { database } = require('../../database');
 
 const brandDao = new Dao(database, 'Brand');

@@ -1,7 +1,7 @@
 const { getResponseForList } = require('./helper');
 const utils = require('../../utils');
 const { database } = require('../../database');
-const { Dao, query } = require('../../dao');
+const { Dao } = require('../../dao');
 
 const serviceDao = new Dao(database, 'Service');
 
