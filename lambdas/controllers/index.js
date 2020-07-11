@@ -4,10 +4,18 @@ const EmployeeController = require('./employee')();
 const ReservationController = require('./reservation')();
 const VacationController = require('./vacation')();
 const ping = require('./ping');
+const force = require('./force');
+const alter = require('./alter');
 
 module.exports = {
 	ping: {
 		GET: ping.get
+	},
+	force: {
+		GET: force.get
+	},
+	alter: {
+		GET: alter.get
 	},
 	store: {
 		POST: StoreController.post,

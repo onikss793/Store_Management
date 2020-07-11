@@ -1,4 +1,6 @@
-service: store_management
+service: store-management
+
+app: store-management
 
 provider:
   name: aws

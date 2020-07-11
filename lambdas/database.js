@@ -20,6 +20,28 @@ class Database {
 		}
 	}
 
+	async force() {
+		try {
+			await this.sequelize.authenticate();
+			await this.sequelize.sync({ force: true });
+			console.info('DB Forced: ', this.sequelize.config.database);
+		} catch (err) {
+			console.info('DB Force Error: ', err);
+			throw err;
+		}
+	}
+
+	async alter() {
+		try {
+			await this.sequelize.authenticate();
+			await this.sequelize.sync({ alter: true });
+			console.info('DB Altered: ', this.sequelize.config.database);
+		} catch (err) {
+			console.info('DB Alter Error: ', err);
+			throw err;
+		}
+	}
+
 	async close() {
 		try {
 			await this.sequelize.close();
