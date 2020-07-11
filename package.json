@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_PATH=./ NODE_ENV=test jest --runInBand --detectOpenHandles",
-    "serve:loc": "NODE_PATH=./ NODE_ENV=dev nodemon server.js",
-    "serve:dev": "NODE_ENV=lambda serverless offline",
-    "serve:prod": "serverless deploy"
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
+    "serve:loc": "NODE_ENV=dev nodemon server.js",
+    "serve:dev": "NODE_ENV=dev serverless offline",
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",

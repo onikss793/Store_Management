@@ -4,26 +4,35 @@ module.exports = class Dao {
 		this.model = database.models[model];
 	}
 
-	selectAll(index) {
-		return this.model.findAll({ where: { ...index } });
+	selectAll(index, attributes = ['id']) {
+		return this.model.findAll({ where: { ...index }, attributes });
 	}
 
-	selectOne(index = {}) {
-		return this.model.findOne({ where: { ...index } });
+	selectOne(index = {}, attributes = ['id']) {
+		return this.model.findOne({ where: { ...index }, attributes });
 	}
 
 	insertOne(data, transaction) {
-		if (transaction) return this.model.create(data, { transaction });
-		else return this.model.create(data);
+		if (transaction) {
+			return this.model.create(data, { transaction });
+		} else {
+			return this.model.create(data);
+		}
 	}
 
 	updateOne(index, data, transaction) {
-		if (transaction) return this.model.update({ ...data }, { where: { ...index }, transaction });
-		else return this.model.update({ ...data }, { where: { ...index } });
+		if (transaction) {
+			return this.model.update({ ...data }, { where: { ...index }, transaction });
+		} else {
+			return this.model.update({ ...data }, { where: { ...index } });
+		}
 	}
 
 	upsertOne(data, transaction) {
-		if (transaction) return this.model.upsert(data, { transaction });
-		else return this.model.upsert(data);
+		if (transaction) {
+			return this.model.upsert(data, { transaction });
+		} else {
+			return this.model.upsert(data);
+		}
 	}
 };
