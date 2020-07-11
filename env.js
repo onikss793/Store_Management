@@ -1,6 +1,6 @@
 module.exports = () => {
 	return {
-		STAGE: process.env.SM_STAGE,
+		SM_STAGE: process.env.SM_STAGE,
 		NODE_ENV: process.env.NODE_ENV
 	}
 }
