@@ -1,6 +1,6 @@
 module.exports = () => {
 	return {
-		NODE_ENV: process.env.NODE_ENV,
-		SLS_DEBUG: '*'
+		STAGE: process.env.SM_STAGE,
+		NODE_ENV: process.env.NODE_ENV
 	}
 }

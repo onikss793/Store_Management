@@ -1,3 +1,7 @@
+# database manipulation
+./lambdas/controllers/alter.js
+./lambdas/controllers/force.js
+
 # package directories
 node_modules
 jspm_packages
