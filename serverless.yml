@@ -19,6 +19,7 @@ functions:
           path: /v1/{endpoint+}
           method: ANY
           cors: true
+    noPrependStageInUrl: true
 
 custom:
   serverless-offline:
