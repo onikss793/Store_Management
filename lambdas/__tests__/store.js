@@ -1,15 +1,15 @@
 const utils = require('../test-utils');
 
 const newStoreData = {
-	'store_name': utils.makeStoreName(4),
-	'password': 'password',
-	'brand_id': 1,
-	'is_admin': true
+	store_name: utils.makeRandomName(4),
+	password: 'password',
+	brand_id: 1,
+	is_admin: true
 };
 
-describe('로그인 테스트', () => {
+describe('매장 생성 > 로그인(+, -)', () => {
 	beforeAll(async () => {
-		await utils.forceDatabase();
+		// await utils.forceDatabase();
 		await utils.setMasterStore();
 	});
 
@@ -54,8 +54,26 @@ describe('로그인 테스트', () => {
 				endpoint: '/account'
 			});
 		} catch (err) {
-			console.log(err);
 			expect(err.response.status).toBe(401);
 		}
+	});
+
+	test('매장 정보 업데이트', async () => {
+		const accessToken = await utils.getMasterAccessToken();
+		const storeData = {
+			store_name: 'changed',
+			password: 'p@ssword',
+			brand_id: 1,
+			is_admin: false
+		};
+
+		const response = await utils.axiosCall({
+			method: 'POST',
+			data: storeData,
+			endpoint: '/store',
+			accessToken
+		});
+
+		expect(response.status).toBe(200);
 	});
 });

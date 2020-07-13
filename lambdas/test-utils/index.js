@@ -32,7 +32,7 @@ async function setMasterStore() {
 	await transaction.commit();
 }
 
-function makeStoreName(length) {
+function makeRandomName(length) {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	const charactersLength = characters.length;
 	let result = '';
@@ -61,4 +61,4 @@ async function axiosCall({
 	});
 }
 
-module.exports = { makeStoreName, axiosCall, setMasterStore, forceDatabase, getMasterAccessToken };
+module.exports = { makeRandomName, axiosCall, setMasterStore, forceDatabase, getMasterAccessToken };

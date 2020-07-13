@@ -21,7 +21,6 @@ class AccountService {
 			}
 
 			const decodedData = jwt.verify(accessToken, JWT_SECRET);
-			console.log(decodedData);
 			const storeData = await this.getStoreById(decodedData.id);
 
 			if (!storeData || !storeData.id) {

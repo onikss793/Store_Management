@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const models = require('../models');
 const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
-const STAGE = process.env.SM_STAGE || 'dev';
+const STAGE = process.env.SM_STAGE || 'test';
 
 class Database {
 	constructor() {
