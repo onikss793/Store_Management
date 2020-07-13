@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const models = require('../models');
 const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
-const STAGE = process.env.SM_STAGE || 'dev';
+const STAGE = process.env.SM_STAGE || 'test';
 
 class Database {
 	constructor() {
@@ -86,13 +86,13 @@ class Database {
 			pool: {
 				max: 10,
 				min: 0,
-				idle: 10000
+				idle: 5000
 			}
 		});
 	}
 
 	_getDBName() {
-		switch (process.env.NODE_ENV) {
+		switch (STAGE) {
 			case 'test': {
 				return 'store_management_test';
 			}
@@ -100,7 +100,7 @@ class Database {
 				return 'store_management_dev';
 			}
 			case undefined: {
-				return 'store_management_dev';
+				return 'store_management_test';
 			}
 		}
 	}

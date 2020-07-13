@@ -1,15 +1,17 @@
 const Controller = require('./controller');
-const { StoreService } = require('../services');
+const { StoreService, AccountService } = require('../services');
 const utils = require('../utils');
 
 class StoreController extends Controller {
 	storeService;
+	accountService;
 
 	constructor() {
 		super();
 		this.setDatabase();
 		this.setProperties(['brand_id', 'store_name', 'password', 'is_admin']);
 		this.setService('storeService', StoreService);
+		this.setService('accountService', AccountService);
 	}
 
 	post = async (request) => {
@@ -35,10 +37,26 @@ class StoreController extends Controller {
 
 	get = async (request) => {
 		try {
-			const storeId = request.resourceId;
-			const data = storeId
-				? await this.storeService.getStoreById(storeId)
-				: await this.storeService.getAllStores();
+			const resourceId = request.resourceId;
+			const accountId = request.accountId;
+			const isAdmin = request.isAdmin;
+			const storeId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
+
+			let data;
+			if (storeId) {
+				data = await this.storeService.getStoreById(storeId);
+			}
+			if (isAdmin) {
+				data = await this.storeService.getAllStores();
+			}
+
+			if (!data) {
+				return utils.makeError({
+					statusCode: 403,
+					name: 'Forbidden',
+					message: 'You have No Access'
+				});
+			}
 
 			return utils.response({
 				body: { data }

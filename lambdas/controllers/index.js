@@ -3,7 +3,10 @@ const BrandController = require('./brand')();
 const EmployeeController = require('./employee')();
 const ReservationController = require('./reservation')();
 const VacationController = require('./vacation')();
+const AccountController = require('./account')();
+const middlewares = require('../middleware');
 const ping = require('./ping');
+// 아래 두개는 개발 단계에서 임시로...
 const force = require('./force');
 const alter = require('./alter');
 
@@ -17,24 +20,56 @@ module.exports = {
 	alter: {
 		GET: alter.get
 	},
+	account: {
+		POST: async request => (await middlewares({
+			pre: [],
+			runner: AccountController.post
+		}))(request),
+	},
 	store: {
-		POST: StoreController.post,
-		GET: StoreController.get
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: StoreController.post
+		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: StoreController.get
+		}))(request)
 	},
 	brand: {
-		POST: BrandController.post,
-		// GET
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: BrandController.post
+		}))(request),
 	},
 	employee: {
-		POST: EmployeeController.post,
-		GET: EmployeeController.get,
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: EmployeeController.post
+		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: EmployeeController.get
+		}))(request)
 	},
 	reservation: {
-		POST: ReservationController.post,
-		GET: ReservationController.get
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: ReservationController.post
+		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: ReservationController.get
+		}))(request)
 	},
 	vacation: {
-		POST: VacationController.post,
-		GET: VacationController.get,
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: VacationController.post
+		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: VacationController.get
+		}))(request)
 	}
-}
+};

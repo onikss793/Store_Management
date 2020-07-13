@@ -12,7 +12,7 @@ class EmployeeController extends Controller {
 		this.setService('employeeService', EmployeeService);
 	}
 
-	post = async (request) => {
+	post = async request => {
 		let transaction;
 
 		try {
@@ -32,8 +32,8 @@ class EmployeeController extends Controller {
 			return utils.throwError(err);
 		}
 	};
-	// /employee?storeId=1
-	get = async (request) => {
+	// /employee?storeId=1&date=2020-05-31T15:00:00.000Z
+	get = async request => {
 		try {
 			const storeId = request.query['storeId'];
 			const date = new Date(request.query['date'] || Date.now()).toISOString(); // "2020-05-31T15:00:00.000Z"
