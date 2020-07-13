@@ -22,29 +22,26 @@ function corsHeaders(origin) {
 		};
 	} else {
 		return {
-			// 'Access-Control-Allow-Origin': '',
+			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Headers': 'Content-Type, Content-Length, x-Requested-With, Accept, Authorization',
 			'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE'
 		};
 	}
 }
 
-function setParamsQs(event, context) {
-	context.endpoint = event.pathParameters.endpoint;
-	context.querystring = event.queryStringParameters;
-	context.method = event.httpMethod;
-}
-
 function response({ statusCode = 200, body }) {
 	return {
 		statusCode,
+		headers: {
+			...corsHeaders()
+		},
 		body: JSON.stringify(body)
 	};
 }
 
 const allowed = [
 	/http:\/\/localhost:[0-9]+/,
-	/http:\/\/10\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+/,
+	/http:\/\/127\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+/,
 ];
 
 function allowedDomain() {
@@ -102,11 +99,37 @@ function cryptonite(password) {
 	return crypto.pbkdf2Sync(password, SECRET_KEY, 100000, 64, 'sha256').toString('hex');
 }
 
+function makeError({ statusCode = null, name = null, message = null }) {
+	const error = new Error(message);
+	error.statusCode = statusCode;
+	error.name = name;
+
+	return throwError(error);
+}
+
+function getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin) {
+	const storeId = resourceId && Number(resourceId);
+
+	if (isAdmin) {
+		console.log('Admin');
+		return storeId;
+	}
+
+	if (storeId === accountId) {
+		console.log('Normal');
+		return storeId;
+	}
+
+	return null;
+}
+
 module.exports = {
 	slsHeaders,
 	corsHeaders,
 	response,
 	throwError,
 	checkRequest,
-	cryptonite
+	cryptonite,
+	makeError,
+	getStoreIdFromAccountAndParam
 };

@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: ap-northeast-2     # optional, default: us-east-1
-  memorySize: 512           # optional, in MB, default: 1024
+  memorySize: 128           # optional, in MB, default: 1024
   stage: ${env:SM_STAGE}                # optional, default: dev
   environment: ${file(./env.js)}
 
@@ -16,7 +16,7 @@ functions:
     handler: ./lambda.handler
     events:
       - http:
-          path: /v1/{endpoint+}
+          path: /{endpoint+}
           method: ANY
           cors: true
     noPrependStageInUrl: true

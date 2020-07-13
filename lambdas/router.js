@@ -25,7 +25,7 @@ function parseEndpoint(event) {
 	const request = {};
 
 	if (path.length === 2) {
-		request.resourceId = path[1];
+		request.resourceId = Number(path[1]);
 	}
 	if (event.httpMethod === 'POST') {
 		const body = event.body;
@@ -35,6 +35,7 @@ function parseEndpoint(event) {
 	request.route = route;
 	request.method = event.httpMethod;
 	request.query = event.queryStringParameters;
+	request.headers = event.headers;
 
 	return request;
 }

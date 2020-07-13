@@ -32,13 +32,19 @@ class StoreService {
 
 	async getStoreById(storeId) {
 		const { selectStoreData } = query.store;
-		const [{
-				id,
-				store_name,
-				is_admin,
-				brand_id,
-				brand_name
-			}] = await this.database.query(selectStoreData(storeId));
+		const [storeData] = await this.database.query(selectStoreData(storeId));
+
+		if (!storeData) {
+			return {};
+		}
+
+		const {
+			id,
+			store_name,
+			is_admin,
+			brand_id,
+			brand_name
+		} = storeData;
 
 		return {
 			id,
@@ -49,6 +55,10 @@ class StoreService {
 				brand_name: brand_name
 			}
 		};
+	}
+
+	async getStoreByWhereClause({ ...index }) {
+		return this.storeDao.selectOne(index);
 	}
 }
 
