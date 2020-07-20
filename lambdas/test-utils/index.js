@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { createDatabase } = require('../database');
-const { StoreService, AccountService } = require('../services');
+const { StoreService, AccountService } = require('../../services');
 const database = createDatabase();
 const storeService = new StoreService(database);
 
@@ -61,4 +61,11 @@ async function axiosCall({
 	});
 }
 
-module.exports = { makeRandomName, axiosCall, setMasterStore, forceDatabase, getMasterAccessToken };
+module.exports = {
+	database,
+	makeRandomName,
+	axiosCall,
+	setMasterStore,
+	forceDatabase,
+	getMasterAccessToken
+};

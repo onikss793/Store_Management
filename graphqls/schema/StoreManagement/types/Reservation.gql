@@ -1,0 +1,16 @@
+type Reservation {
+    employee: Employee!
+    store: Store!
+    startAt: String!
+    finishAt: String!
+    status: Status!
+    memo: String!
+    createdAt: String
+    updatedAt: String
+}
+
+enum Status {
+    ready
+    done
+    canceled
+}

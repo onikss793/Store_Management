@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
-const models = require('../models');
 const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
-const STAGE = process.env.SM_STAGE || 'test';
+const models = require('../models');
+const env = process.env.NODE_ENV;
 
 class Database {
 	constructor() {
@@ -9,45 +9,13 @@ class Database {
 		this.setModels();
 	}
 
-	async connect(force = false) {
+	async connect(force) {
 		try {
 			await this.sequelize.authenticate();
 			await this.sequelize.sync({ force });
 			console.info('DB Loaded: ', this.sequelize.config.database);
 		} catch (err) {
 			console.info('DB Loading Error: ', err);
-			throw err;
-		}
-	}
-
-	async force() {
-		try {
-			await this.sequelize.authenticate();
-			await this.sequelize.sync({ force: true });
-			console.info('DB Forced: ', this.sequelize.config.database);
-		} catch (err) {
-			console.info('DB Force Error: ', err);
-			throw err;
-		}
-	}
-
-	async alter() {
-		try {
-			await this.sequelize.authenticate();
-			await this.sequelize.sync({ alter: true });
-			console.info('DB Altered: ', this.sequelize.config.database);
-		} catch (err) {
-			console.info('DB Alter Error: ', err);
-			throw err;
-		}
-	}
-
-	async close() {
-		try {
-			await this.sequelize.close();
-		} catch (err) {
-			console.info('DB close ERROR: ', err);
-			throw err;
 		}
 	}
 
@@ -61,7 +29,18 @@ class Database {
 	}
 
 	_setSequelize() {
-		if (STAGE === 'production') {
+		const standard = 'lambda';
+
+		if (env !== standard) {
+			return new Sequelize(this._getDBName(), 'root', '1', {
+				host: 'localhost',
+				port: 3306,
+				logging: false,
+				dialect: 'mysql'
+			});
+		}
+
+		if (env === standard) {
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
 				host,
 				port: 3306,
@@ -69,35 +48,28 @@ class Database {
 				dialect: 'mysql',
 				dialectOptions: {
 					ssl: 'Amazon RDS'
-				},
-				pool: {
-					max: 10,
-					min: 0,
-					idle: 10000
 				}
 			});
 		}
 
-		return new Sequelize(this._getDBName(), 'root', '1', {
-			host: 'localhost',
-			port: 3306,
-			logging: false,
-			dialect: 'mysql',
-			pool: {
-				max: 10,
-				min: 0,
-				idle: 5000
-			}
-		});
+		if (env === 'production') {
+			//
+		}
 	}
 
 	_getDBName() {
-		switch (STAGE) {
+		switch (env) {
+			case 'test': {
+				return 'store_management_test';
+			}
 			case 'dev': {
 				return 'store_management_dev';
 			}
-			case undefined || null: {
+			case 'lambda': {
 				return 'store_management_dev';
+			}
+			case undefined: {
+				return 'store_management_test';
 			}
 		}
 	}
@@ -120,8 +92,7 @@ class Database {
 	}
 }
 
-function createDatabase() {
-	return new Database().setModels();
-}
+const database = new Database().setModels();
+const sequelize = database.getSequelize();
 
-module.exports = { createDatabase };
+module.exports = { sequelize, database, Database };

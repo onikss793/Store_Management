@@ -2,17 +2,20 @@
   "name": "store_management",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lambdas/handler.js",
   "scripts": {
-    "test": "NODE_ENV=test SM_STAGE=test jest --runInBand --detectOpenHandles",
+    "test": "NODE_ENV=test SM_STAGE=dev jest --runInBand --detectOpenHandles",
+    "build": "npx webpack-cli --config ./graphqls/webpack.config.js",
     "serve:dev": "NODE_ENV=dev SM_STAGE=dev npx sls offline start --skipCacheInvalidation --processName StoreManagement",
     "serve:stop": "kill -9 $(pgrep -d \" \" -f \"node.*processName.*StoreManagement\")",
-    "deploy": "NODE_ENV=production SM_STAGE=production sls deploy"
+    "deploy": "NODE_ENV=production SM_STAGE=production sls deploy",
+    "serve:gql": "npm run build && npm run serve:dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-server-lambda": "2.15.1",
     "aws-serverless-express": "3.3.8",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
@@ -28,20 +31,26 @@
   },
   "devDependencies": {
     "@types/jest": "25.2.1",
-    "axios": "^0.19.2",
+    "axios": "0.19.2",
+    "clean-webpack-plugin": "3.0.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-plugin-import": "2.20.2",
     "jest": "25.2.3",
+    "pnp-webpack-plugin": "1.6.4",
     "sequelize-mock": "0.10.2",
-    "serverless": "^1.73.1",
+    "serverless": "1.73.1",
     "serverless-offline": "6.1.4",
-    "supertest": "4.0.2"
+    "supertest": "4.0.2",
+    "terser-webpack-plugin": "3.0.7",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.12",
+    "webpack-node-externals": "2.5.0"
   },
   "jest": {
     "testMatch": [
-      "./lambdas/__tests__/**/*.[jt]s?(x)",
-      "**/__tests__/*.js?(x)"
+      "**/__tests__/**/*.js",
+      "**/__tests__/*.js"
     ]
   }
 }

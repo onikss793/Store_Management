@@ -9,8 +9,10 @@ const newStoreData = {
 
 describe('매장 생성 > 로그인(+, -)', () => {
 	beforeAll(async () => {
-		// await utils.forceDatabase();
 		await utils.setMasterStore();
+	});
+	afterAll(async () => {
+		await utils.forceDatabase();
 	});
 
 	test('새로운 매장을 만든다', async () => {
@@ -24,6 +26,26 @@ describe('매장 생성 > 로그인(+, -)', () => {
 		});
 
 		expect(response.status).toBe(200);
+	});
+
+	test('해당 매장 정보 확인', async () => {
+		const [storeData] = await utils.database.query(`
+			SELECT
+				id,
+				store_name,
+				brand_id,
+				is_admin
+			FROM stores
+			WHERE store_name = "${newStoreData.store_name}"
+		`);
+		storeData.is_admin = Boolean(storeData.is_admin);
+
+		expect(storeData).toEqual({
+			id: 2,
+			store_name: newStoreData.store_name,
+			brand_id: newStoreData.brand_id,
+			is_admin: newStoreData.is_admin,
+		});
 	});
 
 	test('그 매장으로 로그인을 시도한다', async () => {
@@ -56,24 +78,5 @@ describe('매장 생성 > 로그인(+, -)', () => {
 		} catch (err) {
 			expect(err.response.status).toBe(401);
 		}
-	});
-
-	test('매장 정보 업데이트', async () => {
-		const accessToken = await utils.getMasterAccessToken();
-		const storeData = {
-			store_name: 'changed',
-			password: 'p@ssword',
-			brand_id: 1,
-			is_admin: false
-		};
-
-		const response = await utils.axiosCall({
-			method: 'POST',
-			data: storeData,
-			endpoint: '/store',
-			accessToken
-		});
-
-		expect(response.status).toBe(200);
 	});
 });

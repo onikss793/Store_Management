@@ -1,0 +1,7 @@
+type Query {
+    StoreManagement: StoreManagement
+}
+
+type Mutation {
+    StoreManagementMutation: StoreManagementMutation
+}

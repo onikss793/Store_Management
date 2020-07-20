@@ -41,5 +41,5 @@ function parseEndpoint(event) {
 }
 
 function logs(event) {
-	console.log(`${event.requestContext.httpMethod} ${event.requestContext.identity.sourceIp} ${event.path} ${event.requestContext.requestTime}`);
+	console.log(`${event.requestContext.httpMethod} ${event.requestContext.identity.sourceIp}${event.path} ${event.requestContext.requestTime}`);
 }

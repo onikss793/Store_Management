@@ -13,13 +13,28 @@ provider:
 functions:
   store_management_api:
     name: store_management
-    handler: ./lambda.handler
+    handler: ./lambdas/handler.index
     events:
       - http:
           path: /{endpoint+}
           method: ANY
           cors: true
-    noPrependStageInUrl: true
+
+#  GraphQL:
+#    handler: graphqls/dist/handler.index
+#    events:
+#      - http:
+#          path: /graphql
+#          method: get
+#          cors: true
+#      - http:
+#          path: /graphql
+#          method: post
+#          cors: true
+#      - http:
+#          path: /graphql
+#          method: options
+#          cors: true
 
 custom:
   serverless-offline:

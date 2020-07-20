@@ -124,6 +124,7 @@ function getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin) {
 }
 
 module.exports = {
+	allowedDomain: allowed,
 	slsHeaders,
 	corsHeaders,
 	response,

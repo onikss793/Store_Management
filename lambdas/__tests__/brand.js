@@ -6,8 +6,10 @@ const newBrandData = {
 
 describe('브랜드 생성', () => {
 	beforeAll(async () => {
-		// await utils.forceDatabase();
 		await utils.setMasterStore();
+	});
+	afterAll(async () => {
+		await utils.forceDatabase();
 	});
 
 	test('새로운 브랜드를 만든다', async () => {
@@ -21,5 +23,20 @@ describe('브랜드 생성', () => {
 		});
 
 		expect(response.status).toBe(200);
+	});
+
+	test('해당 브랜드를 확인', async () => {
+		const [brandData] = await utils.database.query(`
+			SELECT
+				id,
+				brand_name
+			FROM brands
+			WHERE brand_name = "${newBrandData.brand_name}"
+		`);
+
+		expect(brandData).toEqual({
+			id: expect.any(Number),
+			brand_name: newBrandData.brand_name
+		});
 	});
 });

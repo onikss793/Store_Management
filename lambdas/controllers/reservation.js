@@ -1,5 +1,5 @@
 const Controller = require('./controller');
-const { ReservationService } = require('../services');
+const { ReservationService } = require('../../services');
 const utils = require('../utils');
 
 class ReservationController extends Controller {
