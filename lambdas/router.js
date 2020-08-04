@@ -27,7 +27,7 @@ function parseEndpoint(event) {
 	if (path.length === 2) {
 		request.resourceId = Number(path[1]);
 	}
-	if (event.httpMethod === 'POST') {
+	if (event.httpMethod === 'POST' || 'PUT' || 'PATCH') {
 		const body = event.body;
 		request.body = JSON.parse(body);
 	}
@@ -41,5 +41,5 @@ function parseEndpoint(event) {
 }
 
 function logs(event) {
-	console.log(`${event.requestContext.httpMethod} ${event.requestContext.identity.sourceIp} ${event.path} ${event.requestContext.requestTime}`);
+	console.log(`${event.requestContext.httpMethod} ${event.requestContext.identity.sourceIp}${event.path} ${event.requestContext.requestTime}`);
 }

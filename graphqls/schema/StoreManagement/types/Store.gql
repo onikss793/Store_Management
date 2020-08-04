@@ -1,0 +1,10 @@
+type Store {
+    id: Int!
+    storeName: String!
+    password: String!
+    brand: Brand!
+    isAdmin: Boolean!
+    accessToken: String
+    createdAt: String
+    updatedAt: String
+}

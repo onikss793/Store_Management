@@ -1,0 +1,4 @@
+input ReservationInput {
+    storeId: Int!
+    date: String
+}

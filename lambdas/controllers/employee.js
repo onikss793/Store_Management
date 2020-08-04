@@ -1,6 +1,7 @@
 const Controller = require('./controller');
-const { EmployeeService } = require('../services');
+const { EmployeeService } = require('../../services');
 const utils = require('../utils');
+const moment = require('moment');
 
 class EmployeeController extends Controller {
 	employeeService;
@@ -36,7 +37,7 @@ class EmployeeController extends Controller {
 	get = async request => {
 		try {
 			const storeId = request.query['storeId'];
-			const date = new Date(request.query['date'] || Date.now()).toISOString(); // "2020-05-31T15:00:00.000Z"
+			const date = moment(request.query['date'] || Date.now()).toISOString(); // "2020-05-31T15:00:00.000Z"
 
 			const data = await this.employeeService.getEmployeesByStoreId(storeId, date);
 

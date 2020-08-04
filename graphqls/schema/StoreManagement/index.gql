@@ -1,0 +1,17 @@
+type StoreManagement {
+    ping: String!
+
+    #    login: Store!
+
+    #    storeList: [Store]!
+    #    employeeList(input: StoreInput!): [Employee]!
+    #    reservationList(input: ReservationInput): [Reservation]!
+}
+
+type StoreManagementMutation {
+    ping: String!
+    #    createBrand: Boolean!
+    #    createStore: Boolean!
+    #    createEmployee: Boolean!
+    #    createReservation: Boolean!
+}

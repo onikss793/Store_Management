@@ -83,6 +83,9 @@ class Database {
 			port: 3306,
 			logging: false,
 			dialect: 'mysql',
+			dialectOptions: {
+				dateStrings: true
+			},
 			pool: {
 				max: 10,
 				min: 0,
@@ -93,14 +96,11 @@ class Database {
 
 	_getDBName() {
 		switch (STAGE) {
-			case 'test': {
-				return 'store_management_test';
-			}
 			case 'dev': {
 				return 'store_management_dev';
 			}
-			case undefined: {
-				return 'store_management_test';
+			case null: {
+				return 'store_management_dev';
 			}
 		}
 	}

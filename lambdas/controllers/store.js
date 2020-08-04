@@ -1,5 +1,5 @@
 const Controller = require('./controller');
-const { StoreService, AccountService } = require('../services');
+const { StoreService, AccountService } = require('../../services');
 const utils = require('../utils');
 
 class StoreController extends Controller {
@@ -37,16 +37,11 @@ class StoreController extends Controller {
 
 	get = async (request) => {
 		try {
-			const resourceId = request.resourceId;
-			const accountId = request.accountId;
-			const isAdmin = request.isAdmin;
-			const storeId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
-
 			let data;
-			if (storeId) {
-				data = await this.storeService.getStoreById(storeId);
-			}
-			if (isAdmin) {
+
+			if (request.resourceId) { // /store/1 => resourceId가 있는 경우
+				data = await this.getSpecificStoreData(request);
+			} else if (request.isAdmin) { // /store => 모든 매장 목록일 경우
 				data = await this.storeService.getAllStores();
 			}
 
@@ -66,6 +61,23 @@ class StoreController extends Controller {
 			return utils.throwError(err);
 		}
 	};
+
+	async getSpecificStoreData(request) {
+		const resourceId = request.resourceId;
+		const accountId = request.accountId;
+		const isAdmin = request.isAdmin;
+		const storeId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
+
+		if (storeId) {
+			return await this.storeService.getStoreById(storeId);
+		} else {
+			return utils.makeError({
+				statusCode: 403,
+				name: 'Forbidden',
+				message: 'You have No Access'
+			});
+		}
+	}
 }
 
 module.exports = () => new StoreController();

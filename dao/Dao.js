@@ -5,7 +5,11 @@ module.exports = class Dao {
 	}
 
 	selectAll(index, attributes = ['id']) {
-		return this.model.findAll({ where: { ...index }, attributes });
+		if (index) {
+			return this.model.findAll({ where: { ...index }, attributes });
+		} else {
+			return this.model.findAll({ attributes });
+		}
 	}
 
 	selectOne(index = {}, attributes = ['id']) {
