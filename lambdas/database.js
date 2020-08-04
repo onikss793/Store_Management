@@ -83,6 +83,9 @@ class Database {
 			port: 3306,
 			logging: false,
 			dialect: 'mysql',
+			dialectOptions: {
+				dateStrings: true
+			},
 			pool: {
 				max: 10,
 				min: 0,
@@ -96,7 +99,7 @@ class Database {
 			case 'dev': {
 				return 'store_management_dev';
 			}
-			case undefined || null: {
+			case null: {
 				return 'store_management_dev';
 			}
 		}

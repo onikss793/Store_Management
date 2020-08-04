@@ -57,8 +57,8 @@ async function axiosCall({
 		url: urlEndpoint,
 		method,
 		data,
-		headers: { Authorization: accessToken }
-	});
+		headers: { authorization: accessToken }
+	}).catch(e => e);
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const newBrandData = {
 	brand_name: utils.makeRandomName(3)
 };
 
-describe('브랜드 생성', () => {
+describe('브랜드 생성 > 확인 > 목록', () => {
 	beforeAll(async () => {
 		await utils.setMasterStore();
 	});
@@ -36,6 +36,22 @@ describe('브랜드 생성', () => {
 
 		expect(brandData).toEqual({
 			id: expect.any(Number),
+			brand_name: newBrandData.brand_name
+		});
+	});
+
+	test('브랜드 목록 확인', async () => {
+		const accessToken = await utils.getMasterAccessToken();
+
+		const response = await utils.axiosCall({
+			endpoint: '/brand',
+			accessToken
+		});
+
+		expect(response.status).toBe(200);
+		expect(response.data.data.length).toBe(1);
+		expect(response.data.data[0]).toEqual({
+			id: 1,
 			brand_name: newBrandData.brand_name
 		});
 	});

@@ -12,12 +12,50 @@ class ReservationController extends Controller {
 		this.setService('reservationService', ReservationService);
 	}
 
-	post = async (request) => {
+	put = async request => {
+		let transaction;
+
+		try {
+			this.bodyCheck(request);
+			const reservationId = request.resourceId;
+			const reservationData = request.body;
+
+			transaction = await this.database.transaction();
+			const [result] = await this.reservationService.updateReservation(reservationId, reservationData, transaction);
+			await transaction.commit();
+
+			if (result) {
+				return utils.response({
+					body: { success: true }
+				});
+			} else {
+				return utils.makeError({
+					statusCode: 500,
+					message: 'Something Gone Wrong'
+				});
+			}
+		} catch (err) {
+			if (transaction) await transaction.rollback();
+			console.error(err);
+			return utils.throwError(err);
+		}
+	};
+
+	post = async request => {
 		let transaction;
 
 		try {
 			this.bodyCheck(request);
 			const reservationData = request.body;
+
+			const isDuplicated = await this.reservationService.isDuplicated(reservationData);
+
+			if (isDuplicated) {
+				return utils.makeError({
+					statusCode: 409,
+					message: 'Duplicated Reservation'
+				});
+			}
 
 			transaction = await this.database.transaction();
 			await this.reservationService.createReservation(reservationData, transaction);
@@ -34,7 +72,7 @@ class ReservationController extends Controller {
 	};
 
 	// /reservation?storeId=1&date=2020-05-01T15:38:29.821Z
-	get = async (request) => {
+	get = async request => {
 		try {
 			const date = request.query['date'];
 			const accountId = request.accountId;

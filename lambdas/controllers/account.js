@@ -30,7 +30,7 @@ class AccountController extends Controller {
 		}
 	};
 
-	post = async (request) => {
+	post = async request => {
 		let transaction;
 
 		try {

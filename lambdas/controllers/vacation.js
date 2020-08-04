@@ -20,15 +20,15 @@ class VacationController extends Controller {
 			const vacationData = request.body;
 
 			const duplicatedVacation = await this.vacationService.getDuplicatedVacation(vacationData);
-
+			console.log(duplicatedVacation);
 			if (duplicatedVacation.length) {
-				const error = new Error('The Vacation Already Exists');
-				error.statusCode = 409;
-				error.name = 'Conflict';
-
-				return utils.throwError(error);
+				return utils.makeError({
+					statusCode: 409,
+					message: 'The Vacation Already Exists'
+				});
 			}
 
+			console.log('############# passed #############');
 			const transaction = await this.database.transaction();
 			await this.vacationService.createVacation(vacationData, transaction);
 			await transaction.commit();

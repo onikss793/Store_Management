@@ -8,7 +8,35 @@ class ReservationService {
 	}
 
 	async createReservation(reservationData, transaction) {
-		return this.reservationDao.upsertOne(reservationData, transaction);
+		reservationData.start_at = moment(reservationData.start_at).toISOString();
+		reservationData.finish_at = moment(reservationData.finish_at).toISOString();
+		return this.reservationDao.insertOne(reservationData, transaction);
+	}
+
+	async updateReservation(reservationId, reservationData, transaction) {
+		const index = { id: Number(reservationId) };
+		reservationData.start_at = moment(reservationData.start_at).toISOString();
+		reservationData.finish_at = moment(reservationData.finish_at).toISOString();
+
+		return this.reservationDao.updateOne(index, reservationData, transaction);
+	}
+
+	async isDuplicated(reservationData) {
+		const index = { employee_id: reservationData.employee_id };
+		const attributes = ['id', 'employee_id', 'start_at', 'finish_at', 'status', 'memo'];
+		const reservationList = await this.reservationDao.selectAll(index, attributes);
+
+		return reservationList.find(data => {
+			const startAt = moment(reservationData.start_at);
+			const finishAt = moment(reservationData.finish_at);
+
+			if (
+				startAt.isBetween(data.start_at, data.finish_at) ||
+				finishAt.isBetween(data.start_at, data.finish_at)
+			) {
+				return data;
+			}
+		});
 	}
 
 	async getReservationList(storeId, date) {

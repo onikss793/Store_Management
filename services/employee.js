@@ -7,7 +7,7 @@ class EmployeeService {
 	}
 
 	async createEmployee(employeeData, transaction) {
-		return this.employeeDao.upsertOne(employeeData, transaction);
+		return this.employeeDao.insertOne(employeeData, transaction);
 	}
 
 	async getEmployeesByStoreId(storeId, date) {
@@ -18,7 +18,7 @@ class EmployeeService {
 			return {
 				id,
 				employee_name,
-				vacation: Boolean(vacation)
+				vacation: vacation === 'true'
 			}
 		})
 	}

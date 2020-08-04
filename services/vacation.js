@@ -8,7 +8,9 @@ class VacationService {
 	}
 
 	async createVacation(vacationData, transaction) {
-		return this.vacationDao.upsertOne(vacationData, transaction);
+		vacationData.start_at = moment(vacationData['start_at']).toISOString();
+		vacationData.finish_at = moment(vacationData['finish_at']).toISOString();
+		return this.vacationDao.insertOne(vacationData, transaction);
 	}
 
 	async getDuplicatedVacation(vacationData) {

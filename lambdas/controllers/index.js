@@ -41,6 +41,10 @@ module.exports = {
 			pre: [AccountController.authorize, AccountController.onlyAdmin],
 			runner: BrandController.post
 		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: BrandController.get
+		}))(request)
 	},
 	employee: {
 		POST: async request => (await middlewares({
@@ -53,6 +57,10 @@ module.exports = {
 		}))(request)
 	},
 	reservation: {
+		PUT: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: ReservationController.put
+		}))(request),
 		POST: async request => (await middlewares({
 			pre: [AccountController.authorize],
 			runner: ReservationController.post

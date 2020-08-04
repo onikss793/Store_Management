@@ -10,7 +10,7 @@ class StoreService {
 	async createStore(storeData, transaction) {
 		storeData.password = utils.cryptonite(storeData.password);
 
-		return this.storeDao.upsertOne(storeData, transaction);
+		return this.storeDao.insertOne(storeData, transaction);
 	}
 
 	async getAllStores() {

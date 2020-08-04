@@ -4,7 +4,7 @@
   "description": "",
   "main": "./lambdas/handler.js",
   "scripts": {
-    "test": "NODE_ENV=test SM_STAGE=dev jest --runInBand --detectOpenHandles",
+    "test": "NODE_ENV=test SM_STAGE=dev jest --runInBand --detectOpenHandles --colors",
     "build": "npx webpack-cli --config ./graphqls/webpack.config.js",
     "serve:dev": "NODE_ENV=dev SM_STAGE=dev npx sls offline start --skipCacheInvalidation --processName StoreManagement",
     "serve:stop": "kill -9 $(pgrep -d \" \" -f \"node.*processName.*StoreManagement\")",
@@ -51,6 +51,8 @@
     "testMatch": [
       "**/__tests__/**/*.js",
       "**/__tests__/*.js"
-    ]
+    ],
+    "bail": true,
+    "verbose": true
   }
 }

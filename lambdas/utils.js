@@ -111,12 +111,10 @@ function getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin) {
 	const storeId = resourceId && Number(resourceId);
 
 	if (isAdmin) {
-		console.log('Admin');
 		return storeId;
 	}
 
 	if (storeId === accountId) {
-		console.log('Normal');
 		return storeId;
 	}
 

@@ -7,7 +7,12 @@ class BrandService {
 	}
 
 	async createBrand(brandData, transaction) {
-		return this.brandDao.upsertOne(brandData, transaction);
+		return this.brandDao.insertOne(brandData, transaction);
+	}
+
+	async getBrandList() {
+		const attributes = ['id', 'brand_name'];
+		return this.brandDao.selectAll(null, attributes);
 	}
 }
 

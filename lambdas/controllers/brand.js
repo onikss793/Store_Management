@@ -12,7 +12,19 @@ class BrandController extends Controller {
 		this.setService('brandService', BrandService);
 	}
 
-	post = async (request) => {
+	get = async request => {
+		try {
+			const brandList = await this.brandService.getBrandList();
+
+			return utils.response({
+				body: { data: brandList }
+			});
+		} catch (err) {
+			return utils.throwError(err);
+		}
+	};
+
+	post = async request => {
 		let transaction;
 
 		try {
