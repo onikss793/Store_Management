@@ -9,7 +9,12 @@
     "serve:dev": "NODE_ENV=dev SM_STAGE=dev npx sls offline start --skipCacheInvalidation --processName StoreManagement",
     "serve:stop": "kill -9 $(pgrep -d \" \" -f \"node.*processName.*StoreManagement\")",
     "deploy": "NODE_ENV=production SM_STAGE=production sls deploy",
-    "serve:gql": "npm run build && npm run serve:dev"
+    "serve:gql": "npm run build && npm run serve:dev",
+    "dep:build": "./_scripts/build.sh",
+    "dep:start": "./_scripts/serve-start.sh",
+    "dep:clean": "./_scripts/serve-stop.sh",
+    "dep:local": "npm run dep:clean && npm run dep:build && npm run dep:start",
+    "serve:local": "npm run dep:local && npm run serve:dev"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 const models = require('../models');
-const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
 const STAGE = process.env.SM_STAGE || 'test';
 
 class Database {
@@ -62,6 +61,7 @@ class Database {
 
 	_setSequelize() {
 		if (STAGE === 'production') {
+			const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
 				host,
 				port: 3306,
@@ -78,9 +78,9 @@ class Database {
 			});
 		}
 
-		return new Sequelize(this._getDBName(), 'root', '1', {
-			host: 'localhost',
-			port: 3306,
+		return new Sequelize('store_management_dev', 'root', '1', {
+			host: '127.0.0.1',
+			port: 33069,
 			logging: false,
 			dialect: 'mysql',
 			dialectOptions: {
@@ -92,17 +92,6 @@ class Database {
 				idle: 5000
 			}
 		});
-	}
-
-	_getDBName() {
-		switch (STAGE) {
-			case 'dev': {
-				return 'store_management_dev';
-			}
-			case null: {
-				return 'store_management_dev';
-			}
-		}
 	}
 
 	async query(query) {
