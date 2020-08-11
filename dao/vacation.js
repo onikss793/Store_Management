@@ -1,10 +1,10 @@
 const selectDuplicatedVacation = (employeeId, startAt, finishAt) => `
 	SELECT
-        id
+        *
     FROM vacations
     WHERE employee_id = ${employeeId}
-    AND start_at BETWEEN "${startAt}" AND "${finishAt}"
-    OR finish_at BETWEEN "${startAt}" AND "${finishAt}"
+    AND "${startAt}" BETWEEN start_at AND finish_at
+    OR "${finishAt}" BETWEEN start_at AND finish_at
     AND deleted_at IS NULL
 `;
 

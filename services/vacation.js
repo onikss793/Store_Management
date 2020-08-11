@@ -10,7 +10,9 @@ class VacationService {
 	async createVacation(vacationData, transaction) {
 		vacationData.start_at = moment(vacationData['start_at']).toISOString();
 		vacationData.finish_at = moment(vacationData['finish_at']).toISOString();
-		return this.vacationDao.insertOne(vacationData, transaction);
+		const [result] = this.vacationDao.insertOne(vacationData, transaction);
+
+		return result;
 	}
 
 	async getDuplicatedVacation(vacationData) {
@@ -18,8 +20,9 @@ class VacationService {
 		const employeeId = vacationData['employee_id'];
 		const startAt = moment(vacationData['start_at']).toISOString();
 		const finishAt = moment(vacationData['finish_at']).toISOString();
+		const [result] = await this.database.query(selectDuplicatedVacation(employeeId, startAt, finishAt));
 
-		return await this.database.query(selectDuplicatedVacation(employeeId, startAt, finishAt));
+		return result;
 	}
 
 	async getAllVacationsByStoreId(storeId) {
@@ -27,7 +30,7 @@ class VacationService {
 
 		const storeData = await this.database.query(selectVacationByStoreId(storeId));
 
-		return storeData.map(({
+		return storeData.length && storeData.map(({
 			id,
 			start_at,
 			finish_at,

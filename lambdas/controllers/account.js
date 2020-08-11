@@ -41,14 +41,13 @@ class AccountController extends Controller {
 			const { storeId } = await this.accountService.login(credentials, transaction);
 
 			if (!storeId) {
-				const error = utils.makeError({
+				await transaction.rollback();
+
+				return utils.makeError({
 					statusCode: 401,
 					name: 'Unauthorized',
 					message: 'Authorization Failed'
 				});
-
-				await transaction.rollback();
-				return utils.throwError(error);
 			}
 
 			const storeData = await this.accountService.getStoreById(storeId);
@@ -65,7 +64,6 @@ class AccountController extends Controller {
 			});
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};

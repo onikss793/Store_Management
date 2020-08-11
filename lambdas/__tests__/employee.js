@@ -96,24 +96,24 @@ describe('직원 생성 > 목록 확인', () => {
 	});
 
 	test('중복된 휴가 등록 시도 => 409', async () => {
-		try {
-			const accessToken = await utils.getMasterAccessToken();
+		expect.assertions(1);
+		const accessToken = await utils.getMasterAccessToken();
 
-			const response = await utils.axiosCall({
-				endpoint: '/vacation',
-				method: 'POST',
-				accessToken,
-				data: {
-					employee_id: 1,
-					start_at: STANDARD.add(1, 'days').toISOString(),
-					finish_at: STANDARD.add(2, 'days').toISOString()
-				}
-			});
-
-			expect(response).toBeFalsy();
-		} catch (err) {
-			expect(err.response.status).toBe(409);
-		}
+		await utils.axiosCall({
+			endpoint: '/vacation',
+			method: 'POST',
+			accessToken,
+			data: {
+				employee_id: 1,
+				start_at: STANDARD.add(1, 'days').toISOString(),
+				finish_at: STANDARD.add(2, 'days').toISOString()
+			}
+		}).then(res => {
+			console.log(res.data);
+		}).catch(err => {
+	           console.error(err);
+	           expect(err.response.status).toBe(409);
+           });
 	});
 
 	test('1번 매장 전체 휴가 목록 확인', async () => {
@@ -123,7 +123,7 @@ describe('직원 생성 > 목록 확인', () => {
 			endpoint: '/vacation?storeId=1',
 			accessToken
 		});
-		console.log(inspect(response.data, true, null, true));
+		console.log(inspect(response, true, null, true));
 		expect(response.status).toBe(200);
 	});
 });

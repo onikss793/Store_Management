@@ -40,10 +40,10 @@ class AccountService {
 	}
 
 	async login(credentials) {
-		const storeData = await this.getStoreDataByStoreName(credentials.store_name) || {};
+		const storeData = await this.getStoreDataByStoreName(credentials.store_name);
 		const credentialPassword = utils.cryptonite(credentials.password);
 
-		if (storeData.password === credentialPassword) {
+		if (storeData.password && storeData.password === credentialPassword) {
 			return { storeId: storeData.id };
 		} else {
 			return { storeId: null };
@@ -52,25 +52,23 @@ class AccountService {
 
 	async getStoreById(storeId) {
 		const { selectStoreData } = query.store;
-		const [
-			{
+		const [result] = await this.database.query(selectStoreData(storeId));
+
+		if (result) {
+			const { id, store_name, is_admin, brand_id, brand_name } = result;
+
+			return {
 				id,
 				store_name,
-				is_admin,
-				brand_id,
-				brand_name
-			}
-		] = await this.database.query(selectStoreData(storeId));
+				is_admin: Boolean(is_admin),
+				brand: {
+					id: brand_id,
+					brand_name: brand_name
+				}
+			};
+		}
 
-		return {
-			id,
-			store_name,
-			is_admin: Boolean(is_admin),
-			brand: {
-				id: brand_id,
-				brand_name: brand_name
-			}
-		};
+		return {};
 	}
 
 	async getStoreDataByStoreName(storeName) {
