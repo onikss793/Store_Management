@@ -1,7 +1,9 @@
+const dotenv = require('dotenv');
 const routers = require('./router');
 const utils = require('./utils');
 
 async function index(event, context) {
+	dotenv.config();
 	if (!utils.slsHeaders(event)) {
 		return { body: '' };
 	}
@@ -16,4 +18,4 @@ async function index(event, context) {
 	return await routers(event);
 }
 
-module.exports = { index }
+module.exports = { index };
