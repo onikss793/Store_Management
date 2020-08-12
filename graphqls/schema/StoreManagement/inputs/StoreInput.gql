@@ -1,4 +1,0 @@
-input StoreInput {
-    store_id: Int
-    store_name: String
-}

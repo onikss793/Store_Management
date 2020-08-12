@@ -1,6 +1,4 @@
 const crypto = require('crypto');
-// const { SECRET_KEY } = require('../config/secret');
-const SECRET_KEY = process.env.SECRET_KEY;
 
 function slsHeaders(event) {
 	if (!Object.prototype.hasOwnProperty.call(event, 'headers')) {
@@ -101,7 +99,7 @@ function checkRequest(request, properties = []) {
 }
 
 function cryptonite(password) {
-	return crypto.pbkdf2Sync(password, SECRET_KEY, 100000, 64, 'sha256').toString('hex');
+	return crypto.pbkdf2Sync(password, process.env.SECRET_KEY, 100000, 64, 'sha256').toString('hex');
 }
 
 function makeError({ statusCode = null, name = null, message = null }) {

@@ -1,1 +1,5 @@
-docker-compose up -d local
+#!/bin/bash
+
+SM_STAGE=dev npx sls offline start --skipCacheInvalidation --processName StoreManagement &
+sleep 5
+echo "[[ STORE_MANAGEMENT ]]: SERVER STARTED!!!"

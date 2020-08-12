@@ -1,8 +1,0 @@
-type Employee {
-    id: Int!
-    employeeName: String!
-    phoneNumber: String
-    store: Store!
-    createdAt: String
-    updatedAt: String
-}

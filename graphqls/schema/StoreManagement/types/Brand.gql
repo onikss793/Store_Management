@@ -1,6 +1,0 @@
-type Brand {
-    id: Int!
-    brandName: String!
-    createdAt: String
-    updatedAt: String
-}

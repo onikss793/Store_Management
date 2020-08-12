@@ -12,31 +12,31 @@ class Database {
 		try {
 			await this.sequelize.authenticate();
 			await this.sequelize.sync({ force });
-			console.info('DB Loaded: ', this.sequelize.config.database);
+			console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
 		} catch (err) {
-			console.info('DB Loading Error: ', err);
+			console.info('[[ DB Loading Error ]]: ', err);
 			throw err;
 		}
 	}
 
 	async force() {
+		const { inspect } = require('util');
+		console.log(inspect(this.sequelize, false, null, true));
 		try {
-			await this.sequelize.authenticate();
 			await this.sequelize.sync({ force: true });
-			console.info('DB Forced: ', this.sequelize.config.database);
+			console.info('[[ DB Forced ]]: ', this.sequelize.config.database);
 		} catch (err) {
-			console.info('DB Force Error: ', err);
+			console.info('[[ DB Force Error]]: ', err);
 			throw err;
 		}
 	}
 
 	async alter() {
 		try {
-			await this.sequelize.authenticate();
 			await this.sequelize.sync({ alter: true });
-			console.info('DB Altered: ', this.sequelize.config.database);
+			console.info('[[ DB Altered ]]: ', this.sequelize.config.database);
 		} catch (err) {
-			console.info('DB Alter Error: ', err);
+			console.info('[[ DB Alter Error]]: ', err);
 			throw err;
 		}
 	}
@@ -45,7 +45,7 @@ class Database {
 		try {
 			await this.sequelize.close();
 		} catch (err) {
-			console.info('DB close ERROR: ', err);
+			console.info('[[ DB close ERROR ]]: ', err);
 			throw err;
 		}
 	}
