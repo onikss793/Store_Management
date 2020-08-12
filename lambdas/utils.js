@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-const { SECRET_KEY } = require('../config/secret');
+// const { SECRET_KEY } = require('../config/secret');
+const SECRET_KEY = process.env.SECRET_KEY;
 
 function slsHeaders(event) {
 	if (!Object.prototype.hasOwnProperty.call(event, 'headers')) {

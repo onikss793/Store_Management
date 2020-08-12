@@ -1,4 +1,5 @@
-const JWT_SECRET = require('../config/secret').SECRET_KEY;
+// const JWT_SECRET = require('../config/secret').SECRET_KEY;
+const JWT_SECRET = process.env.SECRET_KEY;
 const jwt = require('jsonwebtoken');
 const { Dao, query } = require('../dao');
 const utils = require('../lambdas/utils');

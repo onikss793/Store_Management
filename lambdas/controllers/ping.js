@@ -1,5 +1,5 @@
 module.exports = {
-	get: (request) => {
+	get: request => {
 		console.log(request);
 		return "PONG";
 	}
