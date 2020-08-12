@@ -1,7 +1,7 @@
 const { createDatabase } = require('../database');
 
 module.exports = {
-	get: async (request) => {
+	get: async request => {
 		const database = createDatabase();
 		await database.force();
 
