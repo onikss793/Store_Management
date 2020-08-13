@@ -43,8 +43,10 @@ class AccountService {
 
 	async login(credentials) {
 		const storeData = await this.getStoreDataByStoreName(credentials.store_name);
+		if (!storeData) return { storeId: null };
+
 		const result = await bcrypt.compare(credentials.password, storeData.password);
-		console.log('result: ', result);
+
 		if (result) return { storeId: storeData.id };
 		return { storeId: null };
 	}
