@@ -1,5 +1,5 @@
 module.exports = async (database) => {
-	await database.connect();
+	await database.force();
 
 	return true;
 };

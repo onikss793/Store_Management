@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
 function slsHeaders(event) {
@@ -101,9 +100,7 @@ function checkRequest(request, properties = []) {
 }
 
 function cryptonite(password) {
-	console.log(Number(process.env.SALT_ROUNDS));
 	return bcrypt.hashSync(password, Number(process.env.SALT_ROUNDS));
-	// return crypto.pbkdf2Sync(password, new Buffer(process.env.SECRET_KEY, 'binary'), 100000, 64, 'sha256').toString('hex');
 }
 
 function makeError({ statusCode = null, name = null, message = null }) {

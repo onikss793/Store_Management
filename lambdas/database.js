@@ -20,13 +20,11 @@ class Database {
 	}
 
 	async force() {
-		const { inspect } = require('util');
-		console.log(inspect(this.sequelize, false, null, true));
 		try {
 			await this.sequelize.sync({ force: true });
-			console.info('[[ DB Forced ]]: ', this.sequelize.config.database);
+			console.info('[[ MIGRATION ]]: DB FORCED!', this.sequelize.config.database);
 		} catch (err) {
-			console.info('[[ DB Force Error]]: ', err);
+			console.info('[[ MIGRATION ]]: DB FORCE ERROR!', err);
 			throw err;
 		}
 	}
@@ -84,7 +82,7 @@ class Database {
 			logging: false,
 			dialect: 'mysql',
 			dialectOptions: {
-				dateStrings: true
+				charset: 'utf8mb4'
 			},
 			pool: {
 				max: 10,

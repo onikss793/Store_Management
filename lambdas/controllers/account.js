@@ -38,7 +38,7 @@ class AccountController extends Controller {
 			const credentials = request.body;
 
 			transaction = await this.database.transaction();
-			const { storeId = null } = await this.accountService.login(credentials, transaction);
+			const { storeId } = await this.accountService.login(credentials, transaction);
 
 			if (!storeId) {
 				await transaction.rollback();

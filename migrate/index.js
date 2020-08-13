@@ -1,5 +1,5 @@
 const sync = require('./sync');
-const setMaster = require('./setMaster');
+const setSeedData = require('./seedData');
 const { createDatabase } = require('../lambdas/database');
 const dotenv = require('dotenv');
 
@@ -13,13 +13,13 @@ async function migrate(retryCount = 5) {
 
 		const database = createDatabase();
 		await sync(database);
-		await setMaster(database);
+		await setSeedData(database);
 		return true;
 	} catch (e) {
 		if (retryCount > 1) {
 			await migrate(retryCount - 1);
 		}
-		console.error('MIGRATE ERROR: ', e);
+		console.error('[[ MIGRATE ]]: ERROR: ', e);
 		return false;
 	}
 }
@@ -27,6 +27,6 @@ async function migrate(retryCount = 5) {
 (async function () {
 	await sleep(10);
 
-	await migrate();
+	await migrate(1);
 	return true;
 })();

@@ -1,15 +1,11 @@
 version: "3.7"
 
-x-build-option: &BUILD_OPTION
-  context: .
-  cache_from:
-    - mysql_store_management
-  dockerfile: ./Dockerfile
-
 services:
   local:
     image: mysql_store_management:latest
     build:
-      <<: *BUILD_OPTION
+      context: .
+      cache_from:
+        - mysql_store_management
     ports:
       - "33069:3306"
