@@ -1,6 +1,7 @@
 // const JWT_SECRET = require('../config/secret').SECRET_KEY;
 const JWT_SECRET = process.env.SECRET_KEY;
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { Dao, query } = require('../dao');
 const utils = require('../lambdas/utils');
 
@@ -42,13 +43,10 @@ class AccountService {
 
 	async login(credentials) {
 		const storeData = await this.getStoreDataByStoreName(credentials.store_name);
-		const credentialPassword = utils.cryptonite(credentials.password);
-
-		if (storeData.password && storeData.password === credentialPassword) {
-			return { storeId: storeData.id };
-		} else {
-			return { storeId: null };
-		}
+		const result = await bcrypt.compare(credentials.password, storeData.password);
+		console.log('result: ', result);
+		if (result) return { storeId: storeData.id };
+		return { storeId: null };
 	}
 
 	async getStoreById(storeId) {

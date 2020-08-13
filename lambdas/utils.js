@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
 function slsHeaders(event) {
 	if (!Object.prototype.hasOwnProperty.call(event, 'headers')) {
@@ -53,9 +54,10 @@ function allowedDomain() {
 }
 
 function throwError(occurredError) {
-	console.error({
+	console.log({
 		name: occurredError.name || 'Unknown Error',
-		message: occurredError.message || 'Internal Server Error'
+		message: occurredError.message || 'Internal Server Error',
+		stack: occurredError
 	});
 	return {
 		statusCode: occurredError.statusCode || 500,
@@ -99,7 +101,9 @@ function checkRequest(request, properties = []) {
 }
 
 function cryptonite(password) {
-	return crypto.pbkdf2Sync(password, process.env.SECRET_KEY, 100000, 64, 'sha256').toString('hex');
+	console.log(Number(process.env.SALT_ROUNDS));
+	return bcrypt.hashSync(password, Number(process.env.SALT_ROUNDS));
+	// return crypto.pbkdf2Sync(password, new Buffer(process.env.SECRET_KEY, 'binary'), 100000, 64, 'sha256').toString('hex');
 }
 
 function makeError({ statusCode = null, name = null, message = null }) {
