@@ -1,6 +1,6 @@
 const { StoreService, BrandService, EmployeeService } = require('../services');
 
-module.exports = async (database) => {
+module.exports = async database => {
 	let transaction;
 	const seedfunctions = [seedStore, seedBrand, seedEmployee];
 
@@ -12,7 +12,7 @@ module.exports = async (database) => {
 
 		await Promise.all(tasks.getTasks());
 		await transaction.commit();
-
+		
 		console.log('[[ MIGRATE ]]: SET SEED DATA SUCCESS!');
 		return true;
 	} catch (e) {
