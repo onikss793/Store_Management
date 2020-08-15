@@ -53,7 +53,8 @@ class ReservationController extends Controller {
 			if (isDuplicated) {
 				return utils.makeError({
 					statusCode: 409,
-					message: 'Duplicated Reservation'
+					message: 'Duplicated Reservation',
+					name: 'Conflict'
 				});
 			}
 

@@ -36,6 +36,7 @@ function seedData(database, transaction) {
 
 async function seedEmployee(database, transaction) {
 	const employeeService = new EmployeeService(database);
+	console.log('[[ MIGRATE ]]: migrating employees...');
 	return employeeService.createEmployee({
 		employee_name: '조인호',
 		phone_number: '010-1234-1234',
@@ -45,6 +46,7 @@ async function seedEmployee(database, transaction) {
 
 async function seedBrand(database, transaction) {
 	const brandService = new BrandService(database);
+	console.log('[[ MIGRATE ]]: migrating brands...');
 	return brandService.createBrand({ brand_name: '삼성' }, transaction);
 }
 

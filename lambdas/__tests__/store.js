@@ -8,13 +8,6 @@ const newStoreData = {
 };
 
 describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
-	beforeAll(async () => {
-		await utils.setMasterStore();
-	});
-	afterAll(async () => {
-		await utils.forceDatabase();
-	});
-
 	test('새로운 매장을 만든다', async () => {
 		const accessToken = await utils.getMasterAccessToken();
 
@@ -41,7 +34,7 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		storeData.is_admin = Boolean(storeData.is_admin);
 
 		expect(storeData).toEqual({
-			id: 2,
+			id: expect.any(Number),
 			store_name: newStoreData.store_name,
 			brand_id: newStoreData.brand_id,
 			is_admin: newStoreData.is_admin,
@@ -80,7 +73,7 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		}
 	});
 
-	test('Admin 브랜드 id: 1 매장 목록 확인', async () => {
+	test('Admin 계정으로 brand_id 1에 해당하는 매장 목록 확인', async () => {
 		const accessToken = await utils.getMasterAccessToken();
 
 		const response = await utils.axiosCall({
@@ -89,13 +82,20 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		});
 
 		expect(response.status).toBe(200);
-		expect(response.data.data.length).toBe(2);
 		response.data.data.forEach(data => {
 			expect(data.id).toEqual(expect.any(Number));
 			expect(data.store_name).toEqual(expect.any(String));
 			expect(data.is_admin).toEqual(expect.any(Boolean));
 			expect(data.brand).toEqual(expect.any(Object));
 		});
+		expect(response.data.data).toEqual(expect.arrayContaining([
+			{
+				id: expect.any(Number),
+				brand: utils.getSampleData().brand,
+				is_admin: newStoreData.is_admin,
+				store_name: newStoreData.store_name
+			}
+		]));
 	});
 
 	test('Admin 아닌 계정으로 매장 목록 확인 시도 => 403', async () => {
@@ -130,9 +130,9 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		expect(response.status).toBe(200);
 		expect(response.data.data).toEqual({
 			id: 2,
-			store_name: newStoreData.store_name,
+			store_name: expect.any(String),
 			brand: expect.any(Object),
-			is_admin: newStoreData.is_admin
+			is_admin: expect.any(Boolean)
 		});
 	});
 

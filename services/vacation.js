@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { Dao, query } = require('../dao');
+const { inspect } = require('util');
 
 class VacationService {
 	constructor(database) {
@@ -10,9 +11,8 @@ class VacationService {
 	async createVacation(vacationData, transaction) {
 		vacationData.start_at = moment(vacationData['start_at']).toISOString();
 		vacationData.finish_at = moment(vacationData['finish_at']).toISOString();
-		const [result] = this.vacationDao.insertOne(vacationData, transaction);
 
-		return result;
+		return await this.vacationDao.insertOne(vacationData, transaction);
 	}
 
 	async getDuplicatedVacation(vacationData) {

@@ -1,36 +1,38 @@
+const dotenv = require('dotenv');
 const axios = require('axios');
 const { createDatabase } = require('../database');
 const { StoreService, AccountService } = require('../../services');
 const database = createDatabase();
 const storeService = new StoreService(database);
+dotenv.config();
 
-
-async function forceDatabase() {
-	await database.force();
-}
+// async function forceDatabase() {
+// 	await database.force();
+// }
 
 async function getMasterAccessToken() {
 	const accountService = new AccountService(database);
+	const { store } = getSampleData();
 	const { storeId } = await accountService.login({
-		store_name: 'master',
-		password: 'password'
+		store_name: store.store_name,
+		password: store.password
 	});
 
 	return accountService.getAccessToken(storeId);
 }
 
-async function setMasterStore() {
-	const transaction = await database.transaction();
-	const master = {
-		store_name: 'master',
-		password: 'password',
-		brand_id: 1,
-		is_admin: true
-	};
-
-	await storeService.createStore(master, transaction);
-	await transaction.commit();
-}
+// async function setMasterStore() {
+// 	const transaction = await database.transaction();
+// 	const master = {
+// 		store_name: 'master',
+// 		password: 'password',
+// 		brand_id: 1,
+// 		is_admin: true
+// 	};
+//
+// 	await storeService.createStore(master, transaction);
+// 	await transaction.commit();
+// }
 
 function makeRandomName(length) {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -61,11 +63,31 @@ async function axiosCall({
 	}).catch(e => e);
 }
 
+const getSampleData = () => {
+	return {
+		employee: {
+			id: 1,
+			employee_name: '조인호',
+			phone_number: '010-1234-1234'
+		},
+		store: {
+			id: 1,
+			store_name: 'master',
+			is_admin: true,
+			brand_id: 1,
+			password: 'password'
+		},
+		brand: {
+			id: 1,
+			brand_name: '삼성'
+		}
+	};
+};
+
 module.exports = {
 	database,
 	makeRandomName,
 	axiosCall,
-	setMasterStore,
-	forceDatabase,
+	getSampleData,
 	getMasterAccessToken
 };

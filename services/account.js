@@ -1,5 +1,3 @@
-// const JWT_SECRET = require('../config/secret').SECRET_KEY;
-const JWT_SECRET = process.env.SECRET_KEY;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { Dao, query } = require('../dao');
@@ -21,8 +19,7 @@ class AccountService {
 					message: 'Access Token Missing'
 				});
 			}
-
-			const decodedData = jwt.verify(accessToken, JWT_SECRET);
+			const decodedData = jwt.verify(accessToken, process.env.SECRET_KEY);
 			const storeData = await this.getStoreById(decodedData.id);
 
 			if (!storeData || !storeData.id) {
@@ -78,7 +75,7 @@ class AccountService {
 	}
 
 	getAccessToken(storeId) {
-		return jwt.sign({ id: storeId }, JWT_SECRET);
+		return jwt.sign({ id: storeId }, process.env.SECRET_KEY);
 	}
 }
 

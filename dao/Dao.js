@@ -4,7 +4,7 @@ module.exports = class Dao {
 		this.model = database.models[model];
 	}
 
-	selectAll(index, attributes = ['id']) {
+	async selectAll(index, attributes = ['id']) {
 		if (index) {
 			return this.model.findAll({ where: { ...index }, attributes });
 		} else {
@@ -12,11 +12,11 @@ module.exports = class Dao {
 		}
 	}
 
-	selectOne(index = {}, attributes = ['id']) {
+	async selectOne(index = {}, attributes = ['id']) {
 		return this.model.findOne({ where: { ...index }, attributes });
 	}
 
-	insertOne(data, transaction) {
+	async insertOne(data, transaction) {
 		if (transaction) {
 			return this.model.create(data, { transaction });
 		} else {
@@ -24,7 +24,7 @@ module.exports = class Dao {
 		}
 	}
 
-	updateOne(index, data, transaction) {
+	async updateOne(index, data, transaction) {
 		if (transaction) {
 			return this.model.update({ ...data }, { where: { ...index }, transaction });
 		} else {
@@ -32,7 +32,7 @@ module.exports = class Dao {
 		}
 	}
 
-	upsertOne(data, transaction) {
+	async upsertOne(data, transaction) {
 		if (transaction) {
 			return this.model.upsert(data, { transaction });
 		} else {

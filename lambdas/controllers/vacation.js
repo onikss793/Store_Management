@@ -24,7 +24,8 @@ class VacationController extends Controller {
 			if (duplicatedVacation) {
 				return utils.makeError({
 					statusCode: 409,
-					message: 'The Vacation Already Exists'
+					message: 'The Vacation Already Exists',
+					name: 'Conflicts'
 				});
 			}
 
@@ -46,6 +47,13 @@ class VacationController extends Controller {
 	get = async (request) => {
 		try {
 			const storeId = request.query['storeId'];
+			if (!storeId) {
+				return utils.makeError({
+					statusCode: 400,
+					message: 'Request should have querystring storeId',
+					name: 'No Querystring'
+				});
+			}
 			const data = await this.vacationService.getAllVacationsByStoreId(storeId);
 
 			return utils.response({

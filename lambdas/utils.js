@@ -71,6 +71,7 @@ function throwError(occurredError) {
 
 function checkRequest(request, properties = []) {
 	const body = request.body;
+	if (!body) return false;
 
 	for (const prop of properties) {
 		const key = body[prop];

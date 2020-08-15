@@ -48,7 +48,7 @@ const selectReservation = (storeId, startAt, finishAt) => `
         AND RESERVATION.deleted_at IS NULL
         AND RESERVATION.start_at >= "${startAt}"
         AND RESERVATION.finish_at <= "${finishAt}" 
-    ORDER BY RESERVATION.start_at
+    ORDER BY id DESC
 `;
 
 module.exports = { selectReservation };

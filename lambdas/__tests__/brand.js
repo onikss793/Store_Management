@@ -5,13 +5,6 @@ const newBrandData = {
 };
 
 describe('브랜드 생성 > 확인 > 목록', () => {
-	beforeAll(async () => {
-		await utils.setMasterStore();
-	});
-	afterAll(async () => {
-		await utils.forceDatabase();
-	});
-
 	test('새로운 브랜드를 만든다', async () => {
 		const accessToken = await utils.getMasterAccessToken();
 
@@ -49,10 +42,8 @@ describe('브랜드 생성 > 확인 > 목록', () => {
 		});
 
 		expect(response.status).toBe(200);
-		expect(response.data.data.length).toBe(1);
-		expect(response.data.data[0]).toEqual({
-			id: 1,
-			brand_name: newBrandData.brand_name
-		});
+		expect(response.data.data).toEqual(expect.arrayContaining([
+			{ id: expect.any(Number), brand_name: newBrandData.brand_name }
+		]));
 	});
 });

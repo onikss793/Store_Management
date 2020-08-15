@@ -1,6 +1,6 @@
 const selectDuplicatedVacation = (employeeId, startAt, finishAt) => `
 	SELECT
-        *
+        id
     FROM vacations
     WHERE employee_id = ${employeeId}
     AND "${startAt}" BETWEEN start_at AND finish_at
