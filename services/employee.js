@@ -14,10 +14,11 @@ class EmployeeService {
 		const { selectEmployeesByStoreId } = query.employee;
 		const employeeData = await this.database.query(selectEmployeesByStoreId(storeId, date));
 
-		return employeeData.map(({ id, employee_name, vacation }) => {
+		return employeeData.map(({ id, employee_name, vacation, phone_number }) => {
 			return {
 				id,
 				employee_name,
+				phone_number,
 				vacation: vacation === 'true'
 			}
 		})
