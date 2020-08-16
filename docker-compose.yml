@@ -7,5 +7,6 @@ services:
       context: .
       cache_from:
         - mysql_store_management
+      dockerfile: Dockerfile
     ports:
       - "33069:3306"

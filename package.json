@@ -10,7 +10,6 @@
 		"dep:clean": "_scripts/dep-stop.sh",
 		"dep:local": "yarn dep:clean && yarn dep:build && yarn dep:start",
 		"dep:migrate": "node ./migrate",
-        "dep:prepare": "yarn dep:local && yarn dep:prepare",
 		"serve:start": "yarn serve:stop && _scripts/serve-start.sh",
 		"serve:stop": "_scripts/serve-stop.sh",
 		"serve:local": "yarn dep:local && yarn serve:start && yarn dep:migrate",
