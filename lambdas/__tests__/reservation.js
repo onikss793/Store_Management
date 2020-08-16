@@ -18,6 +18,10 @@ let randomReservationData = {
 	memo: 'VIP'
 };
 
+afterAll(() => {
+	utils.database.close();
+});
+
 describe('예약 등록 > 확인 > 변경 > 목록', () => {
 	let duplicated = false;
 
@@ -26,16 +30,18 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 		const { store_id } = randomReservationData;
 		const accessToken = await utils.getMasterAccessToken();
 
-		const response = await utils.axiosCall({
+		const result = await utils.axiosCall({
 			method: 'POST',
 			data: randomReservationData,
 			endpoint: `/reservation?storeId=${store_id}&date=${randomDate.toISOString()}`,
 			accessToken
 		});
-		if (response.status === 200) expect(response.status).toBe(200);
-		if (response.status === 409) {
+		
+		if (result.status === 200) {
+			expect(result.status).toBe(200);
+		} else if (result.response.status === 409) {
 			duplicated = true;
-			expect(response.status).toBe(409);
+			expect(result.response.status).toBe(409);
 		}
 	});
 
@@ -61,8 +67,8 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 				store_id: 1,
 				start_at: expect.any(Date),
 				finish_at: expect.any(Date),
-				status: 'Changed',
-				memo: randomReservationData.memo,
+				status: 'ready',
+				memo: 'Changed',
 			});
 		} else {
 			expect(reservationData).toEqual({

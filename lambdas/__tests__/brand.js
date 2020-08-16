@@ -4,6 +4,10 @@ const newBrandData = {
 	brand_name: utils.makeRandomName(3)
 };
 
+afterAll(() => {
+	utils.database.close();
+});
+
 describe('브랜드 생성 > 확인 > 목록', () => {
 	test('새로운 브랜드를 만든다', async () => {
 		const accessToken = await utils.getMasterAccessToken();

@@ -7,6 +7,10 @@ const newStoreData = {
 	is_admin: false
 };
 
+afterAll(() => {
+	utils.database.close();
+});
+
 describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 	test('새로운 매장을 만든다', async () => {
 		const accessToken = await utils.getMasterAccessToken();

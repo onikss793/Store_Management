@@ -22,6 +22,10 @@ const newVacationData = {
 	finish_at: randomDate.add(3, 'days').toISOString()
 };
 
+afterAll(() => {
+	utils.database.close();
+});
+
 describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 휴가 목록 확인', () => {
 	let employeeId;
 	let duplicated = false;
