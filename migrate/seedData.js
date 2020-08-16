@@ -2,12 +2,12 @@ const { StoreService, BrandService, EmployeeService } = require('../services');
 
 module.exports = async database => {
 	let transaction;
-	const seedfunctions = [seedStore, seedBrand, seedEmployee];
-
+	
 	try {
 		transaction = await database.transaction();
-
-		const tasks = seedData(database, transaction);
+		
+		const seedfunctions = [seedStore, seedBrand, seedEmployee];
+		const tasks = makeIOTasks(database, transaction);
 		tasks.addTasks(seedfunctions);
 
 		await Promise.all(tasks.getTasks());
@@ -21,13 +21,13 @@ module.exports = async database => {
 	}
 };
 
-function seedData(database, transaction) {
+function makeIOTasks(database, transaction) {
 	const task = [];
 
 	return {
 		getTasks: () => task,
-		addTasks: (list) => {
-			list.forEach(func => {
+		addTasks: functions => {
+			functions.forEach(func => {
 				task.push(func(database, transaction));
 			});
 		}
@@ -36,7 +36,6 @@ function seedData(database, transaction) {
 
 async function seedEmployee(database, transaction) {
 	const employeeService = new EmployeeService(database);
-	console.log('[[ MIGRATE ]]: migrating employees...');
 	return employeeService.createEmployee({
 		employee_name: '조인호',
 		phone_number: '010-1234-1234',
@@ -46,7 +45,6 @@ async function seedEmployee(database, transaction) {
 
 async function seedBrand(database, transaction) {
 	const brandService = new BrandService(database);
-	console.log('[[ MIGRATE ]]: migrating brands...');
 	return brandService.createBrand({ brand_name: '삼성' }, transaction);
 }
 
