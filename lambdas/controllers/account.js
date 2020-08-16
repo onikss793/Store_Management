@@ -15,9 +15,9 @@ class AccountController extends Controller {
 	onlyAdmin = request => {
 		if (!request.isAdmin) {
 			return utils.makeError({
-				statusCode: 401,
-				name: 'Unauthorized',
-				message: 'Authorization Failed'
+				statusCode: 403,
+				name: 'Not Allowed',
+				message: 'Only for admin'
 			});
 		}
 	};

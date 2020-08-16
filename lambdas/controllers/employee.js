@@ -29,7 +29,6 @@ class EmployeeController extends Controller {
 			});
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -45,7 +44,6 @@ class EmployeeController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};

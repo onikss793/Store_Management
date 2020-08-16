@@ -30,7 +30,6 @@ class StoreController extends Controller {
 			});
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -57,7 +56,6 @@ class StoreController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -71,11 +69,7 @@ class StoreController extends Controller {
 		if (storeId) {
 			return await this.storeService.getStoreById(storeId);
 		} else {
-			return utils.makeError({
-				statusCode: 403,
-				name: 'Forbidden',
-				message: 'You have No Access'
-			});
+			return null;
 		}
 	}
 }
