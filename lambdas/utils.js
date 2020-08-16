@@ -115,10 +115,11 @@ function makeError({ statusCode = null, name = null, message = null }) {
 function getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin) {
 	const storeId = resourceId && Number(resourceId);
 
+	// 어드민일 경우, 바로 리소스 아이디에 대한 권한이 있다. 
 	if (isAdmin) {
 		return storeId;
 	}
-
+	// 어드민이 아닌 경우, 리소스 아이디와 계정의 아이디가 일치한 경우만 권한이 있다. 
 	if (storeId === accountId) {
 		return storeId;
 	}
