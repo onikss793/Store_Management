@@ -14,7 +14,6 @@ class Database {
 			await this.sequelize.sync({ force });
 			console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
 		} catch (err) {
-			console.info('[[ DB Loading Error ]]: ', err);
 			throw err;
 		}
 	}
@@ -22,9 +21,8 @@ class Database {
 	async force() {
 		try {
 			await this.sequelize.sync({ force: true });
-			console.info('[[ MIGRATION ]]: DB FORCED!', this.sequelize.config.database);
+			console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
 		} catch (err) {
-			console.info('[[ MIGRATION ]]: DB FORCE ERROR!', err);
 			throw err;
 		}
 	}
@@ -34,7 +32,6 @@ class Database {
 			await this.sequelize.sync({ alter: true });
 			console.info('[[ DB Altered ]]: ', this.sequelize.config.database);
 		} catch (err) {
-			console.info('[[ DB Alter Error]]: ', err);
 			throw err;
 		}
 	}
@@ -43,7 +40,6 @@ class Database {
 		try {
 			await this.sequelize.close();
 		} catch (err) {
-			console.info('[[ DB close ERROR ]]: ', err);
 			throw err;
 		}
 	}

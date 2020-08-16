@@ -53,17 +53,18 @@ function allowedDomain() {
 }
 
 function throwError(occurredError) {
-	console.log({
-		name: occurredError.name || 'Unknown Error',
+	console.error({
 		message: occurredError.message || 'Internal Server Error',
-		stack: occurredError
+		...occurredError,
+		stack: occurredError.stack
 	});
 	return {
 		statusCode: occurredError.statusCode || 500,
 		body: JSON.stringify({
 			error: {
-				name: occurredError.name || 'Unknown Error',
-				message: occurredError.message || 'Internal Server Error'
+				name: 'Unknown Error',
+				message: occurredError.message || 'Internal Server Error',
+				...occurredError
 			}
 		})
 	};
