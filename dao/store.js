@@ -10,10 +10,11 @@ const selectStoreList = () => `
 	LEFT JOIN brands AS BRAND ON STORE.brand_id = BRAND.id
 	WHERE
 		STORE.deleted_at IS NULL
-	ORDER BY STORE.brand_id
+	AND BRAND.deleted_at IS NULL
+	ORDER BY STORE.id
 `;
 
-const selectStoreData = (storeId) => `
+const selectStoreData = storeId => `
 	SELECT
 		STORE.id AS id,
 		STORE.store_name AS store_name,
