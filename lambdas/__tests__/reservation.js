@@ -18,8 +18,8 @@ let randomReservationData = {
 	memo: 'VIP'
 };
 
-afterAll(() => {
-	utils.database.close();
+afterAll(async () => {
+	await utils.database.close();
 });
 
 describe('예약 등록 > 확인 > 변경 > 목록', () => {
@@ -36,7 +36,7 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 			endpoint: `/reservation?storeId=${store_id}&date=${randomDate.toISOString()}`,
 			accessToken
 		});
-		
+
 		if (result.status === 200) {
 			expect(result.status).toBe(200);
 		} else if (result.response.status === 409) {
@@ -146,7 +146,7 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 			endpoint: `/reservation?storeId=1&date=${randomDate.toISOString()}`,
 			accessToken
 		});
-
+		console.log(response.data);
 		expect(response.status).toBe(200);
 		expect(response.data.data[0]).toEqual({
 			id: expect.any(Number),

@@ -5,9 +5,14 @@ const timeout = 60000;
 
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
 const getRandomDate = () => {
-	return STANDARD.add(randomAmount(), 'hours')
-	               .add(randomAmount(), 'minutes')
-	               .add(randomAmount(), 'days');
+	const date = STANDARD.add(randomAmount(), 'hours')
+	                     .add(randomAmount(), 'minutes')
+	                     .add(randomAmount(), 'days');
+	const result = moment(date);
+	return (original = false) => {
+		if (original) return date;
+		else return result;
+	};
 };
 const randomDate = getRandomDate();
 
@@ -18,12 +23,12 @@ const newEmployeeData = {
 };
 const newVacationData = {
 	employee_id: 1,
-	start_at: randomDate.toISOString(),
-	finish_at: randomDate.add(3, 'days').toISOString()
+	start_at: randomDate().toISOString(),
+	finish_at: randomDate().add(3, 'days').toISOString()
 };
 
-afterAll(() => {
-	utils.database.close();
+afterAll(async () => {
+	await utils.database.close();
 });
 
 describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 휴가 목록 확인', () => {
@@ -95,11 +100,11 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 			accessToken,
 			data: {
 				employee_id: 1,
-				start_at: randomDate.add(1, 'days').toISOString(),
-				finish_at: randomDate.add(2, 'days').toISOString()
+				start_at: randomDate(true).add(1, 'days').toISOString(),
+				finish_at: randomDate(true).add(2, 'days').toISOString()
 			}
 		});
-
+		console.log(err);
 		expect(err.response.status).toBe(409);
 	});
 

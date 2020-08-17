@@ -2,16 +2,14 @@ const utils = require('../test-utils');
 const moment = require('moment');
 const timeout = 60000;
 
-const makeRandomPhonNumber = (randomString) => randomString.splice(3, 0, '-').splice(8, 0, '-');
-
 const newEmployeeData = {
 	employee_name: utils.makeRandomName(3),
 	store_id: 1,
-	phone_number: makeRandomPhonNumber(utils.makeRandomName(11))
+	phone_number: utils.makeRandomName(11)
 };
 
-afterAll(() => {
-	utils.database.close();
+afterAll(async () => {
+	await utils.database.close();
 });
 
 describe('직원 생성 > 목록 확인', () => {
@@ -31,6 +29,7 @@ describe('직원 생성 > 목록 확인', () => {
 		if (result.status === 200) {
 			expect(result.status).toBe(200);
 		} else if (result.response.status === 409) {
+			duplicated = true;
 			expect(result.response.status).toBe(409);
 		}
 	}, timeout);
@@ -47,7 +46,7 @@ describe('직원 생성 > 목록 확인', () => {
 
 		expect(employeeData).toEqual({
 			id: expect.any(Number),
-			employee_name: expect.any(String),
+			employee_name: newEmployeeData.employee_name,
 			phone_number: newEmployeeData.phone_number,
 		});
 	}, timeout);
@@ -64,7 +63,8 @@ describe('직원 생성 > 목록 확인', () => {
 			{
 				id: expect.any(Number),
 				employee_name: newEmployeeData.employee_name,
-				vacation: false
+				vacation: false,
+				phone_number: newEmployeeData.phone_number
 			}
 		]));
 	}, timeout);

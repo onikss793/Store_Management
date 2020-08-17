@@ -7,8 +7,8 @@ const newStoreData = {
 	is_admin: false
 };
 
-afterAll(() => {
-	utils.database.close();
+afterAll(async () => {
+	await utils.database.close();
 });
 
 describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {

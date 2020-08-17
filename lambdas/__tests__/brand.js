@@ -4,8 +4,8 @@ const newBrandData = {
 	brand_name: utils.makeRandomName(3)
 };
 
-afterAll(() => {
-	utils.database.close();
+afterAll(async () => {
+	await utils.database.close();
 });
 
 describe('브랜드 생성 > 확인 > 목록', () => {
