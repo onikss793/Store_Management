@@ -28,7 +28,9 @@ module.exports = async (req, res, next) => {
 
 		res.status(200).send(result);
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };

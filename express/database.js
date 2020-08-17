@@ -59,18 +59,18 @@ class Database {
 
 	_getDBName() {
 		switch (env) {
-			case 'test': {
-				return 'store_management_test';
-			}
-			case 'dev': {
-				return 'store_management_dev';
-			}
-			case 'lambda': {
-				return 'store_management_dev';
-			}
-			case undefined: {
-				return 'store_management_test';
-			}
+		case 'test': {
+			return 'store_management_test';
+		}
+		case 'dev': {
+			return 'store_management_dev';
+		}
+		case 'lambda': {
+			return 'store_management_dev';
+		}
+		case undefined: {
+			return 'store_management_test';
+		}
 		}
 	}
 
@@ -82,7 +82,9 @@ class Database {
 			await transaction.commit();
 			return result;
 		} catch (err) {
-			if (transaction) await transaction.rollback();
+			if (transaction) {
+				await transaction.rollback();
+			}
 			throw err;
 		}
 	}

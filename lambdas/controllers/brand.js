@@ -3,8 +3,6 @@ const { BrandService } = require('../../services');
 const utils = require('../utils');
 
 class BrandController extends Controller {
-	brandService;
-
 	constructor() {
 		super();
 		this.setDatabase();
@@ -12,7 +10,7 @@ class BrandController extends Controller {
 		this.setService('brandService', BrandService);
 	}
 
-	get = async _ => {
+	get = async () => {
 		try {
 			const brandList = await this.brandService.getBrandList();
 

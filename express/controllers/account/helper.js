@@ -6,7 +6,7 @@ const compareCrypto = (given, original) => {
 	const hashed = cryptonite(given);
 
 	return hashed === original;
-}
+};
 
 const signJwt = (data) => {
 	return jwt.sign({ id: data.id }, JWT_SECRET);
@@ -22,7 +22,7 @@ const renderStoreData = (data) => {
 		store_name: data.store_name,
 		brand_id: data.brand_id,
 		is_admin: data.is_admin,
-	}
-}
+	};
+};
 
 module.exports = { signJwt, dataExist, renderStoreData, compareCrypto };

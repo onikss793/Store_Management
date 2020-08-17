@@ -24,7 +24,9 @@ const createEmployee = async (req, res, next) => {
 			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };
@@ -60,7 +62,9 @@ const createVacation = async (req, res, next) => {
 			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };

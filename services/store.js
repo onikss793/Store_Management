@@ -24,7 +24,7 @@ class StoreService {
 				is_admin: Boolean(is_admin),
 				brand: {
 					id: brand_id,
-					brand_name: brand_name
+					brand_name
 				}
 			};
 		});
@@ -52,7 +52,7 @@ class StoreService {
 			is_admin: Boolean(is_admin),
 			brand: {
 				id: brand_id,
-				brand_name: brand_name
+				brand_name
 			}
 		};
 	}

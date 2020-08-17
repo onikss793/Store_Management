@@ -47,8 +47,8 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 
 	test('그 매장으로 로그인을 시도한다', async () => {
 		const credential = {
-			'store_name': newStoreData.store_name,
-			'password': newStoreData.password
+			store_name: newStoreData.store_name,
+			password: newStoreData.password
 		};
 
 		const response = await utils.axiosCall({
@@ -63,8 +63,8 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 	test('잘못된 비밀번호로 로그인을 시도한다 => 401', async () => {
 		try {
 			const credential = {
-				'store_name': newStoreData.store_name,
-				'password': 'wrong'
+				store_name: newStoreData.store_name,
+				password: 'wrong'
 			};
 
 			await utils.axiosCall({
@@ -108,8 +108,8 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 				endpoint: '/account',
 				method: 'POST',
 				data: {
-					'store_name': newStoreData.store_name,
-					'password': newStoreData.password
+					store_name: newStoreData.store_name,
+					password: newStoreData.password
 				}
 			}).then(res => res.data.data.accessToken);
 
@@ -146,8 +146,8 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 				endpoint: '/account',
 				method: 'POST',
 				data: {
-					'store_name': newStoreData.store_name,
-					'password': newStoreData.password
+					store_name: newStoreData.store_name,
+					password: newStoreData.password
 				}
 			}).then(res => res.data.data.accessToken);
 

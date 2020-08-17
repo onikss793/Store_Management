@@ -43,7 +43,7 @@ const allowed = [
 	/http:\/\/127\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+/,
 ];
 
-function allowedDomain() {
+function allowedDomain(origin) {
 	for (const r of allowed) {
 		if (origin.match(r) !== null) {
 			return true;
@@ -72,7 +72,9 @@ function throwError(occurredError) {
 
 function checkRequest(request, properties = []) {
 	const body = request.body;
-	if (!body) return false;
+	if (!body) {
+		return false;
+	}
 
 	for (const prop of properties) {
 		const key = body[prop];

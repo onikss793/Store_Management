@@ -4,8 +4,6 @@ const utils = require('../utils');
 const moment = require('moment');
 
 class EmployeeController extends Controller {
-	employeeService;
-
 	constructor() {
 		super();
 		this.setDatabase();

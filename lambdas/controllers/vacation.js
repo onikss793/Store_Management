@@ -3,8 +3,6 @@ const { VacationService } = require('../../services');
 const utils = require('../utils');
 
 class VacationController extends Controller {
-	vacationService;
-
 	constructor() {
 		super();
 		this.setDatabase();
@@ -12,7 +10,7 @@ class VacationController extends Controller {
 		this.setService('vacationService', VacationService);
 	}
 
-	post = async (request) => {
+	post = async request => {
 		let transaction;
 
 		try {
@@ -44,7 +42,7 @@ class VacationController extends Controller {
 	};
 
 	// /vacation?storeId=1
-	get = async (request) => {
+	get = async request => {
 		try {
 			const storeId = request.query['storeId'];
 			if (!storeId) {

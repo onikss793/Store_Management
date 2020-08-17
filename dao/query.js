@@ -3,4 +3,4 @@ module.exports = {
 	employee: require('./employee'),
 	reservation: require('./reservation'),
 	vacation: require('./vacation'),
-}
+};

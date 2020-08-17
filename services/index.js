@@ -12,4 +12,4 @@ module.exports = {
 	ReservationService,
 	VacationService,
 	AccountService
-}
+};

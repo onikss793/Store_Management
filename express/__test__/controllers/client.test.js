@@ -47,7 +47,7 @@ describe('Test Client Update Controller', () => {
 			store_id: 1
 		};
 		const response = await Test.post('/client/1', client);
-		const updated = await Test.get('/client/1').then(res => JSON.parse(res.text));
+		const updated = await Test.get('/client/1').then((res) => JSON.parse(res.text));
 
 		expect(response.status).toEqual(200);
 		expect(updated[0]).toHaveProperty('client_name', 'updated');

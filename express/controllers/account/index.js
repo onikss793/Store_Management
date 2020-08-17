@@ -13,8 +13,8 @@ const login = async (req, res, next) => {
 		}
 
 		const { name, password } = req.body;
-		const store_data = await storeDao.selectOne({ store_name: name })
-		                                 .then(data => data && data.toJSON());
+		const store_data = await storeDao.selectOne({ store_name: name }).
+		                                 then((data) => data && data.toJSON());
 
 		if (helper.dataExist(store_data)) {
 			if (helper.compareCrypto(password, store_data.password)) {

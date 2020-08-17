@@ -3,8 +3,6 @@ const { AccountService } = require('../../services');
 const utils = require('../utils');
 
 class AccountController extends Controller {
-	accountService;
-
 	constructor() {
 		super();
 		this.setDatabase();
@@ -57,7 +55,7 @@ class AccountController extends Controller {
 			return utils.response({
 				body: {
 					data: {
-						accessToken: accessToken,
+						accessToken,
 						...storeData
 					}
 				}

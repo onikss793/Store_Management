@@ -1,4 +1,4 @@
-module.exports = async (database) => {
+module.exports = async database => {
 	await database.force();
 
 	return true;

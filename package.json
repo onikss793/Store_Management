@@ -4,7 +4,9 @@
 	"description": "",
 	"main": "./lambdas/handler.js",
 	"scripts": {
-		"test": "jest --runInBand --detectOpenHandles --colors",
+		"test": "yarn test:lint && yarn test:jest",
+		"test:lint": "npx eslint -c ./.eslintrc.json .",
+		"test:jest": "npx jest --runInBand --detectOpenHandles --colors",
 		"dep:build": "_scripts/dep-build.sh",
 		"dep:start": "_scripts/dep-start.sh",
 		"dep:clean": "_scripts/dep-stop.sh",
@@ -19,7 +21,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"bcrypt": "^5.0.0",
+		"bcrypt": "5.0.0",
 		"body-parser": "1.19.0",
 		"cors": "2.8.5",
 		"dotenv": "8.2.0",
@@ -35,7 +37,10 @@
 	"devDependencies": {
 		"@types/jest": "25.2.1",
 		"axios": "0.19.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "7.7.0",
 		"jest": "25.2.3",
+		"prettier": "^2.0.5",
 		"sequelize-mock": "0.10.2",
 		"serverless": "1.73.1",
 		"serverless-offline": "6.1.4",

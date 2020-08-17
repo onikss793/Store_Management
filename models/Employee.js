@@ -33,4 +33,4 @@ module.exports = (DataTypes, sequelize) => {
 		updatedAt: 'updated_at',
 		deletedAt: 'deleted_at'
 	});
-}
+};

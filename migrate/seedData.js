@@ -16,7 +16,9 @@ module.exports = async database => {
 		console.log('[[ MIGRATE ]]: SET SEED DATA SUCCESS!');
 		return true;
 	} catch (e) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		throw e;
 	}
 };

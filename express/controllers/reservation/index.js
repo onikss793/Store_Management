@@ -38,7 +38,9 @@ const createReservation = async (req, res, next) => {
 			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch(err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };
@@ -59,7 +61,7 @@ const getReservationList = async (req, res, next) => {
 	} catch(err) {
 		next(err);
 	}
-}
+};
 
 const updateReservation = async (req, res, next) => {
 	let transaction;
@@ -74,9 +76,11 @@ const updateReservation = async (req, res, next) => {
 
 		res.status(200).json(utils.postResponse());
 	} catch(err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
-}
+};
 
 module.exports = { createReservation, getReservationList, updateReservation };

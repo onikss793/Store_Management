@@ -13,8 +13,6 @@ afterAll(async () => {
 });
 
 describe('직원 생성 > 목록 확인', () => {
-	let duplicated = false;
-
 	test('새로운 직원을 1번 매장에 등록', async () => {
 		expect.assertions(1);
 		const accessToken = await utils.getMasterAccessToken();
@@ -29,7 +27,6 @@ describe('직원 생성 > 목록 확인', () => {
 		if (result.status === 200) {
 			expect(result.status).toBe(200);
 		} else if (result.response.status === 409) {
-			duplicated = true;
 			expect(result.response.status).toBe(409);
 		}
 	}, timeout);

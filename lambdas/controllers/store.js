@@ -3,9 +3,6 @@ const { StoreService, AccountService } = require('../../services');
 const utils = require('../utils');
 
 class StoreController extends Controller {
-	storeService;
-	accountService;
-
 	constructor() {
 		super();
 		this.setDatabase();
@@ -14,7 +11,7 @@ class StoreController extends Controller {
 		this.setService('accountService', AccountService);
 	}
 
-	post = async (request) => {
+	post = async request => {
 		let transaction;
 
 		try {
@@ -34,7 +31,7 @@ class StoreController extends Controller {
 		}
 	};
 
-	get = async (request) => {
+	get = async request => {
 		try {
 			let data;
 

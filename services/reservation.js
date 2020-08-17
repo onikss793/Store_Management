@@ -41,8 +41,8 @@ class ReservationService {
 			const startAt = moment(reservationData.start_at);
 			const finishAt = moment(reservationData.finish_at);
 
-			if (startAt.isBetween(data.start_at, data.finish_at) || finishAt.isBetween(data.start_at, data.finish_at) ||
-			    (startAt.isBefore(data.start_at) && finishAt.isAfter(data.finish_at))) {
+			if ((startAt.isBetween(data.start_at, data.finish_at) || finishAt.isBetween(data.start_at, data.finish_at)) 
+			|| (startAt.isBefore(data.start_at) && finishAt.isAfter(data.finish_at))) {
 				return data;
 			}
 		});

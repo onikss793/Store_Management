@@ -18,7 +18,9 @@ async function migrate(retryCount) {
 		const syncResult = await sync(database);
 		const seedResult = await setSeedData(database);
 		
-		if (syncResult && seedResult) return true;
+		if (syncResult && seedResult) {
+			return true;
+		}
 	} catch (e) {
 		if (retryCount > 1) {
 			await migrate(retryCount - 1);
@@ -30,5 +32,5 @@ async function migrate(retryCount) {
 }
 
 (async function () {
-	await migrate(retryCount=4);
-})();
+	await migrate(4);
+}());

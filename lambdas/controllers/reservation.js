@@ -3,8 +3,6 @@ const { ReservationService } = require('../../services');
 const utils = require('../utils');
 
 class ReservationController extends Controller {
-	reservationService;
-
 	constructor() {
 		super();
 		this.setDatabase();

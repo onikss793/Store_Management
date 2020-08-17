@@ -9,39 +9,23 @@ class Database {
 	}
 
 	async connect(force = false) {
-		try {
-			await this.sequelize.authenticate();
-			await this.sequelize.sync({ force });
-			console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
-		} catch (err) {
-			throw err;
-		}
+		await this.sequelize.authenticate();
+		await this.sequelize.sync({ force });
+		console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
 	}
 
 	async force() {
-		try {
-			await this.sequelize.sync({ force: true });
-			console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
-		} catch (err) {
-			throw err;
-		}
+		await this.sequelize.sync({ force: true });
+		console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
 	}
 
 	async alter() {
-		try {
-			await this.sequelize.sync({ alter: true });
-			console.info('[[ DB Altered ]]: ', this.sequelize.config.database);
-		} catch (err) {
-			throw err;
-		}
+		await this.sequelize.sync({ alter: true });
+		console.info('[[ DB Altered ]]: ', this.sequelize.config.database);
 	}
 
 	async close() {
-		try {
-			await this.sequelize.close();
-		} catch (err) {
-			throw err;
-		}
+		await this.sequelize.close();
 	}
 
 	getSequelize() {
@@ -100,7 +84,9 @@ class Database {
 			await transaction.commit();
 			return result;
 		} catch (err) {
-			if (transaction) await transaction.rollback();
+			if (transaction) {
+				await transaction.rollback();
+			}
 			throw err;
 		}
 	}

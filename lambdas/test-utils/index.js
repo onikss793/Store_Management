@@ -1,14 +1,9 @@
 const dotenv = require('dotenv');
 const axios = require('axios');
 const { createDatabase } = require('../database');
-const { StoreService, AccountService } = require('../../services');
+const { AccountService } = require('../../services');
 const database = createDatabase();
-const storeService = new StoreService(database);
 dotenv.config();
-
-// async function forceDatabase() {
-// 	await database.force();
-// }
 
 async function getMasterAccessToken() {
 	const accountService = new AccountService(database);
@@ -20,19 +15,6 @@ async function getMasterAccessToken() {
 
 	return accountService.getAccessToken(storeId);
 }
-
-// async function setMasterStore() {
-// 	const transaction = await database.transaction();
-// 	const master = {
-// 		store_name: 'master',
-// 		password: 'password',
-// 		brand_id: 1,
-// 		is_admin: true
-// 	};
-//
-// 	await storeService.createStore(master, transaction);
-// 	await transaction.commit();
-// }
 
 function makeRandomName(length) {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

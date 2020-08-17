@@ -5,8 +5,8 @@ const STANDARD = moment();
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
 const getRandomDate = () => {
 	return STANDARD.add(randomAmount(), 'hours')
-	               .add(randomAmount(), 'minutes')
-	               .add(randomAmount(), 'days');
+		.add(randomAmount(), 'minutes')
+		.add(randomAmount(), 'days');
 };
 const randomDate = getRandomDate();
 let randomReservationData = {

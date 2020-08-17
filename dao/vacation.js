@@ -9,7 +9,7 @@ const selectDuplicatedVacation = (employeeId, startAt, finishAt) => `
     AND deleted_at IS NULL
 `;
 
-const selectVacationByStoreId = (storeId) => `
+const selectVacationByStoreId = storeId => `
 	SELECT
 		VACATION.id AS id,
 		VACATION.start_at AS start_at,

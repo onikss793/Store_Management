@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 module.exports = () => {
 	const result = dotenv.config();
 	if (result.error) {
-		throw result.error
+		throw result.error;
 	}
 
 	return {

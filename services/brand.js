@@ -1,4 +1,4 @@
-const { Dao, query } = require('../dao');
+const { Dao } = require('../dao');
 
 class BrandService {
 	constructor(database) {

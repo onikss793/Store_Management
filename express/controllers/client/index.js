@@ -8,8 +8,8 @@ const clientDao = new Dao(database, 'Client');
 const getClientListByStoreId = async (req, res, next) => {
 	try {
 		const store_id = req.params.store_id;
-		const data = await clientDao.selectAll({ store_id })
-		                            .then(d => d.length && d.map(o => o.toJSON()));
+		const data = await clientDao.selectAll({ store_id }).
+		                            then((d) => d.length && d.map((o) => o.toJSON()));
 		const response = getResponseForList(data);
 
 		res.status(200).json(response);
@@ -43,7 +43,9 @@ const createClient = async (req, res, next) => {
 			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };
@@ -61,7 +63,9 @@ const updateClient = async (req, res, next) => {
 
 		res.status(200).json(utils.postResponse());
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };

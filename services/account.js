@@ -40,11 +40,15 @@ class AccountService {
 
 	async login(credentials) {
 		const storeData = await this.getStoreDataByStoreName(credentials.store_name);
-		if (!storeData) return { storeId: null };
+		if (!storeData) {
+			return { storeId: null };
+		}
 
 		const result = await bcrypt.compare(credentials.password, storeData.password);
 
-		if (result) return { storeId: storeData.id };
+		if (result) {
+			return { storeId: storeData.id };
+		}
 		return { storeId: null };
 	}
 
@@ -61,7 +65,7 @@ class AccountService {
 				is_admin: Boolean(is_admin),
 				brand: {
 					id: brand_id,
-					brand_name: brand_name
+					brand_name
 				}
 			};
 		}
@@ -71,7 +75,7 @@ class AccountService {
 
 	async getStoreDataByStoreName(storeName) {
 		return this.storeDao.selectOne({ store_name: storeName }, ['id', 'password'])
-		           .then(data => data && data.toJSON());
+			.then(data => data && data.toJSON());
 	}
 
 	getAccessToken(storeId) {

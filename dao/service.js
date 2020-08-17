@@ -1,6 +1,6 @@
 const { Service } = require('../models');
 
-const selectServicesByStoreId = (store_id) => {
+const selectServicesByStoreId = store_id => {
 	return Service.findAll({ where: { store_id } });
 };
 

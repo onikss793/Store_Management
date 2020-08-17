@@ -6,12 +6,16 @@ const timeout = 60000;
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
 const getRandomDate = () => {
 	const date = STANDARD.add(randomAmount(), 'hours')
-	                     .add(randomAmount(), 'minutes')
-	                     .add(randomAmount(), 'days');
+		.add(randomAmount(), 'minutes')
+		.add(randomAmount(), 'days');
+	
 	const result = moment(date);
 	return (original = false) => {
-		if (original) return date;
-		else return result;
+		if (original) {
+			return date;
+		} else {
+			return result;
+		}
 	};
 };
 const randomDate = getRandomDate();
@@ -32,9 +36,6 @@ afterAll(async () => {
 });
 
 describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 휴가 목록 확인', () => {
-	let employeeId;
-	let duplicated = false;
-
 	test('직원 1명 생성', async () => {
 		const accessToken = await utils.getMasterAccessToken();
 
@@ -44,10 +45,6 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 			endpoint: '/employee',
 			accessToken
 		});
-		const [result] = await utils.database.query(`
-			SELECT id FROM employees WHERE employee_name = "${newEmployeeData.employee_name}"
-		`);
-		employeeId = result.id;
 
 		expect(response.data.success).toBe(true);
 	}, timeout);
@@ -66,7 +63,6 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 		if (response.status === 200) {
 			expect(response.status).toBe(200);
 		} else {
-			duplicated = true;
 			expect(response.response.status).toBe(409);
 		}
 
@@ -81,7 +77,7 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 				ORDER BY id DESC
 				LIMIT 1
 			`);
-
+		
 		expect(vacationData).toEqual({
 			id: expect.any(Number),
 			employee_id: 1,
@@ -91,6 +87,7 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 	}, timeout);
 
 	test('중복된 휴가 등록 시도 => 409', async () => {
+		// 현재 위의 테스트에서 중복된 휴가가 등록이 되면, 이 테스트에도 영향이 미친다. 분리해도 좋을 듯...
 		expect.assertions(1);
 		const accessToken = await utils.getMasterAccessToken();
 
@@ -134,4 +131,3 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 		expect(response.data.data).toEqual(expect.arrayContaining(JSON.parse(dataMap)));
 	});
 });
-

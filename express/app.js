@@ -13,7 +13,7 @@ const forTest = () => {
 	routes(app);
 
 	return app;
-}
+};
 
 class App {
 	constructor() {

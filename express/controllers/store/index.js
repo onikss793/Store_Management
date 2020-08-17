@@ -26,7 +26,9 @@ const createStore = async (req, res, next) => {
 			next(utils.throwError(400, 'Bad Request'));
 		}
 	} catch (err) {
-		if (transaction) await transaction.rollback();
+		if (transaction) {
+			await transaction.rollback();
+		}
 		next(err);
 	}
 };

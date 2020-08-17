@@ -8,7 +8,7 @@ async function router(event) {
 		return utils.throwError({
 			statusCode: 404,
 			name: 'Not Found',
-			message: "Can't find the url in the server"
+			message: 'Can\'t find the url in the server'
 		});
 	}
 
@@ -27,7 +27,11 @@ function parseEndpoint(event) {
 	if (path.length === 2) {
 		request.resourceId = Number(path[1]);
 	}
-	if (event.httpMethod === 'POST' || 'PUT' || 'PATCH') {
+	if (
+		event.httpMethod === 'POST' || 
+		event.httpMethod === 'PUT' || 
+		event.httpMethod === 'PATCH'
+	) {
 		const body = event.body;
 		request.body = JSON.parse(body);
 	}

@@ -38,21 +38,21 @@ class Test {
 	}
 
 	async get(url) {
-		return request.get(url).set('Authorization', this.session.token)
-		              .then(res => res.toJSON());
+		return request.get(url).set('Authorization', this.session.token).
+		              then((res) => res.toJSON());
 	}
 
 	async post(url, data) {
-		return request.post(url).set('Authorization', this.session.token)
-		              .send(data).then(res => res.toJSON());
+		return request.post(url).set('Authorization', this.session.token).
+		              send(data).then((res) => res.toJSON());
 	}
 
 	async bearCall(url, method, token, data) {
 		if (method === 'GET') {
-			return request.get(url).set('Authorization', token).then(res => res.toJSON());
+			return request.get(url).set('Authorization', token).then((res) => res.toJSON());
 		}
 		if (method === 'POST') {
-			return request.post(url).set('Authorization', token).send(data).then(res => res.toJSON());
+			return request.post(url).set('Authorization', token).send(data).then((res) => res.toJSON());
 		}
 		if (method === undefined) {
 			throw new Error('NO METHOD!');
@@ -156,8 +156,8 @@ class Session {
 	async login() {
 		try {
 			const { store_name: name, password } = Array.from(require('./stores.json'))[0];
-			const response = await request.post('/account')
-			                              .send({ name, password }).then(res => res.toJSON());
+			const response = await request.post('/account').
+			                              send({ name, password }).then((res) => res.toJSON());
 
 			this.token = JSON.parse(response.text).token;
 			console.info('Logged In!');

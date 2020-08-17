@@ -20,8 +20,8 @@ class EmployeeService {
 				employee_name,
 				phone_number,
 				vacation: vacation === 'true'
-			}
-		})
+			};
+		});
 	}
 }
 

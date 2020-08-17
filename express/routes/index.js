@@ -23,7 +23,7 @@ const exec = (app) => (routerModule) => {
 	app.use(url, ...preMiddleware, runner);
 };
 
-module.exports = app => {
+module.exports = (app) => {
 	const router = exec(app);
 	forTest(app);
 	ping(app);

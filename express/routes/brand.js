@@ -9,4 +9,4 @@ module.exports = {
 	url: '/brand',
 	preMiddleware: [authMiddleware],
 	runner: router
-}
+};
