@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { Dao, query } = require('../dao');
+const { Op } = require('sequelize');
 
 class ReservationService {
 	constructor(database) {
@@ -22,18 +23,26 @@ class ReservationService {
 	}
 
 	async isDuplicated(reservationData) {
-		const index = { employee_id: reservationData.employee_id };
-		const attributes = ['id', 'employee_id', 'start_at', 'finish_at', 'status', 'memo'];
+		const { lte, gte, and } = Op;
+		const index = {
+			employee_id: reservationData.employee_id,
+			status: 'ready',
+			[and]: [
+				{
+					start_at: { [gte]: moment(reservationData.start_at).startOf('day').toISOString() },
+					finish_at: { [lte]: moment(reservationData.finish_at).endOf('day').toISOString() }
+				}
+			]
+		};
+		const attributes = ['id', 'start_at', 'finish_at'];
 		const reservationList = await this.reservationDao.selectAll(index, attributes);
 
 		return reservationList.find(data => {
 			const startAt = moment(reservationData.start_at);
 			const finishAt = moment(reservationData.finish_at);
 
-			if (
-				startAt.isBetween(data.start_at, data.finish_at) ||
-				finishAt.isBetween(data.start_at, data.finish_at)
-			) {
+			if (startAt.isBetween(data.start_at, data.finish_at) || finishAt.isBetween(data.start_at, data.finish_at) ||
+			    (startAt.isBefore(data.start_at) && finishAt.isAfter(data.finish_at))) {
 				return data;
 			}
 		});

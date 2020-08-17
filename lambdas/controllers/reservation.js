@@ -20,6 +20,16 @@ class ReservationController extends Controller {
 			const reservationId = request.resourceId;
 			const reservationData = request.body;
 
+			const isDuplicated = await this.reservationService.isDuplicated(reservationData);
+
+			if (isDuplicated && isDuplicated.id !== reservationId) {
+				return utils.makeError({
+					statusCode: 409,
+					message: 'Duplicated Reservation',
+					name: 'Conflict'
+				});
+			}
+
 			transaction = await this.database.transaction();
 			const [result] = await this.reservationService.updateReservation(reservationId, reservationData, transaction);
 			await transaction.commit();
@@ -31,12 +41,12 @@ class ReservationController extends Controller {
 			} else {
 				return utils.makeError({
 					statusCode: 500,
-					message: 'Something Gone Wrong'
+					message: 'Something Gone Wrong',
+					name: 'Unknown Error'
 				});
 			}
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -67,7 +77,6 @@ class ReservationController extends Controller {
 			});
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -96,7 +105,6 @@ class ReservationController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
