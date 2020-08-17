@@ -43,6 +43,7 @@ module.exports = (DataTypes, sequelize) => {
 			allowNull: true
 		}
 	}, {
+		indexes: [{ unique: false, fields: ['employee_id'], name: 'reservation_employee_id_index' }],
 		paranoid: true,
 		underscored: true,
 		timestamps: true,

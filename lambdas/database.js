@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const models = require('../models');
 const STAGE = process.env.SM_STAGE || 'test';
 
@@ -86,6 +86,10 @@ class Database {
 				idle: 5000
 			}
 		});
+	}
+
+	op() {
+		return { ...Op };
 	}
 
 	async query(query) {
