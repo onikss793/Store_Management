@@ -37,7 +37,7 @@ module.exports = {
 			const database = createDatabase();
 			const storeService = new StoreService(database);
 
-			transaction = database.transaction();
+			transaction = await database.transaction();
 			const superuser = data['store'];
 			await storeService.createStore(superuser, transaction);
 			await transaction.commit();

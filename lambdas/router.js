@@ -1,5 +1,6 @@
 const controllers = require('./controllers');
 const utils = require('./utils');
+const { inspect } = require('util');
 
 async function router(event) {
 	const request = parseEndpoint(event);
