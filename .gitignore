@@ -1,6 +1,6 @@
 # database manipulation
-#./lambdas/controllers/alter.js
-#./lambdas/controllers/force.js
+**/alter.js
+**/force.js
 
 # package directories
 node_modules
