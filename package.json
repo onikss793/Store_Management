@@ -7,7 +7,7 @@
 		"test": "yarn test:lint && yarn test:jest",
 		"test:lint": "npx eslint -c ./.eslintrc.json .",
 		"test:jest": "npx jest --runInBand --detectOpenHandles --colors",
-    "test:deploy": "yarn serve:local && yarn test:jest && yarn serve:stop && yarn dep:clean",
+        "test:deploy": "yarn serve:local && yarn test:jest && yarn serve:stop && yarn dep:clean",
 		"dep:build": "_scripts/dep-build.sh",
 		"dep:start": "_scripts/dep-start.sh",
 		"dep:clean": "_scripts/dep-stop.sh",

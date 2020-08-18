@@ -25,7 +25,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
-    - run: yarn serve:local
-    - run: yarn test:jest
-    - run: yarn serve:stop
-    - run: yarn dep:clean
+    - run: yarn test:deploy
