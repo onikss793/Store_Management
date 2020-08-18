@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 function slsHeaders(event) {
 	if (!Object.prototype.hasOwnProperty.call(event, 'headers')) {
@@ -29,6 +29,7 @@ function corsHeaders(origin) {
 }
 
 function response({ statusCode = 200, body }) {
+	console.log(body);
 	return {
 		statusCode,
 		headers: {

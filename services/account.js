@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Dao, query } = require('../dao');
 const utils = require('../lambdas/utils');
 

@@ -9,6 +9,7 @@ provider:
   memorySize: 128           # optional, in MB, default: 1024
   stage: ${env:SM_STAGE}                # optional, default: dev
   environment: ${file(./lambdas/env.js)}
+  profile: store_management
 
 functions:
   store_management_api:
@@ -24,6 +25,15 @@ custom:
   serverless-offline:
     httpPort: 8080
     noPrependStageInUrl: true
+
+package:
+  exclude:
+    - express/**
+    - .serverless
+    - _scripts
+    - migrate
+    - Dockerfile
+    - docker-compose.yml
 
 plugins:
   - serverless-offline

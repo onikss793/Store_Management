@@ -5,7 +5,7 @@ async function index(event, context) {
 	if (!utils.slsHeaders(event)) {
 		return { body: '' };
 	}
-	context;
+
 	if (event.httpMethod === 'OPTIONS') {
 		return {
 			statusCode: 200,
