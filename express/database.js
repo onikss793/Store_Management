@@ -29,7 +29,7 @@ class Database {
 	}
 
 	_setSequelize() {
-		const standard = 'lambda';
+		const standard = 'production';
 
 		if (env !== standard) {
 			return new Sequelize(this._getDBName(), 'root', '1', {

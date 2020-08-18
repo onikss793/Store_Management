@@ -7,8 +7,8 @@ provider:
   runtime: nodejs12.x
   region: ap-northeast-2     # optional, default: us-east-1
   memorySize: 128           # optional, in MB, default: 1024
-  environment: ${file(./lambdas/env.js)}
   stage: ${env:SM_STAGE}                # optional, default: dev
+  environment: ${file(./lambdas/env.js)}
 
 functions:
   store_management_api:

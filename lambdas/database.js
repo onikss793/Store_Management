@@ -1,6 +1,6 @@
 const { Sequelize, Op } = require('sequelize');
 const models = require('../models');
-const STAGE = process.env.SM_STAGE || 'test';
+const STAGE = process.env.NODE_ENV || 'test';
 
 class Database {
 	constructor() {
