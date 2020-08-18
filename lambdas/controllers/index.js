@@ -15,7 +15,8 @@ module.exports = {
 		GET: ping.get
 	},
 	force: {
-		GET: force.get
+		GET: force.get,
+		POST: force.post
 	},
 	alter: {
 		GET: alter.get

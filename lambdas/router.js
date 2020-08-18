@@ -4,11 +4,11 @@ const utils = require('./utils');
 async function router(event) {
 	const request = parseEndpoint(event);
 
-	if (!controllers[request.route]) {
+	if (!controllers[request.route] || !controllers[request.route][request.method]) {
 		return utils.throwError({
 			statusCode: 404,
 			name: 'Not Found',
-			message: 'Can\'t find the url in the server'
+			message: `Can't find ${request.method}: ${request.route} in the server`
 		});
 	}
 

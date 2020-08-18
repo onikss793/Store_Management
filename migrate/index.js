@@ -32,5 +32,5 @@ async function migrate(retryCount) {
 }
 
 (async function () {
-	await migrate(4);
+	await migrate(5);
 }());
