@@ -7,20 +7,20 @@ const AccountController = require('./account')();
 const middlewares = require('../middleware');
 const ping = require('./ping');
 // 아래 두개는 개발 단계에서 임시로...
-const force = require('./force');
-const alter = require('./alter');
+// const force = require('./force');
+// const alter = require('./alter');
 
 module.exports = {
 	ping: {
 		GET: ping.get
 	},
-	force: {
-		GET: force.get,
-		POST: force.post
-	},
-	alter: {
-		GET: alter.get
-	},
+	// force: {
+	// 	GET: force.get,
+	// 	POST: force.post
+	// },
+	// alter: {
+	// 	GET: alter.get
+	// },
 	account: {
 		POST: async request => (await middlewares({
 			pre: [],
