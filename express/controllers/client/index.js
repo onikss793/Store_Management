@@ -9,7 +9,7 @@ const getClientListByStoreId = async (req, res, next) => {
 	try {
 		const store_id = req.params.store_id;
 		const data = await clientDao.selectAll({ store_id }).
-		                            then((d) => d.length && d.map((o) => o.toJSON()));
+		                            then(d => d.length && d.map(o => o.toJSON()));
 		const response = getResponseForList(data);
 
 		res.status(200).json(response);

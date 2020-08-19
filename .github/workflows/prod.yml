@@ -36,7 +36,7 @@ jobs:
         NODE_ENV: ${{ secrets.NODE_ENV }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
-      run: yarn install
-      run: yarn test:deploy
-      run: yarn deploy
+    - run: yarn install
+    - run: yarn test:ci
+    - run: yarn deploy
 

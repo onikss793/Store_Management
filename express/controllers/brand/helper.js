@@ -1,4 +1,4 @@
-const responseForList = (data) => {
+const responseForList = data => {
 	if (!data) {
 		return [];
 	}

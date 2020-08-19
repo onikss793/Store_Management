@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authMiddleware = require('../middlewares/auth');
-const { clientController }= require('../controllers');
+const { clientController } = require('../controllers');
 
 router.get('/:store_id', clientController.getClientListByStoreId);
 router.post('/', clientController.createClient);

@@ -7,7 +7,7 @@ const brandDao = new Dao(database, 'Brand');
 
 const getBrandList = async (req, res, next) => {
 	try {
-		const data = await brandDao.selectAll().then((d) => d.length && d.map((o) => o.toJSON()));
+		const data = await brandDao.selectAll().then(d => d.length && d.map(o => o.toJSON()));
 		const response = responseForList(data);
 
 		res.status(200).json(response);

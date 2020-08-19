@@ -17,7 +17,7 @@ module.exports = {
 			return utils.throwError(e);
 		}
 	},
-	post: async (request) => {
+	post: async request => {
 		let transaction;
 
 		try {

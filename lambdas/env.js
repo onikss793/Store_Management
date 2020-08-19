@@ -1,9 +1,7 @@
 const dotenv = require('dotenv');
-const { resolve } = require('path');
 
 module.exports = () => {
-	if (process.env.SM_STAGE === 'production') {
-	} else {
+	if (process.env['SM_STAGE'] !== 'production') {
 		const result = dotenv.config();
 		if (result.error) {
 			throw result.error;

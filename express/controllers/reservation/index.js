@@ -37,7 +37,7 @@ const createReservation = async (req, res, next) => {
 		} else {
 			next(utils.throwError(400, 'Bad Request'));
 		}
-	} catch(err) {
+	} catch (err) {
 		if (transaction) {
 			await transaction.rollback();
 		}
@@ -58,7 +58,7 @@ const getReservationList = async (req, res, next) => {
 		const data = helper.convertRawToReservationList(result);
 
 		res.status(200).json(data);
-	} catch(err) {
+	} catch (err) {
 		next(err);
 	}
 };
@@ -75,7 +75,7 @@ const updateReservation = async (req, res, next) => {
 		await transaction.commit();
 
 		res.status(200).json(utils.postResponse());
-	} catch(err) {
+	} catch (err) {
 		if (transaction) {
 			await transaction.rollback();
 		}
