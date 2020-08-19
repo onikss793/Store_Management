@@ -1,6 +1,6 @@
 const { Sequelize, Op } = require('sequelize');
 const models = require('../models');
-const STAGE = process.env.NODE_ENV || 'test';
+const STAGE = process.env.NODE_ENV;
 
 class Database {
 	constructor() {
@@ -39,21 +39,22 @@ class Database {
 
 	_setSequelize() {
 		if (STAGE === 'production') {
-			const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
-			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
-				host,
-				port: 3306,
-				logging: false,
-				dialect: 'mysql',
-				dialectOptions: {
-					ssl: 'Amazon RDS'
-				},
-				pool: {
-					max: 10,
-					min: 0,
-					idle: 10000
-				}
-			});
+			return new Sequelize(process.env.DATABASE,
+				process.env.USERNAME,
+				process.env.PASSWORD, {
+					host: process.env.HOST,
+					port: 3306,
+					logging: false,
+					dialect: 'mysql',
+					dialectOptions: {
+						ssl: 'Amazon RDS'
+					},
+					pool: {
+						max: 10,
+						min: 0,
+						idle: 10000
+					}
+				});
 		}
 
 		return new Sequelize('store_management_dev', 'root', '1', {
