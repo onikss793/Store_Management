@@ -1,0 +1,38 @@
+[
+  {
+    "store_name": "선릉 1호점",
+    "password": "1111",
+    "brand_id": 1,
+    "is_admin": true
+  },
+  {
+    "store_name": "강남 1호점",
+    "password": "1111",
+    "brand_id": 1,
+    "is_admin": false
+  },
+  {
+    "store_name": "선릉 3호점",
+    "password": "1111",
+    "brand_id": 1,
+    "is_admin": false
+  },
+  {
+    "store_name": "을지로점",
+    "password": "1111",
+    "brand_id": 1,
+    "is_admin": true
+  },
+  {
+    "store_name": "서울역점",
+    "password": "1111",
+    "brand_id": 1,
+    "is_admin": false
+  },
+  {
+    "store_name": "분당점",
+    "password": "test",
+    "brand_id": 1,
+    "is_admin": false
+  }
+]

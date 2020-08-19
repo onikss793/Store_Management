@@ -1,32 +1,58 @@
 {
-    "name": "store_management",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "NODE_PATH=./ jest --detectOpenHandles",
-        "dev": "NODE_PATH=./ NODE_ENV=dev nodemon server.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "bcrypt": "^3.0.8",
-        "body-parser": "^1.19.0",
-        "cors": "^2.8.5",
-        "dotenv": "^8.2.0",
-        "express": "^4.17.1",
-        "jsonwebtoken": "^8.5.1",
-        "morgan": "^1.10.0",
-        "mysql": "^2.17.1",
-        "mysql2": "^2.1.0",
-        "nodemon": "^2.0.2",
-        "sequelize": "^5.21.3"
-    },
-    "devDependencies": {
-        "jest": "^25.2.3",
-        "sequelize-mock": "^0.10.2",
-        "sqlite": "^3.0.3",
-        "supertest": "^4.0.2"
-    }
+	"name": "store_management",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./lambdas/handler.js",
+	"scripts": {
+		"test": "yarn test:lint && yarn test:jest",
+		"test:lint": "npx eslint -c ./.eslintrc.json .",
+		"test:jest": "npx jest --runInBand --detectOpenHandles --colors",
+        "test:deploy": "yarn serve:local && yarn test:jest && yarn serve:stop && yarn dep:clean",
+		"dep:build": "_scripts/dep-build.sh",
+		"dep:start": "_scripts/dep-start.sh",
+		"dep:clean": "_scripts/dep-stop.sh",
+		"dep:local": "yarn dep:clean && yarn dep:build && yarn dep:start",
+		"dep:migrate": "node ./migrate",
+		"serve:start": "yarn serve:stop && _scripts/serve-start.sh",
+		"serve:stop": "_scripts/serve-stop.sh",
+		"serve:local": "yarn dep:local && yarn serve:start && yarn dep:migrate",
+		"deploy": "_scripts/deploy.sh"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "2.4.3",
+		"body-parser": "1.19.0",
+		"cors": "2.8.5",
+		"dotenv": "8.2.0",
+		"express": "4.17.1",
+		"jsonwebtoken": "8.5.1",
+		"moment": "2.24.0",
+		"morgan": "1.10.0",
+		"mysql": "2.17.1",
+		"mysql2": "2.1.0",
+		"nodemon": "^2.0.4",
+		"sequelize": "5.21.3"
+	},
+	"devDependencies": {
+		"@types/jest": "25.2.1",
+		"axios": "0.19.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "7.7.0",
+		"jest": "25.2.3",
+		"prettier": "^2.0.5",
+		"sequelize-mock": "0.10.2",
+		"serverless": "1.73.1",
+		"serverless-offline": "6.1.4",
+		"supertest": "4.0.2"
+	},
+	"jest": {
+		"testMatch": [
+			"**/__tests__/**/*.js",
+			"**/__tests__/*.js"
+		],
+		"bail": true,
+		"verbose": true
+	}
 }

@@ -1,3 +1,4 @@
 module.exports = {
-	store: require('./store')
-}
+	Dao: require('./Dao'),
+	query: require('./query')
+};

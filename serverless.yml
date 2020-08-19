@@ -1,0 +1,45 @@
+service: store-management
+
+app: store-management
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-2     # optional, default: us-east-1
+  memorySize: 512           # optional, in MB, default: 1024
+  stage: ${env:SM_STAGE}                # optional, default: dev
+  environment: ${file(./lambdas/env.js)}
+  profile: store_management
+  vpc:
+    securityGroupIds:
+      - sg-b3b3fdd2
+    subnetIds:
+      - subnet-05ff487e
+      - subnet-2c48b347
+
+functions:
+  store_management_api:
+    name: store_management
+    handler: ./lambdas/handler.index
+    events:
+      - http:
+          path: /{endpoint+}
+          method: ANY
+          cors: true
+
+custom:
+  serverless-offline:
+    httpPort: 8080
+    noPrependStageInUrl: true
+
+package:
+  exclude:
+    - express/**
+    - .serverless
+    - _scripts
+    - migrate
+    - Dockerfile
+    - docker-compose.yml
+
+plugins:
+  - serverless-offline

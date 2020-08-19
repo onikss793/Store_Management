@@ -1,0 +1,32 @@
+[
+  {
+    "employee_name": "Charles",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  },
+  {
+    "employee_name": "Smith",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  },
+  {
+    "employee_name": "Micheal",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  },
+  {
+    "employee_name": "Jordan",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  },
+  {
+    "employee_name": "LeBron",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  },
+  {
+    "employee_name": "James",
+    "enrolled_in": "2020-03-31T15:00:00.000Z",
+    "store_id": 1
+  }
+]

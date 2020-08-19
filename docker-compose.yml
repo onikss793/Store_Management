@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  local:
+    image: mysql_store_management:latest
+    build:
+      context: .
+      cache_from:
+        - mysql_store_management
+      dockerfile: Dockerfile
+    ports:
+      - "33069:3306"
+    volumes:
+      - store_management_volume:/var/lib/mysql
+
+volumes:
+  store_management_volume:
+    name: sm_data
