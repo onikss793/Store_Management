@@ -6,8 +6,6 @@ name: Production CI
 on:
   push:
     branches: [ production ]
-  pull_request:
-    branches: [ production ]
 
 jobs:
   build:
@@ -24,6 +22,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+      env: 
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ap-northeast-2
+        AWS_DEFAULT_OUTPUT: json
     - run: yarn install
     - run: yarn test:deploy
+    - run: yarn deploy
 
