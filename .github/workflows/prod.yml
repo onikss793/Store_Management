@@ -25,7 +25,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeash-2
+        aws-region: ap-northeast-2
 
     - name: Serverless test Node:${{ matrix.node-version }}
       uses: actions/setup-node@v1
