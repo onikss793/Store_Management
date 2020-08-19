@@ -3,10 +3,6 @@ const { resolve } = require('path');
 
 module.exports = () => {
 	if (process.env.SM_STAGE === 'production') {
-		const result = dotenv.config({ path: resolve(__dirname, '../.production.env') });
-		if (result.error) {
-			throw result.error;
-		}
 	} else {
 		const result = dotenv.config();
 		if (result.error) {
