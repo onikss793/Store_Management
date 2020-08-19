@@ -17,25 +17,35 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-    - name: Serverless test Node:${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-      env: 
-        NODE_ENV: ${{ secrets.NODE_ENV }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
-    - run: yarn install
-    - run: yarn test:ci
-    - run: yarn deploy
+      - name: Serverless Node:${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+        env:
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
 
+      - name: Ci Test
+        env:
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+        run: yarn test:ci
+
+      - name: DEPLOY
+          env:
+            NODE_ENV: ${{ secrets.NODE_ENV }}
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+          run: yarn deploy
