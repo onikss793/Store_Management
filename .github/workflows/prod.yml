@@ -31,16 +31,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-        env:
-          NODE_ENV: ${{ secrets.NODE_ENV }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
 
       - name: Ci Test
         env:
-          NODE_ENV: ${{ secrets.NODE_ENV }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+          NODE_ENV: development
+          SECRET_KEY: sample
+          SALT_ROUNDS: 3
         run: yarn test:ci
 
       - name: DEPLOY
