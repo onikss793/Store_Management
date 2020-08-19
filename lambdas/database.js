@@ -40,7 +40,7 @@ class Database {
 
 	_setSequelize() {
 		if (STAGE === 'production') {
-			const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
+			const { DATABASE, USERNAME, PASSWORD, host } = process.env;
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
 				host,
 				port: 3306,
