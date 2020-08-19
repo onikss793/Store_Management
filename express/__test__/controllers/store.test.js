@@ -26,20 +26,20 @@ describe('Test Store Create Controller', () => {
 
 	test('should throw 400 error', async () => {
 		const brand_null = {
-				store_name: '1234',
-				password: '1111',
-				brand_id: null
-			},
-			store_name_null = {
-				store_name: '',
-				password: '1111',
-				brand_id: 1
-			},
-			password_null = {
-				store_name: 'hello',
-				password: '',
-				brand_id: 1
-			};
+			store_name: '1234',
+			password: '1111',
+			brand_id: null
+		};
+		const store_name_null = {
+			store_name: '',
+			password: '1111',
+			brand_id: 1
+		};
+		const password_null = {
+			store_name: 'hello',
+			password: '',
+			brand_id: 1
+		};
 
 		const brand_result = await Test.post('/store', brand_null);
 		const store_result = await Test.post('/store', store_name_null);

@@ -1,6 +1,15 @@
+const utils = require('../utils');
+
 module.exports = {
-	get: request => {
-		console.log(request);
-		return 'PONG';
+	get: () => {
+		try {
+			return utils.response({
+				body: {
+					message: 'PONG'
+				}
+			});
+		} catch (e) {
+			return utils.throwError(e);
+		}
 	}
 };

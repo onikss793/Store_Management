@@ -1,0 +1,51 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Production CI
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Serverless Node:${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Ci Test
+        env:
+          NODE_ENV: development
+          SECRET_KEY: sample
+          SALT_ROUNDS: 3
+        run: yarn test:ci
+
+      - name: DEPLOY
+        env:
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+          DATABASE: ${{ secrets.DATABASE }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          host: ${{ secrets.HOST }}
+        run: yarn deploy

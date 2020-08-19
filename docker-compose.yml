@@ -10,3 +10,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "33069:3306"
+    volumes:
+      - store_management_volume:/var/lib/mysql
+
+volumes:
+  store_management_volume:
+    name: sm_data

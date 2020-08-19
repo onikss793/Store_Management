@@ -9,12 +9,13 @@ class Database {
 	}
 
 	async connect(force = false) {
-		await this.sequelize.authenticate();
+		await this.sequelize.authenticate().catch(e => console.log('Connection Error: ', e));
 		await this.sequelize.sync({ force });
 		console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
 	}
 
 	async force() {
+		console.log(this.sequelize.config);
 		await this.sequelize.sync({ force: true });
 		console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
 	}
@@ -39,22 +40,21 @@ class Database {
 
 	_setSequelize() {
 		if (STAGE === 'production') {
-			return new Sequelize(process.env.DATABASE,
-				process.env.USERNAME,
-				process.env.PASSWORD, {
-					host: process.env.HOST,
-					port: 3306,
-					logging: false,
-					dialect: 'mysql',
-					dialectOptions: {
-						ssl: 'Amazon RDS'
-					},
-					pool: {
-						max: 10,
-						min: 0,
-						idle: 10000
-					}
-				});
+			const { DATABASE, USERNAME, PASSWORD, HOST } = process.env;
+			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
+				host: HOST,
+				port: 3306,
+				logging: false,
+				dialect: 'mysql',
+				dialectOptions: {
+					ssl: 'Amazon RDS'
+				},
+				pool: {
+					max: 10,
+					min: 0,
+					idle: 10000
+				}
+			});
 		}
 
 		return new Sequelize('store_management_dev', 'root', '1', {

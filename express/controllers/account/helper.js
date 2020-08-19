@@ -8,15 +8,15 @@ const compareCrypto = (given, original) => {
 	return hashed === original;
 };
 
-const signJwt = (data) => {
+const signJwt = data => {
 	return jwt.sign({ id: data.id }, JWT_SECRET);
 };
 
-const dataExist = (data) => {
+const dataExist = data => {
 	return data && data.id && data.store_name.length;
 };
 
-const renderStoreData = (data) => {
+const renderStoreData = data => {
 	return {
 		id: data.id,
 		store_name: data.store_name,
