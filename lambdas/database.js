@@ -69,6 +69,7 @@ class Database {
 			port: 33069,
 			logging: false,
 			dialect: 'mysql',
+			timezone: '+09:00',
 			dialectOptions: {
 				charset: 'utf8mb4'
 			},
@@ -76,6 +77,12 @@ class Database {
 				max: 10,
 				min: 0,
 				idle: 5000
+			},
+			define: {
+				charset: 'utf8',
+				dialectOptions: {
+					collate: 'utf8_general_ci'
+				},
 			}
 		});
 	}
