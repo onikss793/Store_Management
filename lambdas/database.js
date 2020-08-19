@@ -9,12 +9,13 @@ class Database {
 	}
 
 	async connect(force = false) {
-		await this.sequelize.authenticate();
+		await this.sequelize.authenticate().catch(e => console.log('Connection Error: ', e));
 		await this.sequelize.sync({ force });
 		console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
 	}
 
 	async force() {
+		console.log(this.sequelize.config);
 		await this.sequelize.sync({ force: true });
 		console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
 	}

@@ -7,6 +7,7 @@
 		"test": "yarn test:lint && yarn test:jest",
 		"test:lint": "npx eslint -c ./.eslintrc.json .",
 		"test:jest": "npx jest --runInBand --detectOpenHandles --colors",
+        "test:deploy": "yarn serve:local && yarn test:jest && yarn serve:stop && yarn dep:clean",
 		"dep:build": "_scripts/dep-build.sh",
 		"dep:start": "_scripts/dep-start.sh",
 		"dep:clean": "_scripts/dep-stop.sh",
@@ -15,7 +16,7 @@
 		"serve:start": "yarn serve:stop && _scripts/serve-start.sh",
 		"serve:stop": "_scripts/serve-stop.sh",
 		"serve:local": "yarn dep:local && yarn serve:start && yarn dep:migrate",
-		"deploy": "NODE_ENV=production SM_STAGE=production sls deploy"
+		"deploy": "_scripts/deploy.sh"
 	},
 	"keywords": [],
 	"author": "",

@@ -1,6 +1,4 @@
 # database manipulation
-./lambdas/controllers/alter.js
-./lambdas/controllers/force.js
 
 # package directories
 node_modules
@@ -82,8 +80,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 .env.test
+.production.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
