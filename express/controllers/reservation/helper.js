@@ -1,5 +1,5 @@
-const convertRawToReservationList = (data) => {
-	return data.map((r) => {
+const convertRawToReservationList = data => {
+	return data.map(r => {
 		const {
 			id,
 			employee_id,

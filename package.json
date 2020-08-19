@@ -5,7 +5,7 @@
 	"main": "./lambdas/handler.js",
 	"scripts": {
 		"test": "yarn test:lint && yarn test:jest",
-		"test:lint": "npx eslint -c ./.eslintrc.json .",
+		"test:lint": "npx eslint -c ./.eslintrc.js .",
 		"test:jest": "npx jest --runInBand --detectOpenHandles --colors",
 		"test:deploy": "yarn serve:local && yarn test:jest && yarn serve:stop && yarn dep:clean",
 		"dep:build": "_scripts/dep-build.sh",
