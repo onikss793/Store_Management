@@ -46,8 +46,9 @@ class Database {
 				port: 3306,
 				logging: false,
 				dialect: 'mysql',
+				timezone: '+09:00',
 				dialectOptions: {
-					ssl: 'Amazon RDS'
+					ssl: 'Amazon RDS',
 				},
 				pool: {
 					max: 10,
@@ -55,8 +56,10 @@ class Database {
 					idle: 10000
 				},
 				define: {
-					charset: 'utf8mb4',
-					collate: 'utf8mb4_unicode_ci'
+					charset: 'utf8',
+					dialectOptions: {
+						collate: 'utf8_general_ci'
+					},
 				}
 			});
 		}
