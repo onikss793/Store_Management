@@ -41,7 +41,7 @@ describe('Test Reservation Create Controller', () => {
 
 		const data = JSON.parse(response.text);
 
-		data.forEach((res) => {
+		data.forEach(res => {
 			expect(res).toHaveProperty('id');
 			expect(res).toHaveProperty('employee.employee_name');
 			expect(res).toHaveProperty('client.client_name');

@@ -1,4 +1,4 @@
-const getResponseForList = (data) => {
+const getResponseForList = data => {
 	return data.map(({ id, service_name, color }) => {
 		return {
 			id,

@@ -1,4 +1,4 @@
-const renderResponseForList = (data) => {
+const renderResponseForList = data => {
 	if (!data.length) {
 		return [];
 	}

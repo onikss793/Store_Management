@@ -4,17 +4,17 @@ const STANDARD = moment();
 
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
 const getRandomDate = () => {
-    const date = STANDARD.add(randomAmount(), 'hours')
-        .add(randomAmount(), 'minutes')
+	const date = STANDARD.add(randomAmount(), 'hours')
+		.add(randomAmount(), 'minutes')
 		.add(randomAmount(), 'days');
-    const result = moment(date);
-    return (original = false) => {
-        if (original) {
-            return date;
-        } else {
-            return result;
-        }
-    }
+	const result = moment(date);
+	return (original = false) => {
+		if (original) {
+			return date;
+		} else {
+			return result;
+		}
+	};
 };
 const randomDate = getRandomDate();
 let randomReservationData = {
@@ -35,13 +35,12 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 
 	test('새로운 예약을 만든다', async () => {
 		expect.assertions(1);
-		const { store_id } = randomReservationData;
 		const accessToken = await utils.getMasterAccessToken();
 
 		const result = await utils.axiosCall({
 			method: 'POST',
 			data: randomReservationData,
-			endpoint: `/reservation`,
+			endpoint: '/reservation',
 			accessToken
 		});
 
@@ -173,7 +172,6 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 	test('중복된 예약 생성 시도 => 409', async () => {
 		expect.assertions(1);
 
-		const { store_id } = randomReservationData;
 		const accessToken = await utils.getMasterAccessToken();
 
 		const error = await utils.axiosCall({
@@ -186,7 +184,7 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 				memo: 'duplicated',
 				status: 'ready'
 			},
-			endpoint: `/reservation`,
+			endpoint: '/reservation',
 			accessToken
 		});
 
