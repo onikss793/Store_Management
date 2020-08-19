@@ -44,4 +44,8 @@ jobs:
           NODE_ENV: ${{ secrets.NODE_ENV }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+          DATABASE: ${{ secrets.DATABASE }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          host: ${{ secrets.HOST }}
         run: yarn deploy
