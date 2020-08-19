@@ -37,6 +37,6 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
     - run: yarn install
-    - run: yarn test:deploy
+    - run: yarn test:ci
     - run: yarn deploy
 
