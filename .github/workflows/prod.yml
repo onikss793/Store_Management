@@ -44,8 +44,8 @@ jobs:
         run: yarn test:ci
 
       - name: DEPLOY
-          env:
-            NODE_ENV: ${{ secrets.NODE_ENV }}
-            SECRET_KEY: ${{ secrets.SECRET_KEY }}
-            SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
-          run: yarn deploy
+        env:
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+        run: yarn deploy
