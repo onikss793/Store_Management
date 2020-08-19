@@ -47,5 +47,5 @@ jobs:
           DATABASE: ${{ secrets.DATABASE }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          host: ${{ secrets.HOST }}
+          HOST: ${{ secrets.HOST }}
         run: yarn deploy
