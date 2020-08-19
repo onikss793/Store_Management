@@ -27,6 +27,9 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: ap-northeast-2
         AWS_DEFAULT_OUTPUT: json
+        NODE_ENV: ${{ secrets.NODE_ENV }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
     - run: yarn install
     - run: yarn test:deploy
     - run: yarn deploy

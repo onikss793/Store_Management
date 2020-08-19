@@ -9,7 +9,7 @@ provider:
   memorySize: 512           # optional, in MB, default: 1024
   stage: ${env:SM_STAGE}                # optional, default: dev
   environment: ${file(./lambdas/env.js)}
-  profile: store_management
+#  profile: store_management
   vpc:
     securityGroupIds:
       - sg-b3b3fdd2
