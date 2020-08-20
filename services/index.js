@@ -4,6 +4,7 @@ const EmployeeService = require('./employee');
 const ReservationService = require('./reservation');
 const VacationService = require('./vacation');
 const AccountService = require('./account');
+const NotificationService = require('./notification');
 
 module.exports = {
 	StoreService,
@@ -11,5 +12,6 @@ module.exports = {
 	EmployeeService,
 	ReservationService,
 	VacationService,
-	AccountService
+	AccountService,
+	NotificationService
 };
