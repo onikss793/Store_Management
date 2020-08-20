@@ -4,21 +4,36 @@ const STANDARD = moment();
 const timeout = 60000;
 
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
-const getRandomDate = () => {
-	const date = STANDARD.add(randomAmount(), 'hours')
-		.add(randomAmount(), 'minutes')
-		.add(randomAmount(), 'days');
-	
-	const result = moment(date);
-	return (original = false) => {
-		if (original) {
-			return date;
-		} else {
-			return result;
-		}
-	};
+//const getRandomDate = () => {
+//	const date = STANDARD.add(randomAmount(), 'hours')
+//		.add(randomAmount(), 'minutes')
+//		.add(randomAmount(), 'days');
+//
+//	const result = moment(date);
+//	return (original = false) => {
+//		if (original) {
+//			return date;
+//		} else {
+//			return result;
+//		}
+//	};
+//};
+
+const setDate = date => {
+	return moment(date)
+		.add(randomAmount(), 'days')
+		.set('hour', 0)
+		.set('minute', 0)
+		.set('second', 0)
+		.set('millisecond', 0);
 };
-const randomDate = getRandomDate();
+const getDate = () => {
+	const date = setDate(STANDARD);
+
+	return (original = false) => original ? date : moment(date);
+};
+
+const randomDate = getDate();
 
 const newEmployeeData = {
 	employee_name: utils.makeRandomName(3),
@@ -77,7 +92,7 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 				ORDER BY id DESC
 				LIMIT 1
 			`);
-		
+
 		expect(vacationData).toEqual({
 			id: expect.any(Number),
 			employee_id: 1,
