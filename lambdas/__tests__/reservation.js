@@ -2,21 +2,35 @@ const utils = require('../test-utils');
 const moment = require('moment');
 const STANDARD = moment();
 
-const randomAmount = () => Math.floor(Math.random() * 10) - 9;
-const getRandomDate = () => {
-	const date = STANDARD.add(randomAmount(), 'hours')
+const randomAmount = () => Math.floor(Math.random() * 10);
+//const getRandomDate = () => {
+//	const date = STANDARD.add(randomAmount(), 'hours')
+//		.add(randomAmount(), 'minutes')
+//		.add(randomAmount(), 'days');
+//	const result = moment(date);
+//	return (original = false) => {
+//		if (original) {
+//			return date;
+//		} else {
+//			return result;
+//		}
+//	};
+//};
+
+const randomHour = () => Math.random() * (22 - 10) + 10;
+const setRandomDate = date => {
+	return moment(date)
+		.set('hour', randomHour)
 		.add(randomAmount(), 'minutes')
 		.add(randomAmount(), 'days');
-	const result = moment(date);
-	return (original = false) => {
-		if (original) {
-			return date;
-		} else {
-			return result;
-		}
-	};
 };
-const randomDate = getRandomDate();
+const getDate = () => {
+	const date = setRandomDate(STANDARD);
+
+	return (original = false) => original ? date : moment(date);
+};
+
+const randomDate = getDate();
 let randomReservationData = {
 	employee_id: 1,
 	store_id: 1,
