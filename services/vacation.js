@@ -17,8 +17,8 @@ class VacationService {
 	async getDuplicatedVacation(vacationData) {
 		const { selectDuplicatedVacation } = query.vacation;
 		const employeeId = vacationData.employee_id;
-		const startAt = moment(vacationData.start_at).toISOString();
-		const finishAt = moment(vacationData.finish_at).toISOString();
+		const startAt = moment(vacationData.start_at).utc(true).toISOString();
+		const finishAt = moment(vacationData.finish_at).utc(true).toISOString();
 		const [result] = await this.database.query(selectDuplicatedVacation(employeeId, startAt, finishAt));
 
 		return result;

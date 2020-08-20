@@ -23,16 +23,19 @@ class ReservationService {
 	}
 
 	async isDuplicated(reservationData) {
-		const { lte, gte, and } = Op;
+		const { lte, gte, and, is } = Op;
+		const startOfToday = moment(reservationData.start_at).utc(true).startOf('day').toISOString();
+		const endOfToday = moment(reservationData.finish_at).utc(true).endOf('day').toISOString();
 		const index = {
 			employee_id: reservationData.employee_id,
 			status: 'ready',
 			[and]: [
-				{
-					start_at: { [gte]: moment(reservationData.start_at).startOf('day').toISOString() },
-					finish_at: { [lte]: moment(reservationData.finish_at).endOf('day').toISOString() }
-				}
-			]
+				{ start_at: { [gte]: startOfToday } },
+				{ finish_at: { [lte]: endOfToday } }
+			],
+			deleted_at: {
+				[is]: null
+			}
 		};
 		const attributes = ['id', 'start_at', 'finish_at'];
 		const reservationList = await this.reservationDao.selectAll(index, attributes);
@@ -41,8 +44,7 @@ class ReservationService {
 			const startAt = moment(reservationData.start_at);
 			const finishAt = moment(reservationData.finish_at);
 
-			if ((startAt.isBetween(data.start_at, data.finish_at) || finishAt.isBetween(data.start_at, data.finish_at)) 
-			|| (startAt.isBefore(data.start_at) && finishAt.isAfter(data.finish_at))) {
+			if ((startAt.isBetween(data.start_at, data.finish_at) || finishAt.isBetween(data.start_at, data.finish_at)) || (startAt.isBefore(data.start_at) && finishAt.isAfter(data.finish_at))) {
 				return data;
 			}
 		});
@@ -51,11 +53,11 @@ class ReservationService {
 	async getReservationList(storeId, date) {
 		const { selectReservation } = query.reservation;
 
-		date = moment(date);
-		const startAt = date.startOf('day').toISOString();
-		const finishAt = date.endOf('day').toISOString();
+		const timeData = moment(date).utc(true);
+		const startOfToday = timeData.startOf('day').toISOString();
+		const endOfToday = timeData.endOf('day').toISOString();
 
-		const reservationData = await this.database.query(selectReservation(storeId, startAt, finishAt));
+		const reservationData = await this.database.query(selectReservation(storeId, startOfToday, endOfToday));
 
 		if (reservationData.length) {
 			return reservationData.map(({

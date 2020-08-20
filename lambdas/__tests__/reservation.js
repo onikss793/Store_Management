@@ -17,10 +17,10 @@ const randomAmount = () => Math.floor(Math.random() * 10);
 //	};
 //};
 
-const randomHour = () => Math.random() * (22 - 10) + 10;
+const randomHour = () => Math.random() * (21 - 10) + 10;
 const setRandomDate = date => {
 	return moment(date)
-		.set('hour', randomHour)
+		.set('hour', randomHour())
 		.add(randomAmount(), 'minutes')
 		.add(randomAmount(), 'days');
 };
