@@ -23,6 +23,12 @@ class EmployeeService {
 			};
 		});
 	}
+
+	async deleteEmployee(employeeId, transaction) {
+		const index = { id: employeeId };
+
+		return this.employeeDao.deleteOne(index, transaction);
+	}
 }
 
 module.exports = EmployeeService;

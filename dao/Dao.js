@@ -39,4 +39,16 @@ module.exports = class Dao {
 			return this.model.upsert(data);
 		}
 	}
+
+	async deleteOne(index, properties = [], transaction) {
+		const data = properties.reduce((acc, curr) => {
+			return {
+				...acc,
+				[curr]: Date.now().toString()
+			};
+		}, {});
+
+		await this.model.update({ ...data }, { where: { ...index }, transaction });
+		return this.model.destroy({ where: { ...index }, transaction });
+	}
 };

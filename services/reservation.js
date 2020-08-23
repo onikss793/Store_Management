@@ -87,6 +87,12 @@ class ReservationService {
 			return [];
 		}
 	}
+
+	async deleteReservation(reservationId, transaction) {
+		const index = { id: reservationId };
+
+		return this.reservationDao.deleteOne(index, transaction);
+	}
 }
 
 module.exports = ReservationService;

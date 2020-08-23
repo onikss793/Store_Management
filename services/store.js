@@ -60,6 +60,12 @@ class StoreService {
 	async getStoreByWhereClause({ ...index }) {
 		return this.storeDao.selectOne(index);
 	}
+
+	async deleteStore(storeId, transaction) {
+		const index = { id: storeId };
+
+		return this.storeDao.deleteOne(index, transaction);
+	}
 }
 
 module.exports = StoreService;

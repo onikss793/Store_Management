@@ -3,6 +3,8 @@ const { BrandService } = require('../../services');
 const utils = require('../utils');
 
 class BrandController extends Controller {
+	brandService;
+
 	constructor() {
 		super();
 		this.setDatabase();
@@ -39,6 +41,28 @@ class BrandController extends Controller {
 		} catch (err) {
 			if (transaction) await transaction.rollback();
 			return utils.throwError(err);
+		}
+	};
+
+	delete = async request => {
+		let transaction;
+
+		try {
+			const resourceId = request.resourceId;
+			const accountId = request.storeId;
+			const isAdmin = request.isAdmin;
+			const brandId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
+
+			transaction = await this.database.transaction();
+			await this.brandService.deleteBrand(brandId, transaction);
+			await transaction.commit();
+
+			return utils.response({
+				body: { success: true }
+			});
+		} catch (e) {
+			if (transaction) await transaction.rollback();
+			return utils.throwError(e);
 		}
 	};
 }

@@ -49,6 +49,12 @@ class VacationService {
 			};
 		});
 	}
+
+	async deleteVacation(vacationId, transaction) {
+		const index = { id: vacationId };
+
+		return this.vacationDao.deleteOne(index, transaction);
+	}
 }
 
 module.exports = VacationService;

@@ -45,6 +45,10 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize, AccountController.onlyAdmin],
 			runner: BrandController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: BrandController.delete
 		}))(request)
 	},
 	employee: {
