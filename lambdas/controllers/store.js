@@ -3,6 +3,8 @@ const { StoreService, AccountService } = require('../../services');
 const utils = require('../utils');
 
 class StoreController extends Controller {
+	storeService;
+
 	constructor() {
 		super();
 		this.setDatabase();
@@ -57,10 +59,28 @@ class StoreController extends Controller {
 		}
 	};
 
+	delete = async request => {
+		let transaction;
+
+		try {
+			const { resourceId, accountId, isAdmin } = request;
+			const storeId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
+
+			transaction = await this.database.transaction();
+			await this.storeService.deleteStore(storeId, transaction);
+			await transaction.commit();
+
+			return utils.response({
+				body: { success: true }
+			});
+		} catch (e) {
+			if (transaction) await transaction.rollback();
+			return utils.throwError(e);
+		}
+	};
+
 	async getSpecificStoreData(request) {
-		const resourceId = request.resourceId;
-		const accountId = request.accountId;
-		const isAdmin = request.isAdmin;
+		const { resourceId, accountId, isAdmin } = request;
 		const storeId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
 
 		if (storeId) {

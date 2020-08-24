@@ -48,9 +48,7 @@ class BrandController extends Controller {
 		let transaction;
 
 		try {
-			const resourceId = request.resourceId;
-			const accountId = request.storeId;
-			const isAdmin = request.isAdmin;
+			const { resourceId, accountId, isAdmin } = request;
 			const brandId = utils.getStoreIdFromAccountAndParam(resourceId, accountId, isAdmin);
 
 			transaction = await this.database.transaction();

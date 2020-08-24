@@ -71,5 +71,5 @@ module.exports = {
 	makeRandomName,
 	axiosCall,
 	getSampleData,
-	getMasterAccessToken
+	getMasterAccessToken,
 };

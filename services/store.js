@@ -57,14 +57,11 @@ class StoreService {
 		};
 	}
 
-	async getStoreByWhereClause({ ...index }) {
-		return this.storeDao.selectOne(index);
-	}
-
 	async deleteStore(storeId, transaction) {
 		const index = { id: storeId };
+		const properties = ['store_name'];
 
-		return this.storeDao.deleteOne(index, transaction);
+		return this.storeDao.deleteOne(index, properties, transaction);
 	}
 }
 
