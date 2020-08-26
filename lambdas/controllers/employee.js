@@ -4,6 +4,8 @@ const utils = require('../utils');
 const moment = require('moment');
 
 class EmployeeController extends Controller {
+	employeeService;
+
 	constructor() {
 		super();
 		this.setDatabase();
@@ -30,6 +32,7 @@ class EmployeeController extends Controller {
 			return utils.throwError(err);
 		}
 	};
+
 	// /employee?storeId=1&date=2020-05-31T15:00:00.000Z
 	get = async request => {
 		try {
@@ -42,6 +45,25 @@ class EmployeeController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
+			return utils.throwError(err);
+		}
+	};
+
+	delete = async request => {
+		let transaction;
+
+		try {
+			const employeeId = request.resourceId;
+
+			transaction = await this.database.transaction();
+			await this.employeeService.deleteEmployee(employeeId, transaction);
+			await transaction.commit();
+
+			return utils.response({
+				body: { success: true }
+			});
+		} catch (err) {
+			if (transaction) await transaction.rollback();
 			return utils.throwError(err);
 		}
 	};

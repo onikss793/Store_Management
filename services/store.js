@@ -59,9 +59,9 @@ class StoreService {
 
 	async deleteStore(storeId, transaction) {
 		const index = { id: storeId };
-		const properties = ['store_name'];
+		const attributes = ['store_name'];
 
-		return this.storeDao.deleteOne(index, properties, transaction);
+		return this.storeDao.deleteOne(index, attributes, transaction);
 	}
 }
 

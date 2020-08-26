@@ -65,4 +65,31 @@ describe('직원 생성 > 목록 확인', () => {
 			}
 		]));
 	}, timeout);
+
+	test('직원 삭제', async () => {
+		const [employeeData] = await utils.database.query(`
+			SELECT id FROM employees 
+			WHERE phone_number = "${newEmployeeData.phone_number}"
+		`);
+		const employeeId = employeeData.id;
+		const accessToken = await utils.getMasterAccessToken();
+
+		const response = await utils.axiosCall({
+			endpoint: '/employee/' + employeeId,
+			method: 'DELETE',
+			accessToken
+		});
+
+		expect(response.data.success).toBe(true);
+
+		const [deletedEmployee] = await utils.database.query(`
+			SELECT phone_number, deleted_at FROM employees 
+			WHERE id = ${employeeId}
+		`);
+
+		expect(deletedEmployee).not.toEqual({
+			phone_number: newEmployeeData.phone_number,
+			deleted_at: null
+		});
+	});
 });
