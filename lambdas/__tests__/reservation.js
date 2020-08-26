@@ -204,4 +204,32 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 
 		expect(error.response.status).toBe(409);
 	});
+
+	test('예약 삭제', async () => {
+		const [reservationData] = await utils.database.query(`
+			SELECT id FROM reservations
+			ORDER BY id DESC
+			LIMIT 1
+		`);
+		const reservationId = reservationData.id;
+		const accessToken = await utils.getMasterAccessToken();
+
+		const response = await utils.axiosCall({
+			method: 'DELETE',
+			endpoint: '/reservation/' + reservationId,
+			accessToken
+		});
+
+		expect(response.data.success).toBe(true);
+
+		const [deletedReservation] = await utils.database.query(`
+			SELECT deleted_at FROM reservations
+			ORDER BY id DESC
+			LIMIT 1
+		`);
+
+		expect(deletedReservation).not.toEqual({
+			deleted_at: null
+		});
+	});
 });

@@ -82,6 +82,10 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize],
 			runner: ReservationController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: ReservationController.delete
 		}))(request)
 	},
 	vacation: {
