@@ -17,10 +17,10 @@ const randomAmount = () => Math.floor(Math.random() * 10);
 //	};
 //};
 
-const randomHour = () => Math.random() * (22 - 10) + 10;
+const randomHour = () => Math.random() * (21 - 10) + 10;
 const setRandomDate = date => {
 	return moment(date)
-		.set('hour', randomHour)
+		.set('hour', randomHour())
 		.add(randomAmount(), 'minutes')
 		.add(randomAmount(), 'days');
 };
@@ -203,5 +203,33 @@ describe('예약 등록 > 확인 > 변경 > 목록', () => {
 		});
 
 		expect(error.response.status).toBe(409);
+	});
+
+	test('예약 삭제', async () => {
+		const [reservationData] = await utils.database.query(`
+			SELECT id FROM reservations
+			ORDER BY id DESC
+			LIMIT 1
+		`);
+		const reservationId = reservationData.id;
+		const accessToken = await utils.getMasterAccessToken();
+
+		const response = await utils.axiosCall({
+			method: 'DELETE',
+			endpoint: '/reservation/' + reservationId,
+			accessToken
+		});
+
+		expect(response.data.success).toBe(true);
+
+		const [deletedReservation] = await utils.database.query(`
+			SELECT deleted_at FROM reservations
+			ORDER BY id DESC
+			LIMIT 1
+		`);
+
+		expect(deletedReservation).not.toEqual({
+			deleted_at: null
+		});
 	});
 });

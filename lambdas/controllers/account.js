@@ -3,6 +3,8 @@ const { AccountService } = require('../../services');
 const utils = require('../utils');
 
 class AccountController extends Controller {
+	accountService;
+
 	constructor() {
 		super();
 		this.setDatabase();

@@ -1,7 +1,3 @@
-### Current URL
-
-https://w8yl588g86.execute-api.ap-northeast-2.amazonaws.com/production
-
 ### Branch Policy
 
 Deploy: production

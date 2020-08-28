@@ -11,31 +11,22 @@ const force = require('./force');
 const alter = require('./alter');
 
 module.exports = {
-	ping: {
-		GET: ping.get
+	alter: {
+		GET: alter.get
 	},
 	force: {
 		GET: force.get,
 		POST: force.post
 	},
-	alter: {
-		GET: alter.get
+	ping: {
+		GET: ping.get
 	},
+
 	account: {
 		POST: async request => (await middlewares({
 			pre: [],
 			runner: AccountController.post
 		}))(request),
-	},
-	store: {
-		POST: async request => (await middlewares({
-			pre: [AccountController.authorize, AccountController.onlyAdmin],
-			runner: StoreController.post
-		}))(request),
-		GET: async request => (await middlewares({
-			pre: [AccountController.authorize],
-			runner: StoreController.get
-		}))(request)
 	},
 	brand: {
 		POST: async request => (await middlewares({
@@ -45,6 +36,24 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize, AccountController.onlyAdmin],
 			runner: BrandController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: BrandController.delete
+		}))(request)
+	},
+	store: {
+		POST: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: StoreController.post
+		}))(request),
+		GET: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: StoreController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize, AccountController.onlyAdmin],
+			runner: StoreController.delete
 		}))(request)
 	},
 	employee: {
@@ -55,6 +64,10 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize],
 			runner: EmployeeController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: EmployeeController.delete
 		}))(request)
 	},
 	reservation: {
@@ -69,6 +82,10 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize],
 			runner: ReservationController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: ReservationController.delete
 		}))(request)
 	},
 	vacation: {

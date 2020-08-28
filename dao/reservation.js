@@ -42,13 +42,13 @@ const selectReservation = (storeId, startAt, finishAt) => `
         EMPLOYEE.created_at AS employee_created_at,
         EMPLOYEE.updated_at AS employee_updated_at
     FROM reservations AS RESERVATION
-        LEFT JOIN
-            employees AS EMPLOYEE ON RESERVATION.employee_id = EMPLOYEE.id
+    LEFT JOIN employees AS EMPLOYEE 
+        ON RESERVATION.employee_id = EMPLOYEE.id
     WHERE RESERVATION.store_id = ${storeId}
         AND RESERVATION.deleted_at IS NULL
         AND RESERVATION.start_at >= "${startAt}"
         AND RESERVATION.finish_at <= "${finishAt}" 
-    ORDER BY id DESC
+    ORDER BY RESERVATION.start_at
 `;
 
 module.exports = { selectReservation };

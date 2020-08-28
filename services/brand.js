@@ -14,6 +14,13 @@ class BrandService {
 		const attributes = ['id', 'brand_name'];
 		return this.brandDao.selectAll(null, attributes);
 	}
+
+	async deleteBrand(brandId, transaction) {
+		const index = { id: brandId };
+		const properties = ['brand_name'];
+
+		return this.brandDao.deleteOne(index, properties, transaction);
+	}
 }
 
 module.exports = BrandService;

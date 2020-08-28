@@ -3,6 +3,8 @@ const { ReservationService } = require('../../services');
 const utils = require('../utils');
 
 class ReservationController extends Controller {
+	reservationService;
+
 	constructor() {
 		super();
 		this.setDatabase();
@@ -37,6 +39,7 @@ class ReservationController extends Controller {
 					body: { success: true }
 				});
 			} else {
+				await transaction.rollback();
 				return utils.makeError({
 					statusCode: 500,
 					message: 'Something Gone Wrong',
@@ -103,6 +106,25 @@ class ReservationController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
+			return utils.throwError(err);
+		}
+	};
+
+	delete = async request => {
+		let transaction;
+
+		try {
+			const reservationId = request.resourceId;
+
+			transaction = await this.database.transaction();
+			await this.reservationService.deleteReservation(reservationId);
+			await transaction.commit();
+
+			return utils.response({
+				body: { success: true }
+			});
+		} catch (err) {
+			if (transaction) await transaction.rollback();
 			return utils.throwError(err);
 		}
 	};

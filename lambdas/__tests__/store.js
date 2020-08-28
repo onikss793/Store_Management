@@ -122,21 +122,31 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		}
 	});
 
-	test('Admin(1번) 계정으로 2번 매장 확인 시도', async () => {
+	test('Admin(1번) 계정으로 다른 매장 확인 시도', async () => {
 		const accessToken = await utils.getMasterAccessToken();
+
+		const [storeData] = await utils.database.query(`
+			SELECT
+				id,
+				store_name,
+				is_admin
+			FROM stores
+			ORDER BY id DESC
+			LIMIT 1
+		`);
 
 		const response = await utils.axiosCall({
 			method: 'GET',
-			endpoint: '/store/2',
+			endpoint: '/store/' + storeData.id,
 			accessToken
 		});
 
 		expect(response.status).toBe(200);
 		expect(response.data.data).toEqual({
-			id: 2,
-			store_name: expect.any(String),
+			id: storeData.id,
+			store_name: storeData.store_name,
 			brand: expect.any(Object),
-			is_admin: expect.any(Boolean)
+			is_admin: Boolean(storeData.is_admin)
 		});
 	});
 
@@ -158,5 +168,34 @@ describe('매장 생성 > 로그인(+, -) > 매장 목록', () => {
 		} catch (err) {
 			expect(err.response.status).toBe(403);
 		}
+	});
+
+	test('매장 삭제 후 확인', async () => {
+		const accessToken = await utils.getMasterAccessToken();
+		const [storeData] = await utils.database.query(`
+			SELECT
+				id,
+				store_name
+			FROM stores
+			WHERE store_name = "${newStoreData.store_name}"
+		`);
+		const storeId = storeData.id;
+
+		const response = await utils.axiosCall({
+			endpoint: '/store/' + storeId,
+			method: 'DELETE',
+			accessToken
+		});
+
+		expect(response.data.success).toBe(true);
+
+		const [deletedStore] = await utils.database.query(`
+			SELECT store_name, deleted_at FROM stores WHERE id = ${storeId}
+		`);
+
+		expect(deletedStore).not.toEqual({
+			store_name: newStoreData.store_name,
+			deleted_at: null
+		});
 	});
 });
