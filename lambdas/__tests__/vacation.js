@@ -4,21 +4,6 @@ const STANDARD = moment();
 const timeout = 60000;
 
 const randomAmount = () => Math.floor(Math.random() * 10) - 9;
-//const getRandomDate = () => {
-//	const date = STANDARD.add(randomAmount(), 'hours')
-//		.add(randomAmount(), 'minutes')
-//		.add(randomAmount(), 'days');
-//
-//	const result = moment(date);
-//	return (original = false) => {
-//		if (original) {
-//			return date;
-//		} else {
-//			return result;
-//		}
-//	};
-//};
-
 const setDate = date => {
 	return moment(date)
 		.add(randomAmount(), 'days')
@@ -116,7 +101,7 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 				finish_at: randomDate(true).add(2, 'days').toISOString()
 			}
 		});
-		console.log(err);
+
 		expect(err.response.status).toBe(409);
 	});
 
@@ -144,5 +129,31 @@ describe('직원 1명 생성 > 휴가 등록 > 중복된 휴가 등록 > 전체 
 
 		expect(response.status).toBe(200);
 		expect(response.data.data).toEqual(expect.arrayContaining(JSON.parse(dataMap)));
+	});
+
+	test('휴가 삭제 > 확인', async () => {
+		const [vacationData] = await utils.database.query(`
+			SELECT
+				id
+			FROM vacations
+			WHERE deleted_at IS NULL
+			ORDER BY id DESC
+			LIMIT 1
+		`);
+		const accessToken = await utils.getMasterAccessToken();
+
+		const response = await utils.axiosCall({
+			endpoint: '/vacation/' + vacationData.id,
+			method: 'DELETE',
+			accessToken
+		});
+
+		expect(response.status).toBe(200);
+
+		const [deletedVacationData] = await utils.database.query(`
+			SELECT deleted_at FROM vacations WHERE id = ${vacationData.id}
+		`);
+
+		expect(deletedVacationData.deleted_at).not.toBe(null);
 	});
 });

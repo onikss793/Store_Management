@@ -3,20 +3,6 @@ const moment = require('moment');
 const STANDARD = moment();
 
 const randomAmount = () => Math.floor(Math.random() * 10);
-//const getRandomDate = () => {
-//	const date = STANDARD.add(randomAmount(), 'hours')
-//		.add(randomAmount(), 'minutes')
-//		.add(randomAmount(), 'days');
-//	const result = moment(date);
-//	return (original = false) => {
-//		if (original) {
-//			return date;
-//		} else {
-//			return result;
-//		}
-//	};
-//};
-
 const randomHour = () => Math.random() * (21 - 10) + 10;
 const setRandomDate = date => {
 	return moment(date)

@@ -53,7 +53,7 @@ class VacationService {
 	async deleteVacation(vacationId, transaction) {
 		const index = { id: vacationId };
 
-		return this.vacationDao.deleteOne(index, transaction);
+		return this.vacationDao.deleteOne(index, null, transaction);
 	}
 }
 

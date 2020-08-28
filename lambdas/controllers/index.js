@@ -96,6 +96,10 @@ module.exports = {
 		GET: async request => (await middlewares({
 			pre: [AccountController.authorize],
 			runner: VacationController.get
+		}))(request),
+		DELETE: async request => (await middlewares({
+			pre: [AccountController.authorize],
+			runner: VacationController.delete
 		}))(request)
 	}
 };

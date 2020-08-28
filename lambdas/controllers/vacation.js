@@ -3,6 +3,8 @@ const { VacationService } = require('../../services');
 const utils = require('../utils');
 
 class VacationController extends Controller {
+	vacationService;
+
 	constructor() {
 		super();
 		this.setDatabase();
@@ -36,7 +38,6 @@ class VacationController extends Controller {
 			});
 		} catch (err) {
 			if (transaction) await transaction.rollback();
-			console.error(err);
 			return utils.throwError(err);
 		}
 	};
@@ -58,7 +59,25 @@ class VacationController extends Controller {
 				body: { data }
 			});
 		} catch (err) {
-			console.error(err);
+			return utils.throwError(err);
+		}
+	};
+
+	delete = async request => {
+		let transaction;
+
+		try {
+			const vacationId = request.resourceId;
+
+			transaction = await this.database.transaction();
+			await this.vacationService.deleteVacation(vacationId, transaction);
+			await transaction.commit();
+
+			return utils.response({
+				body: { success: true }
+			});
+		} catch (err) {
+			if (transaction) await transaction.rollback();
 			return utils.throwError(err);
 		}
 	};
