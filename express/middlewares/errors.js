@@ -1,30 +1,32 @@
-const makeError = require('../utils/throwError');
+const { getErrorMessage, getErrorStatus } = require('./CustomError');
 
-const notFound = (req, res, next) => {
-	next(makeError(404, `Can't find ${req.originalUrl} from this server`));
+const notFound = (_req, _res, next) => {
+	try {
+		throw new Error('NOT_FOUND');
+	} catch (e) {
+		next(e);
+	}
 };
 
-const globalErrorHandler = (err, req, res, next) => {
-	err.status = err.status || 500;
+const globalErrorHandler = (err, req, res, _next) => {
+	err.name = err.message;
+	err.status = getErrorStatus(err);
+	err.message = getErrorMessage(err);
 
-	err.message === 'Bad Request' && res.status(400).json({ error: err.message });
+	console.error(err);
 
-	(err.message === 'Conflict' || err.message === 'Validation Error') &&
-    res.status(409).json({ error: err.message });
-
-	handleTestErrors(err, res);
+	if (process.env.NODE_ENV === 'test') {
+		res.status(err.status).json();
+	} else {
+		res.status(err.status).json(formError(err));
+	}
 };
 
 module.exports = { notFound, globalErrorHandler };
 
-const handleTestErrors = (err, res) => {
-	const { message, status } = err;
-
-	if (process.env.NODE_ENV === 'test') {
-		res.status(status).json();
-	} else {
-		res.status(status).json({ error: message });
-	}
-
-	console.error(err);
+const formError = err => {
+	return {
+		name: err.name,
+		message: err.message
+	};
 };

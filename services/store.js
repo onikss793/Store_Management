@@ -1,5 +1,4 @@
 const { Dao, query } = require('../dao');
-const utils = require('../lambdas/utils');
 
 class StoreService {
 	constructor(database) {
@@ -8,6 +7,7 @@ class StoreService {
 	}
 
 	async createStore(storeData, transaction) {
+		const utils = require('../lambdas/utils');
 		storeData.password = utils.cryptonite(storeData.password);
 
 		return this.storeDao.insertOne(storeData, transaction);

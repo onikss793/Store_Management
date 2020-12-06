@@ -1,13 +1,26 @@
 version: "3.7"
 
 services:
-  local:
+  app:
+    image: app_store_management:latest
+    build:
+      context: .
+      cache_from:
+        - store_management
+      dockerfile: kubernetes/app/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    links:
+      - db
+  db:
     image: mysql_store_management:latest
     build:
       context: .
       cache_from:
         - mysql_store_management
-      dockerfile: Dockerfile
+      dockerfile: kubernetes/database/Dockerfile
     ports:
       - "33069:3306"
     volumes:
@@ -16,3 +29,4 @@ services:
 volumes:
   store_management_volume:
     name: sm_data
+

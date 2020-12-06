@@ -16,14 +16,18 @@
 		"serve:start": "yarn serve:stop && _scripts/serve-start.sh",
 		"serve:stop": "_scripts/serve-stop.sh",
 		"serve:local": "yarn dep:local && yarn serve:start && yarn dep:migrate",
-		"deploy": "_scripts/deploy.sh"
+		"deploy": "_scripts/deploy.sh",
+		"express:dev": "yarn dep:local &&  npx nodemon ./express/server.js && yarn dep:migrate"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "2.4.3",
+		"body-parser": "1.19.0",
+		"cors": "2.8.5",
 		"dotenv": "8.2.0",
+		"express": "^4.17.1",
 		"jsonwebtoken": "8.5.1",
 		"moment": "2.24.0",
 		"mysql": "2.17.1",
@@ -33,10 +37,11 @@
 	"devDependencies": {
 		"@types/jest": "25.2.1",
 		"axios": "0.19.2",
-		"babel-eslint": "^10.1.0",
+		"babel-eslint": "10.1.0",
 		"eslint": "7.7.0",
 		"jest": "25.2.3",
-		"prettier": "^2.0.5",
+		"morgan": "^1.10.0",
+		"prettier": "2.0.5",
 		"sequelize-mock": "0.10.2",
 		"serverless": "1.73.1",
 		"serverless-offline": "6.1.4"

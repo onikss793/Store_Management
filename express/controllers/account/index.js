@@ -1,32 +1,30 @@
 const utils = require('../../utils');
-const helper = require('./helper');
-const { Dao } = require('../../../dao');
-const { database } = require('../../database');
-const storeDao = new Dao(database, 'Store');
+const { createDatabase } = require('../../database');
+const database = createDatabase();
+const { AccountService } = require('../../../services');
 
 const login = async (req, res, next) => {
+	let transaction;
 	try {
-		const properties = ['name', 'password'];
-
+		const properties = ['store_name', 'password'];
 		if (!utils.checkRequest(req, properties)) {
-			next(utils.throwError(400, 'Bad Request'));
+			throw new Error('BAD_REQUEST');
 		}
+		transaction = await database.transaction();
+		const accountService = new AccountService(database, transaction);
+		const { store_name, password } = req.body;
 
-		const { name, password } = req.body;
-		const store_data = await storeDao.selectOne({ store_name: name }).
-		                                 then(data => data && data.toJSON());
+		const { storeId } = await accountService.login({ store_name, password });
+		const storeData = await accountService.getStoreById(storeId);
+		const token = await accountService.getAccessToken(storeId);
 
-		if (helper.dataExist(store_data)) {
-			if (helper.compareCrypto(password, store_data.password)) {
-				res.status(200).json({
-					...helper.renderStoreData(store_data),
-					token: helper.signJwt(store_data)
-				});
-			} else {
-				next(utils.throwError(401, 'Wrong Password'));
-			}
+		if (storeId) {
+			res.status(200).json({
+				token,
+				...storeData
+			});
 		} else {
-			next(utils.throwError(401, 'No Match For Store Name'));
+			throw new Error('AUTHORIZATION_FAILED');
 		}
 	} catch (err) {
 		next(err);

@@ -1,9 +1,9 @@
 const utils = require('../../utils');
 const helper = require('./helper');
 const moment = require('moment');
-const { database } = require('../../database');
+const { createDatabase } = require('../../database');
 const { Dao, query } = require('../../../dao');
-
+const database = createDatabase();
 const reservationDao = new Dao(database, 'Reservation');
 
 const createReservation = async (req, res, next) => {

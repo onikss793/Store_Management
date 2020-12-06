@@ -1,8 +1,8 @@
 const utils = require('../../utils');
 const { getResponseForList } = require('./helper');
-const { database } = require('../../database');
+const { createDatabase } = require('../../database');
 const { Dao } = require('../../../dao');
-
+const database = createDatabase();
 const clientDao = new Dao(database, 'Client');
 
 const getClientListByStoreId = async (req, res, next) => {

@@ -8,7 +8,7 @@ const storeRouter = require('./store');
 const setupRouter = require('./setup');
 const { globalErrorHandler, notFound } = require('../middlewares/errors');
 
-const forTest = app => {
+const _forTest = app => {
 	app.get('/authTest', require('../middlewares/auth'), require('./authTest'));
 };
 const ping = app => {
@@ -25,7 +25,7 @@ const exec = app => routerModule => {
 
 module.exports = app => {
 	const router = exec(app);
-	forTest(app);
+	_forTest(app);
 	ping(app);
 
 	router(accountRouter);

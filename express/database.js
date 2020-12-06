@@ -1,7 +1,7 @@
-const { Sequelize } = require('sequelize');
-const { DATABASE, USERNAME, PASSWORD, host } = require('../config/db');
+const { Sequelize, Op } = require('sequelize');
 const models = require('../models');
-const env = process.env.NODE_ENV;
+const STAGE = process.env.NODE_ENV;
+const HOST = process.env.DATABASE_HOST || '127.0.0.1';
 
 class Database {
 	constructor() {
@@ -9,14 +9,25 @@ class Database {
 		this.setModels();
 	}
 
-	async connect(force) {
-		try {
-			await this.sequelize.authenticate();
-			await this.sequelize.sync({ force });
-			console.info('DB Loaded: ', this.sequelize.config.database);
-		} catch (err) {
-			console.info('DB Loading Error: ', err);
-		}
+	async connect(force = false) {
+		await this.sequelize.authenticate().catch(e => console.log('Connection Error: ', e));
+		await this.sequelize.sync({ force });
+		console.info('[[ DB Loaded ]]: ', this.sequelize.config.database);
+	}
+
+	async force() {
+		console.log(this.sequelize.config);
+		await this.sequelize.sync({ force: true });
+		console.info('[[ MIGRATE ]]: DB FORCED!', this.sequelize.config.database);
+	}
+
+	async alter() {
+		await this.sequelize.sync({ alter: true });
+		console.info('[[ DB Altered ]]: ', this.sequelize.config.database);
+	}
+
+	async close() {
+		await this.sequelize.close();
 	}
 
 	getSequelize() {
@@ -29,49 +40,56 @@ class Database {
 	}
 
 	_setSequelize() {
-		const standard = 'production';
-
-		if (env !== standard) {
-			return new Sequelize(this._getDBName(), 'root', '1', {
-				host: 'localhost',
-				port: 3306,
-				logging: false,
-				dialect: 'mysql'
-			});
-		}
-
-		if (env === standard) {
+		if (STAGE === 'production') {
+			const { DATABASE, USERNAME, PASSWORD, HOST } = process.env;
 			return new Sequelize(DATABASE, USERNAME, PASSWORD, {
-				host,
-				port: 3306,
+				host: HOST,
+				port: 33069,
 				logging: false,
 				dialect: 'mysql',
+				timezone: '+09:00',
 				dialectOptions: {
-					ssl: 'Amazon RDS'
+					ssl: 'Amazon RDS',
+				},
+				pool: {
+					max: 10,
+					min: 0,
+					idle: 10000
+				},
+				define: {
+					charset: 'utf8',
+					dialectOptions: {
+						collate: 'utf8_general_ci'
+					},
 				}
 			});
 		}
 
-		if (env === 'production') {
-			//
-		}
+		return new Sequelize('store_management_dev', 'root', '1', {
+			host: 'db',
+			port: 3306,
+			logging: console.log,
+			dialect: 'mysql',
+			timezone: '+09:00',
+			dialectOptions: {
+				charset: 'utf8mb4'
+			},
+			pool: {
+				max: 10,
+				min: 0,
+				idle: 5000
+			},
+			define: {
+				charset: 'utf8',
+				dialectOptions: {
+					collate: 'utf8_general_ci'
+				},
+			}
+		});
 	}
 
-	_getDBName() {
-		switch (env) {
-			case 'test': {
-				return 'store_management_test';
-			}
-			case 'dev': {
-				return 'store_management_dev';
-			}
-			case 'lambda': {
-				return 'store_management_dev';
-			}
-			case undefined: {
-				return 'store_management_test';
-			}
-		}
+	Op() {
+		return { ...Op };
 	}
 
 	async query(query) {
@@ -94,7 +112,8 @@ class Database {
 	}
 }
 
-const database = new Database().setModels();
-const sequelize = database.getSequelize();
+function createDatabase() {
+	return new Database().setModels();
+}
 
-module.exports = { sequelize, database, Database };
+module.exports = { createDatabase };

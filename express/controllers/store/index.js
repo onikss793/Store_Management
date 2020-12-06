@@ -1,7 +1,7 @@
 const utils = require('../../utils');
-const { database } = require('../../database');
+const { createDatabase } = require('../../database');
 const { Dao, query } = require('../../../dao');
-
+const database = createDatabase();
 const storeDao = new Dao(database, 'Store');
 
 const createStore = async (req, res, next) => {

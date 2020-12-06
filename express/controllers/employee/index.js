@@ -1,8 +1,8 @@
 const utils = require('../../utils');
 const { renderResponseForList } = require('./helper');
-const { database } = require('../../database');
+const { createDatabase } = require('../../database');
 const { Dao, query } = require('../../../dao');
-
+const database = createDatabase();
 const employeeDao = new Dao(database, 'Employee');
 const vacationDao = new Dao(database, 'Vacation');
 

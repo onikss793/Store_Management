@@ -1,14 +1,10 @@
 require('dotenv').config();
 const http = require('http');
 const { App } = require('./app');
-const { database } = require('./database');
 const PORT = process.env.PORT || 3000;
-const application = new App();
+const application = new App().getApp();
 
-http.createServer(application.getApp()).listen(PORT, () => {
-	(async function () {
-		await database.connect(true);
-	}());
-	console.log('Server Listening to PORT: ', PORT);
-}
+http.createServer(application).listen(PORT, () => {
+		console.log('Server Listening to PORT: ', PORT);
+	}
 );

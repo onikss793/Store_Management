@@ -18,23 +18,23 @@ const forTest = () => {
 class App {
 	constructor() {
 		this.app = express();
-		this.setup();
-		this.router();
+		this._setup();
+		this._router();
 	}
 
 	getApp() {
 		return this.app;
 	}
 
-	setup() {
+	_setup() {
 		this.app.use(cors());
 		this.app.use(logger);
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 	}
 
-	router() {
-		this.router = routes(this.app);
+	_router() {
+		this._router = routes(this.app);
 	}
 }
 

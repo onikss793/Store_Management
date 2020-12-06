@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-store-management
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-store-management
+  template:
+    metadata:
+      name: app-store-management
+      labels:
+        app: app-store-management
+    spec:
+      containers:
+      - image: app-store-management
+        name: app-store-management
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-store-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-store-management
+  template:
+    metadata:
+      name: mysql-store-management
+      labels:
+        app: mysql-store-management
+    spec:
+      containers:
+      - image: mysql-store-management
+        name: mysql-store-management

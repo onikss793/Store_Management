@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker-compose up -d local
+docker-compose up -d db
 true

@@ -1,15 +1,16 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { Dao, query } = require('../dao');
-const utils = require('../lambdas/utils');
 
 class AccountService {
-	constructor(database) {
+	constructor(database, transaction) {
 		this.database = database;
 		this.storeDao = new Dao(database, 'Store');
+		this.transaction = transaction;
 	}
 
 	async authorize(request) {
+		const utils = require('../lambdas/utils');
 		try {
 			const accessToken = request.headers.authorization;
 			if (!accessToken) {
@@ -74,7 +75,8 @@ class AccountService {
 	}
 
 	async getStoreDataByStoreName(storeName) {
-		return this.storeDao.selectOne({ store_name: storeName }, ['id', 'password'])
+		return this.storeDao
+			.selectOne({ store_name: storeName }, ['id', 'password'])
 			.then(data => data && data.toJSON());
 	}
 
